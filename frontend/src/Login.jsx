@@ -68,18 +68,16 @@ function Login() {
   return (
     <div className="h-screen w-full flex items-center justify-center bg-gray-50 overflow-hidden p-4">
       
-      {/* Ny vata lehibe (Card): 
-          - Mobile: h-auto (manaraka ny votoatiny), max-w-md
-          - Desktop (lg): h-125 (raikitra), max-w-4xl 
-      */}
+      {/* Ny vata lehibe (Card) */}
       <div className="flex flex-col lg:flex-row w-full max-w-md lg:max-w-4xl bg-white rounded-4xl lg:rounded-[2.5rem] shadow-2xl overflow-hidden border border-gray-100 h-auto lg:h-125">
         
         {/* 1. ANKAVIA (na AMBONY amin'ny Mobile): SARY */}
-        <div className="w-full lg:w-1/2 relative bg-slate-50 flex items-center justify-center border-b lg:border-b-0 lg:border-r border-gray-50 h-48 lg:h-full">
+        <div className="w-full lg:w-1/2 relative bg-slate-50 flex items-center justify-center border-b lg:border-b-0 lg:border-r border-gray-50 h-56 sm:h-64 lg:h-full overflow-hidden">
           <img 
             src="/admin.png" 
             alt="Admin Illustration" 
-            className="w-full h-full object-cover" 
+            className="w-full h-full object-cover lg:object-cover" 
+            // Raha toa ka sary miendrika logo na misy soratra ilay admin.png dia ampiasao ny object-contain amin'ny mobile
           />
           {/* Overlay kely mba hanome style */}
           <div className="absolute inset-0 bg-indigo-900/5"></div>
@@ -89,7 +87,7 @@ function Login() {
         <div className="w-full lg:w-1/2 flex items-center justify-center p-8 lg:p-12 bg-white">
           <div className="w-full max-w-xs space-y-6">
             
-            {/* Header Form: Natao compact kokoa */}
+            {/* Header Form */}
             <div className="space-y-2">
               <div className="flex items-center gap-3">
                 <div className="p-2 bg-green-600 rounded-xl shadow-lg shadow-indigo-100">
@@ -170,7 +168,7 @@ function Login() {
         </div>
       </div>
   
-      {/* CSS mba hanesorana ny icon browser default */}
+      {/* CSS */}
       <style>{`
         input::-ms-reveal, input::-ms-clear, input::-webkit-password-reveal {
           display: none !important;
