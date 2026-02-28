@@ -2,14 +2,20 @@ import React, { useState, useEffect, useCallback } from 'react';
 import Swal from 'sweetalert2';
 import { supabase } from '../supabaseClient';
 import { Link, useNavigate } from 'react-router-dom';
-import { PlusCircle, LogOut, LayoutList, Trash2, Edit3, Send, RefreshCcw, Settings, MapPin, X, Save } from 'lucide-react';
+import { 
+    PlusCircle, LogOut, LayoutList, Trash2, Edit3, Send, 
+    RefreshCcw, Settings, MapPin, X, Save, Type, 
+    Image as ImageIcon, AlignLeft, Eye, EyeOff, Loader2,
+    CheckCircle2, AlertCircle, Info
+} from 'lucide-react';
 
 const InterventionList = () => {
     const [interventions, setInterventions] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [actionLoading, setActionLoading] = useState(false);
     const navigate = useNavigate();
 
-    // --- STATES VAOVAO HO AN'NY FORMULAIRE ---
+    // --- STATES POUR LE FORMULAIRE ---
     const [isFormOpen, setIsFormOpen] = useState(false);
     const [editingId, setEditingId] = useState(null);
     const [formData, setFormData] = useState({
@@ -20,20 +26,26 @@ const InterventionList = () => {
         is_published: false
     });
 
-    // 1. Chargement des données depuis Supabase
+    // 1. Chargement des données depuis Supabase (Correction du warning error)
     const loadData = useCallback(async () => {
         setLoading(true);
         try {
-            const { data, error } = await supabase
+            const { data, error: supabaseError } = await supabase
                 .from('interventions')
                 .select('*')
                 .order('created_at', { ascending: false });
 
-            if (error) throw error;
+            if (supabaseError) throw supabaseError;
             setInterventions(data || []);
-        } catch (error) {
-            console.error("Erreur de chargement:", error.message);
-            Swal.fire('Erreur', 'Impossible de récupérer les données de la base de données', 'error');
+        } catch (err) {
+            const errorMessage = err instanceof Error ? err.message : 'Une erreur inconnue est survenue';
+            console.error("Erreur de chargement:", errorMessage);
+            Swal.fire({
+                title: 'Erreur de connexion',
+                text: 'Impossible de récupérer les données : ' + errorMessage,
+                icon: 'error',
+                confirmButtonColor: '#ef4444'
+            });
         } finally {
             setLoading(false);
         }
@@ -46,15 +58,16 @@ const InterventionList = () => {
     // 2. Déconnexion (Auth Supabase)
     const handleLogout = async () => {
         const result = await Swal.fire({
-            title: 'Êtes-vous sûr ?',
-            text: "Votre session actuelle sera fermée.",
-            icon: 'warning',
+            title: 'Souhaitez-vous vous déconnecter ?',
+            text: "Votre session actuelle sera fermée et vous devrez vous reconnecter.",
+            icon: 'question',
             showCancelButton: true,
-            // Eto dia loko iray ihany no tazonina (ilay mena #d33 ohatra)
-            confirmButtonColor: '#d33', 
-            cancelButtonColor: '#4f46e5', // Azonao ampiasaina amin'ny bokotra "Annuler" ilay loko manga
-            confirmButtonText: 'Oui, se déconnecter',
-            cancelButtonText: 'Annuler'
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#4f46e5',
+            confirmButtonText: 'Oui, déconnexion',
+            cancelButtonText: 'Annuler',
+            background: '#ffffff',
+            borderRadius: '1.25rem'
         });
 
         if (result.isConfirmed) {
@@ -67,27 +80,38 @@ const InterventionList = () => {
     const deleteIntervention = async (id) => {
         const result = await Swal.fire({
             title: 'Confirmation de suppression',
-            text: "Cette action est irréversible !",
+            text: "Attention, cette action est définitive et irréversible !",
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#ef4444',
-            confirmButtonText: 'Oui, supprimer',
-            cancelButtonText: 'Annuler'
+            confirmButtonText: 'Oui, supprimer définitivement',
+            cancelButtonText: 'Annuler',
+            reverseButtons: true
         });
 
         if (result.isConfirmed) {
+            setActionLoading(true);
             try {
-                const { error } = await supabase
+                const { error: deleteError } = await supabase
                     .from('interventions')
                     .delete()
                     .eq('id', id);
 
-                if (error) throw error;
+                if (deleteError) throw deleteError;
 
-                Swal.fire('Supprimé !', 'L\'intervention a été supprimée avec succès.', 'success');
+                Swal.fire({
+                    title: 'Supprimé !',
+                    text: "L'intervention a été retirée avec succès.",
+                    icon: 'success',
+                    timer: 2000,
+                    showConfirmButton: false
+                });
                 loadData(); 
-            } catch (error) {
-                Swal.fire('Erreur', error.message, 'error');
+            } catch (err) {
+                const msg = err instanceof Error ? err.message : 'Erreur lors de la suppression';
+                Swal.fire('Erreur', msg, 'error');
+            } finally {
+                setActionLoading(false);
             }
         }
     };
@@ -95,27 +119,30 @@ const InterventionList = () => {
     // 4. Gestion de la publication (is_published)
     const togglePublish = async (id, currentStatus) => {
         try {
-            const { error } = await supabase
+            const { error: updateError } = await supabase
                 .from('interventions')
                 .update({ is_published: !currentStatus })
                 .eq('id', id);
 
-            if (error) throw error;
+            if (updateError) throw updateError;
 
             Swal.fire({
-                title: !currentStatus ? 'Publié avec succès !' : 'Retiré de la page d\'accueil',
+                title: !currentStatus ? 'Publication réussie !' : 'Retiré de la page d\'accueil',
+                text: !currentStatus ? 'L\'intervention est maintenant visible par tous.' : 'L\'intervention est désormais en brouillon.',
                 icon: 'success',
-                timer: 1500,
-                showConfirmButton: false
+                timer: 2000,
+                showConfirmButton: false,
+                toast: true,
+                position: 'top-end'
             });
             loadData();
-        } catch (error) {
-            Swal.fire('Erreur', error.message, 'error');
+        } catch (err) {
+            const msg = err instanceof Error ? err.message : 'Erreur de mise à jour';
+            Swal.fire('Erreur', msg, 'error');
         }
     };
 
-    // --- 5. FONCTIONS VAOVAO HO AN'NY FORMULAIRE (AJOUT / MODIF) ---
-    
+    // 5. Gestion des entrées du formulaire
     const handleInputChange = (e) => {
         const { name, value, type, checked } = e.target;
         setFormData({
@@ -148,220 +175,273 @@ const InterventionList = () => {
         setLoading(true);
         try {
             if (editingId) {
-                // MODIFICATION
-                const { error } = await supabase
+                const { error: updateError } = await supabase
                     .from('interventions')
                     .update(formData)
                     .eq('id', editingId);
-                if (error) throw error;
-                Swal.fire('Succès', 'Intervention modifiée !', 'success');
+                if (updateError) throw updateError;
+                
+                Swal.fire({
+                    title: 'Modification réussie',
+                    text: 'Les informations ont été mises à jour avec succès.',
+                    icon: 'success',
+                    confirmButtonColor: '#4f46e5'
+                });
             } else {
-                // AJOUT
-                const { error } = await supabase
+                const { error: insertError } = await supabase
                     .from('interventions')
                     .insert([formData]);
-                if (error) throw error;
-                Swal.fire('Succès', 'Nouvelle intervention ajoutée !', 'success');
+                if (insertError) throw insertError;
+                
+                Swal.fire({
+                    title: 'Enregistré !',
+                    text: 'La nouvelle intervention a été ajoutée à la base de données.',
+                    icon: 'success',
+                    confirmButtonColor: '#4f46e5'
+                });
             }
             resetForm();
             loadData();
-        } catch (error) {
-            Swal.fire('Erreur', error.message, 'error');
+        } catch (err) {
+            const msg = err instanceof Error ? err.message : 'Une erreur est survenue lors de l\'enregistrement';
+            Swal.fire('Erreur technique', msg, 'error');
         } finally {
             setLoading(false);
         }
     };
 
     return (
-        <div className="p-8 bg-gray-50 min-h-screen font-sans">
-            {/* EN-TÊTE (HEADER) */}
-            <div className="flex flex-col md:flex-row justify-between items-center mb-8 bg-white p-6 rounded-2xl shadow-sm border border-gray-100 gap-4">
-                <div className="flex items-center gap-3">
-                    <div className="bg-blue-100 p-2.5 rounded-xl text-blue-600">
-                        <LayoutList size={28} />
+        <div className="p-4 md:p-8 bg-[#f8fafc] min-h-screen font-sans text-slate-900 animate-in fade-in duration-700">
+            {/* EN-TÊTE (HEADER) - DESIGN PREMIUM */}
+            <div className="flex flex-col md:flex-row justify-between items-center mb-10 bg-white p-6 rounded-[2rem] shadow-xl shadow-blue-900/5 border border-white gap-6">
+                <div className="flex items-center gap-4">
+                    <div className="bg-gradient-to-br from-indigo-500 to-blue-600 p-4 rounded-2xl text-white shadow-lg shadow-blue-200 rotate-3 hover:rotate-0 transition-transform duration-300">
+                        <LayoutList size={32} />
                     </div>
                     <div>
-                        <h2 className="text-2xl font-black text-gray-800 uppercase tracking-tight">
-                            Gestion des Interventions
+                        <h2 className="text-3xl font-black text-slate-800 tracking-tighter">
+                            DASHBOARD <span className="text-indigo-600 underline decoration-indigo-200 underline-offset-4">ONG</span>
                         </h2>
-                        <p className="text-sm text-gray-500">Gérez ici toutes les activités de l'ONG</p>
+                        <p className="text-slate-500 font-medium flex items-center gap-2">
+                            <Info size={14} className="text-indigo-400" />
+                            Console de gestion des interventions
+                        </p>
                     </div>
                 </div>
         
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-3 bg-slate-50 p-2 rounded-3xl border border-slate-100">
                     <button 
                         onClick={loadData}
-                        className="p-3 text-gray-500 hover:bg-gray-100 rounded-2xl transition-all"
+                        className="p-3 text-slate-400 hover:text-indigo-600 hover:bg-white rounded-2xl transition-all duration-300 hover:shadow-sm"
                         title="Actualiser les données"
                     >
-                        <RefreshCcw size={20} className={loading ? 'animate-spin' : ''} />
+                        <RefreshCcw size={22} className={loading ? 'animate-spin' : 'hover:rotate-180 transition-transform duration-500'} />
                     </button>
 
                     <Link 
                         to="/settings" 
-                        className="p-3 bg-white border border-slate-100 text-slate-600 rounded-2xl shadow-sm hover:shadow-md hover:bg-slate-50 transition-all duration-300 group"
-                        title="Paramètres du compte"
+                        className="p-3 text-slate-400 hover:text-indigo-600 hover:bg-white rounded-2xl transition-all duration-300 hover:shadow-sm group"
+                        title="Paramètres système"
                     >
-                        <div className="group-hover:rotate-90 transition-transform duration-500">
-                            <Settings size={22} /> 
-                        </div>
+                        <Settings size={22} className="group-hover:rotate-90 transition-transform duration-500" /> 
                     </Link>
 
-                    {/* Bouton Ajouter (Manokatra formulaire) */}
                     <button 
-                        onClick={() => { resetForm(); setIsFormOpen(!isFormOpen); }}
-                        className="p-3.5 bg-indigo-600 text-white rounded-2xl shadow-lg hover:bg-indigo-700 hover:-translate-y-1 transition-all flex items-center gap-2"
-                        title="Ajouter une nouvelle intervention"
+                        onClick={() => { if(isFormOpen) resetForm(); else setIsFormOpen(true); }}
+                        className={`flex items-center gap-2 px-6 py-3 rounded-2xl font-bold transition-all duration-300 shadow-lg ${
+                            isFormOpen 
+                            ? 'bg-slate-800 text-white hover:bg-slate-900 shadow-slate-200' 
+                            : 'bg-indigo-600 text-white hover:bg-indigo-700 hover:-translate-y-1 shadow-indigo-200'
+                        }`}
                     >
-                        {isFormOpen ? <X size={22} /> : <PlusCircle size={22} />}
-                        <span className="font-bold hidden md:inline">{isFormOpen ? 'Fermer' : 'Ajouter'}</span>
+                        {isFormOpen ? <X size={20} /> : <PlusCircle size={20} />}
+                        <span>{isFormOpen ? 'Fermer' : 'Ajouter'}</span>
                     </button>
+
+                    <div className="w-[1px] h-8 bg-slate-200 mx-1"></div>
 
                     <button 
                         onClick={handleLogout}
-                        className="p-3.5 bg-red-50 text-red-600 rounded-2xl border border-red-100 hover:bg-red-600 hover:text-white transition-all duration-300 shadow-sm"
-                        title="Se déconnecter"
+                        className="p-3 bg-red-50 text-red-500 rounded-2xl hover:bg-red-500 hover:text-white transition-all duration-300 hover:shadow-lg hover:shadow-red-200"
+                        title="Déconnexion sécurisée"
                     >
                         <LogOut size={22} />
                     </button>
                 </div>
             </div>
 
-            {/* --- SECTION FORMULAIRE (VAOVAO) --- */}
+            {/* --- SECTION FORMULAIRE --- */}
             {isFormOpen && (
-                <div className="mb-8 bg-white p-8 rounded-2xl shadow-xl border-2 border-indigo-100 animate-in fade-in slide-in-from-top-4 duration-300">
-                    <h3 className="text-xl font-bold text-gray-800 mb-6 flex items-center gap-2">
-                        {editingId ? 'Modifier l\'intervention' : 'Nouvelle Intervention'}
-                    </h3>
-                    <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div className="space-y-4">
-                            <div>
-                                <label className="block text-sm font-bold text-gray-700 mb-1">Titre</label>
+                <div className="mb-10 bg-white p-8 rounded-[2.5rem] shadow-2xl shadow-indigo-900/10 border border-indigo-50 animate-in zoom-in-95 slide-in-from-top-10 duration-500">
+                    <div className="flex items-center gap-3 mb-8">
+                        <div className="w-2 h-8 bg-indigo-600 rounded-full"></div>
+                        <h3 className="text-2xl font-black text-slate-800">
+                            {editingId ? 'Modifier l\'Intervention' : 'Créer une Nouvelle Intervention'}
+                        </h3>
+                    </div>
+
+                    <form onSubmit={handleSubmit} className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                        {/* Colonne Gauche */}
+                        <div className="space-y-6">
+                            <div className="group">
+                                <label className="flex items-center gap-2 text-sm font-bold text-slate-700 mb-2 transition-colors group-focus-within:text-indigo-600">
+                                    <Type size={18} className="text-indigo-500" /> Titre du projet
+                                </label>
                                 <input 
                                     required name="title" value={formData.title} onChange={handleInputChange}
-                                    className="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none"
+                                    placeholder="Ex: Construction d'un puit..."
+                                    className="w-full p-4 bg-slate-50 border-2 border-slate-100 rounded-2xl focus:bg-white focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 outline-none transition-all"
                                 />
                             </div>
-                            <div>
-                                <label className="block text-sm font-bold text-gray-700 mb-1">Lieu</label>
+
+                            <div className="group">
+                                <label className="flex items-center gap-2 text-sm font-bold text-slate-700 mb-2 group-focus-within:text-indigo-600">
+                                    <MapPin size={18} className="text-indigo-500" /> Localisation précise
+                                </label>
                                 <input 
                                     required name="location" value={formData.location} onChange={handleInputChange}
-                                    className="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none"
+                                    placeholder="Ex: District de Menabe, Madagascar"
+                                    className="w-full p-4 bg-slate-50 border-2 border-slate-100 rounded-2xl focus:bg-white focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 outline-none transition-all"
                                 />
                             </div>
-                            <div>
-                                <label className="block text-sm font-bold text-gray-700 mb-1">Lien de l'image (URL)</label>
-                                <input 
-                                    name="image" value={formData.image} onChange={handleInputChange}
-                                    placeholder="https://..."
-                                    className="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none"
-                                />
+
+                            <div className="group">
+                                <label className="flex items-center gap-2 text-sm font-bold text-slate-700 mb-2 group-focus-within:text-indigo-600">
+                                    <ImageIcon size={18} className="text-indigo-500" /> URL de l'image de couverture
+                                </label>
+                                <div className="relative">
+                                    <input 
+                                        name="image" value={formData.image} onChange={handleInputChange}
+                                        placeholder="https://images.unsplash.com/..."
+                                        className="w-full p-4 pl-12 bg-slate-50 border-2 border-slate-100 rounded-2xl focus:bg-white focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 outline-none transition-all"
+                                    />
+                                    <ImageIcon className="absolute left-4 top-4 text-slate-400" size={20} />
+                                </div>
                             </div>
                         </div>
-                        <div className="space-y-4">
-                            <div>
-                                <label className="block text-sm font-bold text-gray-700 mb-1">Description</label>
+
+                        {/* Colonne Droite */}
+                        <div className="space-y-6">
+                            <div className="group">
+                                <label className="flex items-center gap-2 text-sm font-bold text-slate-700 mb-2 group-focus-within:text-indigo-600">
+                                    <AlignLeft size={18} className="text-indigo-500" /> Description détaillée
+                                </label>
                                 <textarea 
-                                    required name="description" value={formData.description} onChange={handleInputChange} rows="4"
-                                    className="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none"
+                                    required name="description" value={formData.description} onChange={handleInputChange} rows="5"
+                                    placeholder="Décrivez les objectifs et les résultats de l'intervention..."
+                                    className="w-full p-4 bg-slate-50 border-2 border-slate-100 rounded-2xl focus:bg-white focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 outline-none transition-all resize-none"
                                 ></textarea>
                             </div>
-                            <div className="flex items-center gap-3 p-3 bg-indigo-50 rounded-xl">
-                                <input 
-                                    type="checkbox" name="is_published" checked={formData.is_published} onChange={handleInputChange}
-                                    className="w-5 h-5 accent-indigo-600"
-                                />
-                                <label className="text-sm font-bold text-indigo-900">Publier sur l'accueil</label>
+
+                            <div className="flex flex-col md:flex-row items-center gap-4">
+                                <div className={`flex-1 flex items-center justify-between p-4 rounded-2xl border-2 transition-all ${formData.is_published ? 'bg-emerald-50 border-emerald-200' : 'bg-slate-50 border-slate-100'}`}>
+                                    <div className="flex items-center gap-3">
+                                        <div className={`p-2 rounded-lg ${formData.is_published ? 'bg-emerald-500 text-white' : 'bg-slate-200 text-slate-500'}`}>
+                                            {formData.is_published ? <Eye size={20} /> : <EyeOff size={20} />}
+                                        </div>
+                                        <span className={`font-bold ${formData.is_published ? 'text-emerald-700' : 'text-slate-500'}`}>
+                                            {formData.is_published ? 'Visible publiquement' : 'Mode Brouillon'}
+                                        </span>
+                                    </div>
+                                    <input 
+                                        type="checkbox" name="is_published" checked={formData.is_published} onChange={handleInputChange}
+                                        className="w-6 h-6 accent-emerald-500 cursor-pointer"
+                                    />
+                                </div>
+
+                                <button type="submit" disabled={actionLoading} className="w-full py-4 bg-indigo-600 text-white rounded-2xl font-black shadow-xl hover:bg-indigo-700 transition-all flex items-center justify-center gap-3">
+                                {actionLoading ? <Loader2 className="animate-spin" /> : <Save size={22} />}
+                                {editingId ? 'METTRE À JOUR' : 'ENREGISTRER L\'INTERVENTION'}
+                                </button>
                             </div>
-                            <button 
-                                type="submit" disabled={loading}
-                                className="w-full p-4 bg-indigo-600 text-white rounded-xl font-bold shadow-lg hover:bg-indigo-700 transition-all flex items-center justify-center gap-2"
-                            >
-                                <Save size={20} />
-                                {editingId ? 'Mettre à jour' : 'Enregistrer l\'intervention'}
-                            </button>
                         </div>
                     </form>
                 </div>
             )}
 
-            {/* SECTION TABLEAU */}
-            <div className="bg-white shadow-xl rounded-2xl overflow-hidden border border-gray-100">
+            {/* SECTION TABLEAU - DESIGN MODERNE */}
+            <div className="bg-white shadow-2xl shadow-slate-200 rounded-[2.5rem] overflow-hidden border border-slate-100 animate-in fade-in slide-in-from-bottom-6 duration-1000">
                 <div className="overflow-x-auto">
-                    <table className="min-w-full leading-normal">
+                    <table className="min-w-full">
                         <thead>
-                            <tr className="bg-gray-50 text-gray-500 uppercase text-xs font-bold tracking-wider">
-                                <th className="px-6 py-4 border-b text-left">Aperçu</th>
-                                <th className="px-6 py-4 border-b text-left">Titre & Lieu</th>
-                                <th className="px-6 py-4 border-b text-left">Description</th>
-                                <th className="px-6 py-4 border-b text-center">Actions</th>
+                            <tr className="bg-slate-50/50 text-slate-400 uppercase text-[11px] font-black tracking-[0.15em]">
+                                <th className="px-8 py-6 text-left">Aperçu Visuel</th>
+                                <th className="px-8 py-6 text-left">Détails de l'intervention</th>
+                                <th className="px-8 py-6 text-left">Description</th>
+                                <th className="px-8 py-6 text-center">Actions de contrôle</th>
                             </tr>
                         </thead>
-                        <tbody className="divide-y divide-gray-100">
+                        <tbody className="divide-y divide-slate-50">
                             {loading && !isFormOpen ? (
                                 <tr>
-                                    <td colSpan="4" className="px-6 py-20 text-center">
-                                        <div className="flex flex-col items-center gap-3 text-gray-400">
-                                            <RefreshCcw className="animate-spin" size={30} />
-                                            <span>Chargement des interventions en cours...</span>
+                                    <td colSpan="4" className="px-8 py-32 text-center">
+                                        <div className="flex flex-col items-center gap-4">
+                                            <div className="relative">
+                                                <div className="w-16 h-16 border-4 border-indigo-100 border-t-indigo-600 rounded-full animate-spin"></div>
+                                                <RefreshCcw className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-indigo-600" size={20} />
+                                            </div>
+                                            <span className="font-bold text-slate-400 tracking-widest uppercase text-xs">Synchronisation avec Supabase...</span>
                                         </div>
                                     </td>
                                 </tr>
                             ) : interventions.length > 0 ? (
-                                interventions.map((item) => (
-                                    <tr key={item.id} className="hover:bg-blue-50/20 transition-colors">
-                                        <td className="px-6 py-5">
-                                            {item.image ? (
+                                interventions.map((item, index) => (
+                                    <tr 
+                                        key={item.id} 
+                                        className="group hover:bg-slate-50/80 transition-all duration-300 animate-in fade-in slide-in-from-left duration-500"
+                                        style={{ animationDelay: `${index * 50}ms` }}
+                                    >
+                                        <td className="px-8 py-6">
+                                            <div className="relative w-20 h-20 overflow-hidden rounded-2xl shadow-md group-hover:shadow-xl group-hover:scale-105 transition-all duration-500">
                                                 <img 
-                                                    src={item.image} 
-                                                    className="w-16 h-16 object-cover rounded-xl border border-gray-200 shadow-sm"
+                                                    src={item.image || "https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?q=80&w=300&h=300&fit=crop"} 
+                                                    className="w-full h-full object-cover"
                                                     alt={item.title}
-                                                    onError={(e) => { e.target.src = "https://via.placeholder.com/150?text=Aucune+Image"; }}
                                                 />
-                                            ) : (
-                                                <div className="w-16 h-16 bg-gray-100 rounded-xl flex items-center justify-center text-gray-300">
-                                                    <LayoutList size={24} />
-                                                </div>
-                                            )}
-                                        </td>
-                                        <td className="px-6 py-5">
-                                            <div className="text-gray-900 font-bold text-lg">{item.title}</div>
-                                            <div className="flex items-center gap-1 text-blue-600 text-sm font-medium">
-                                                <MapPin size={14} />
-                                                {item.location || 'Lieu non spécifié'}
+                                                {!item.is_published && (
+                                                    <div className="absolute inset-0 bg-slate-900/60 flex items-center justify-center">
+                                                        <EyeOff size={16} className="text-white opacity-80" />
+                                                    </div>
+                                                )}
                                             </div>
                                         </td>
-                                        <td className="px-6 py-5">
-                                            <p className="text-gray-600 text-sm line-clamp-2 max-w-xs">
-                                                {item.description || 'Aucune description fournie.'}
+                                        <td className="px-8 py-6">
+                                            <div className="text-slate-900 font-black text-lg group-hover:text-indigo-600 transition-colors">{item.title}</div>
+                                            <div className="flex items-center gap-1.5 text-indigo-500 text-sm font-bold mt-1 bg-indigo-50 w-fit px-3 py-1 rounded-full">
+                                                <MapPin size={14} />
+                                                {item.location || 'Localisation non définie'}
+                                            </div>
+                                        </td>
+                                        <td className="px-8 py-6">
+                                            <p className="text-slate-500 text-sm line-clamp-2 max-w-sm font-medium leading-relaxed">
+                                                {item.description || 'Aucun détail supplémentaire disponible.'}
                                             </p>
                                         </td>
-                                        <td className="px-6 py-5">
+                                        <td className="px-8 py-6">
                                             <div className="flex justify-center items-center gap-3">
                                                 <button 
                                                     onClick={() => togglePublish(item.id, item.is_published)}
-                                                    className={`p-2.5 rounded-xl transition-all ${
+                                                    className={`p-3 rounded-2xl transition-all duration-300 shadow-sm ${
                                                         item.is_published 
-                                                        ? 'bg-emerald-500 text-white shadow-md' 
-                                                        : 'bg-gray-100 text-gray-400 hover:bg-emerald-100 hover:text-emerald-600'
+                                                        ? 'bg-emerald-500 text-white hover:bg-emerald-600 hover:shadow-emerald-200' 
+                                                        : 'bg-slate-100 text-slate-400 hover:bg-white hover:text-emerald-500 hover:shadow-md'
                                                     }`}
-                                                    title={item.is_published ? "Retirer de l'accueil" : "Publier sur l'accueil"}
+                                                    title={item.is_published ? "Mettre hors ligne" : "Publier maintenant"}
                                                 >
                                                     <Send size={18} />
                                                 </button>
 
-                                                {/* Modification (Miantso handleEdit) */}
                                                 <button 
                                                     onClick={() => handleEdit(item)}
-                                                    className="p-2.5 bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white rounded-xl transition-all shadow-sm"
-                                                    title="Modifier cette intervention"
+                                                    className="p-3 bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white rounded-2xl transition-all duration-300 shadow-sm hover:shadow-blue-200"
+                                                    title="Modifier l'entrée"
                                                 >
                                                     <Edit3 size={18} />
                                                 </button>
 
                                                 <button 
                                                     onClick={() => deleteIntervention(item.id)}
-                                                    className="p-2.5 bg-red-50 text-red-500 hover:bg-red-500 hover:text-white rounded-xl transition-all shadow-sm"
+                                                    className="p-3 bg-red-50 text-red-500 hover:bg-red-500 hover:text-white rounded-2xl transition-all duration-300 shadow-sm hover:shadow-red-200"
                                                     title="Supprimer définitivement"
                                                 >
                                                     <Trash2 size={18} />
@@ -372,14 +452,30 @@ const InterventionList = () => {
                                 ))
                             ) : (
                                 <tr>
-                                    <td colSpan="4" className="px-6 py-20 text-center text-gray-400">
-                                        <p className="font-bold text-xl">Aucune intervention trouvée.</p>
-                                        <p className="text-sm">Veuillez ajouter une nouvelle intervention pour commencer.</p>
+                                    <td colSpan="4" className="px-8 py-32 text-center">
+                                        <div className="flex flex-col items-center gap-4 grayscale">
+                                            <LayoutList size={64} className="text-slate-200" />
+                                            <div>
+                                                <p className="font-black text-2xl text-slate-400">Base de données vide</p>
+                                                <p className="text-slate-400 font-medium">Commencez par ajouter votre première intervention.</p>
+                                            </div>
+                                        </div>
                                     </td>
                                 </tr>
                             )}
                         </tbody>
                     </table>
+                </div>
+                
+                {/* Footer du tableau */}
+                <div className="bg-slate-50/50 px-8 py-4 border-t border-slate-100 flex justify-between items-center">
+                    <p className="text-xs font-bold text-slate-400">
+                        TOTAL: {interventions.length} INTERVENTION(S) RÉPERTORIÉE(S)
+                    </p>
+                    <div className="flex items-center gap-2">
+                         <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></div>
+                         <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Système Live</span>
+                    </div>
                 </div>
             </div>
         </div>
