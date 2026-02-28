@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import Swal from 'sweetalert2';
-import { supabase } from '../supabaseClient';
+import { supabase } from './supabaseClient';
 import { Link, useNavigate } from 'react-router-dom';
 import { PlusCircle, LogOut, LayoutList, Trash2, Edit3, Send, RefreshCcw, Settings } from 'lucide-react';
 
@@ -79,7 +79,6 @@ const InterventionList = () => {
     };
 
     // 4. Hanovana ny statut (Publish)
-    // Fanamarihana: Tokony misy column 'is_published' (boolean) ny table-nao raha hampiasa ity
     const togglePublish = async (id, currentStatus) => {
         try {
             const { error } = await supabase
