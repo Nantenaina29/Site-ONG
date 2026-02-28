@@ -267,7 +267,7 @@ function App() {
       <div className="min-h-screen flex flex-col bg-white text-gray-900 relative">
         
         {/* --- NAVBAR --- */}
-        <nav className="bg-white sticky top-0 z-40 px-6 md:px-20 py-5 flex justify-between items-center border-b shadow-sm">
+        <nav className="bg-white sticky top-0 z-50 px-6 md:px-20 py-5 flex justify-between items-center border-b shadow-sm">
           <Link to="/" className="flex items-center space-x-4 text-left">
             <img src="/Logo TAF 3D.png" alt="Logo" className="h-16 w-16 object-contain rounded-full border border-gray-100 shadow-sm" />
             <span className="text-green-600 font-black text-lg leading-none uppercase tracking-tighter">
@@ -294,48 +294,43 @@ function App() {
           {/* --- ICON HAMBURGER (MOBILE) --- */}
           <button 
             className="md:hidden text-indigo-900 focus:outline-none p-2"
-            onClick={() => setIsMenuOpen(true)}
+            onClick={() => setIsMenuOpen(!isMenuOpen)} // Afaka akatona eto koa
           >
-            <Menu size={30} />
+            {isMenuOpen ? <X size={30} /> : <Menu size={30} />}
           </button>
         </nav>
 
         {/* --- SIDEBAR MOBILE --- */}
-        {/* Overlay (Loko maizina ao aoriany rehefa misokatra) */}
+        {/* Overlay (Miseho eo ambanin'ny navbar koa ny overlay) */}
         {isMenuOpen && (
           <div 
-            className="fixed inset-0 bg-black/50 z-50 md:hidden" 
+            className="fixed inset-0 top-26.25 bg-black/30 z-40 md:hidden" 
             onClick={() => setIsMenuOpen(false)}
           ></div>
         )}
 
-        {/* Ny Sidebar tenany (eo amin'ny sisiny havia) */}
-        <div className={`fixed top-0 left-0 h-full bg-white z-[60] shadow-2xl transition-transform duration-300 ease-in-out md:hidden flex flex-col ${isMenuOpen ? 'translate-x-0' : '-translate-x-full'}`}
-             style={{ width: '75.6px' }}> {/* 2cm dia eo amin'ny 75.6px eo ho eo amin'ny écran */}
+        {/* Ny Sidebar (3.5cm ny largeur ary eo ambanin'ny navbar) */}
+        <div className={`fixed top-26.25 left-0 h-[calc(100vh-105px)] bg-white z-45 shadow-xl transition-transform duration-300 ease-in-out md:hidden flex flex-col border-r ${isMenuOpen ? 'translate-x-0' : '-translate-x-full'}`}
+             style={{ width: '132.3px' }}> {/* 3.5cm = 132.3px eo ho eo */}
           
-          <div className="p-4 border-b flex justify-center">
-            <button onClick={() => setIsMenuOpen(false)} className="text-indigo-900">
-              <X size={24} />
-            </button>
-          </div>
-
-          <ul className="flex flex-col items-center py-8 space-y-10 overflow-y-auto">
+          <ul className="flex flex-col items-start py-8 space-y-8 px-4 overflow-y-auto overflow-x-hidden">
             {navLinks.map((l) => (
-              <li key={l.path} className="rotate-[-90deg] whitespace-nowrap">
+              <li key={l.path} className="w-full">
                 <NavLink 
                   to={l.path} 
                   onClick={() => setIsMenuOpen(false)}
                   className={({ isActive }) => 
-                    `text-[12px] font-black uppercase tracking-widest transition-colors ${isActive ? 'text-fmfp-green' : 'text-indigo-900 hover:text-fmfp-green'}`
+                    `text-[11px] font-black uppercase tracking-tight transition-colors block w-full ${isActive ? 'text-fmfp-green border-l-4 border-fmfp-green pl-2' : 'text-indigo-900 hover:text-fmfp-green pl-2'}`
                   }
                 >
                   {l.label}
                 </NavLink>
               </li>
             ))}
-            <li className="pt-4">
-              <Link to="/login" onClick={() => setIsMenuOpen(false)} className="text-indigo-900 hover:text-fmfp-green">
-                <UserCircle size={28} />
+            <li className="pt-4 border-t w-full">
+              <Link to="/login" onClick={() => setIsMenuOpen(false)} className="flex items-center space-x-2 text-indigo-900 hover:text-fmfp-green pl-2">
+                <UserCircle size={24} />
+                <span className="text-[11px] font-black uppercase tracking-tight">Login</span>
               </Link>
             </li>
           </ul>
