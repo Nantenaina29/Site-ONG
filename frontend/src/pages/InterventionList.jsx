@@ -299,7 +299,7 @@ const handleImageUpload = async (e) => {
                     </button>
 
                     <Link 
-                        to="/Parametres" 
+                        to="/settings" 
                         className="p-3 text-slate-400 hover:text-indigo-600 hover:bg-white rounded-2xl transition-all duration-300 hover:shadow-sm group"
                         title="Paramètres système"
                     >
