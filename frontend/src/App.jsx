@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link, NavLink } from 'react-router-dom';
-import { UserCircle } from 'lucide-react';
+import { UserCircle, Menu, X } from 'lucide-react';
 import axios from 'axios';
 
 // --- PAGES ---
@@ -16,8 +16,6 @@ import Parametres from './pages/Parametres';
 import EventCalendar from './components/EventCalendar';
 import './index.css';
 
-
-
 const phrasesHero = [
   "ONG TSINJO AINA FIANARANTSOA",
   "Construisons l'avenir malagasy",
@@ -28,8 +26,6 @@ const phrasesHero = [
 const TeamSection = () => {
   const [team, setTeam] = useState([]);
   const [teamLoading, setTeamLoading] = useState(true);
-  
-
 
   const defaultTeam = [
     { id: 'd1', name: "Jean Pierre", role: "Directeur", img: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=80&w=200" },
@@ -49,17 +45,14 @@ const TeamSection = () => {
           setTeam(defaultTeam);
         }
       } catch (err) {
-        console.error(err); // Mampiasa azy eto mba tsy ho menamena
+        console.error(err);
         setTeam(defaultTeam);
       } finally {
         setTeamLoading(false);
       }
     };
     fetchTeam();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-
 
   if (teamLoading) {
     return (
@@ -87,7 +80,6 @@ const TeamSection = () => {
           {team.map((member) => (
             <div key={member.id} className="group flex flex-col items-center">
               <div className="relative w-48 h-48 mb-6">
-                {/* Nesorina ny translate animation teto */}
                 <div className="absolute inset-0 bg-indigo-100 rounded-full shadow-inner"></div>
                 <div className="relative w-full h-full rounded-full overflow-hidden border-4 border-white shadow-xl">
                   <img 
@@ -122,7 +114,7 @@ const ActivitiesHome = () => {
     {
       id: "02",
       title: "Formations & Production",
-      desc: "Ce programme cible spécifiquement les personnes les plus démunies et exclues qui rencontrent des difficultés majeures pour accéder aux ressources naturelles nécessaires à la production. L'appui repose sur une formation solide aux bases de l'agroécologie, incluant la fabrication de compost biologique et l'installation de haies vives pour enrichir les terres. L'ONG facilite également la mise à disposition de semences locales et la constitution de banques de semences communautaires afin de garantir l'autonomie et la diversité des cultures. Parallèlement, une éducation nutritionnelle est dispensée pour valoriser la production locale et assurer une alimentation saine et équilibrée à toutes les familles. Enfin, des formations transversales sur la gestion du temps, le genre et l'adaptation au changement climatique complètent ce dispositif pour renforcer la résilience globale des bénéficiaires.",
+      desc:  "Ce programme cible spécifiquement les personnes les plus démunies et exclues qui rencontrent des difficultés majeures pour accéder aux ressources naturelles nécessaires à la production. L'appui repose sur une formation solide aux bases de l'agroécologie, incluant la fabrication de compost biologique et l'installation de haies vives pour enrichir les terres. L'ONG facilite également la mise à disposition de semences locales et la constitution de banques de semences communautaires afin de garantir l'autonomie et la diversité des cultures. Parallèlement, une éducation nutritionnelle est dispensée pour valoriser la production locale et assurer une alimentation saine et équilibrée à toutes les familles. Enfin, des formations transversales sur la gestion du temps, le genre et l'adaptation au changement climatique complètent ce dispositif pour renforcer la résilience globale des bénéficiaires.",
       details: ["Bases de l'agroécologie","Éducation nutritionnelle","Genre & Climat","Banque de semences"],
       img: "/Formation.jpg", align: "flex-row-reverse"
     },
@@ -179,12 +171,12 @@ const ApproachSection = () => (
         <h2 className="text-3xl font-black text-green-600 uppercase tracking-tighter leading-none">L'effort propre</h2>
         <div className="space-y-2 text-gray-700"> 
           <div className="border-l-4 border-fmfp-green pl-4 py-1">
-             <p className="text-lg font-black uppercase text-green-600 mb-0.5">Épargne Collective</p>
-             <p className="text-lg leading-snug">Pour briser le cycle de l'endettement, l'ONG met en place une épargne collective qui transforme les petites cotisations hebdomadaires en un capital communautaire géré en toute transparence. Ce fonds permet d'octroyer des crédits internes à taux justes, libérant ainsi les paysans de l'usure pour qu'ils retrouvent leur dignité et une totale indépendance financière.</p>
+              <p className="text-lg font-black uppercase text-green-600 mb-0.5">Épargne Collective</p>
+              <p className="text-lg leading-snug">Pour briser le cycle de l'endettement, l'ONG met en place une épargne collective...</p>
           </div>
           <div className="border-l-4 border-indigo-900 pl-4 py-1">
-             <p className="text-lg font-black uppercase text-green-600 mb-0.5">Inclusion Totale</p>
-             <p className="text-lg leading-snug">Ce principe garantit que le rythme de progression de l'ensemble du groupe s'ajuste systématiquement sur les capacités des membres les plus vulnérables afin de ne laisser personne de côté. En plaçant l'humain avant la performance technique, cette approche renforce la cohésion sociale et assure que chaque avancée bénéficie réellement à tous, sans exception.</p>
+              <p className="text-lg font-black uppercase text-green-600 mb-0.5">Inclusion Totale</p>
+              <p className="text-lg leading-snug">Ce principe garantit que le rythme de progression de l'ensemble du groupe s'ajuste systématiquement...</p>
           </div>
         </div>
       </div>
@@ -203,7 +195,6 @@ const ApproachSection = () => (
 );
 
 const HomePage = () => {
-  // Logic Animation
   const [heroText, setHeroText] = useState("");
   const [heroDeleting, setHeroDeleting] = useState(false);
   const [heroLoop, setHeroLoop] = useState(0);
@@ -228,16 +219,10 @@ const HomePage = () => {
 
   return (
     <>
-<div className="relative h-[60vh] bg-gray-900 overflow-hidden text-left flex items-center">
-        {/* --- NY SARY BACKGROUND --- */}
+      <div className="relative h-[60vh] bg-gray-900 overflow-hidden text-left flex items-center">
         <div className="absolute inset-0 z-0">
-          <img 
-            src="/back.jpg" 
-            alt="Background" 
-            className="w-full h-full object-cover" 
-          />
+          <img src="/back.jpg" alt="Background" className="w-full h-full object-cover opacity-60" />
         </div>
-        {/* --- NY CONTENT --- */}
         <div className="relative z-20 container mx-auto px-6 md:px-20 text-white">
           <h2 className="max-w-lg text-gray-300 mb-6 text-md font-light leading-tight">Formation et Développement</h2>
           <h1 className="text-4xl md:text-6xl font-black max-w-3xl mb-4 leading-none uppercase tracking-tighter min-h-[2.4em]">
@@ -260,11 +245,27 @@ const HomePage = () => {
 
 function App() {
   const [loading, setLoading] = useState(true);
-  useEffect(() => { const timer = setTimeout(() => setLoading(false), 400); return () => clearTimeout(timer); }, []);
+  const [isMenuOpen, setIsMenuOpen] = useState(false); // State ho an'ny menu mobile
+
+  useEffect(() => { 
+    const timer = setTimeout(() => setLoading(false), 400); 
+    return () => clearTimeout(timer); 
+  }, []);
+
+  const navLinks = [
+    { path: "/", label: "Accueil" },
+    { path: "/a-propos", label: "À propos" },
+    { path: "/interventions-publiees", label: "Interventions" },
+    { path: "/realisations", label: "Réalisations" },
+    { path: "/contact", label: "Contact" }
+  ];
+
   if (loading) return <div className="h-screen flex items-center justify-center bg-white font-black uppercase text-[10px] tracking-widest text-fmfp-green">Chargement...</div>;
+
   return (
     <Router>
       <div className="min-h-screen flex flex-col bg-white text-gray-900">
+        {/* --- NAVBAR --- */}
         <nav className="bg-white sticky top-0 z-50 px-6 md:px-20 py-5 flex justify-between items-center border-b shadow-sm">
           <Link to="/" className="flex items-center space-x-4 text-left">
             <img src="/Logo TAF 3D.png" alt="Logo" className="h-16 w-16 object-contain rounded-full border border-gray-100 shadow-sm" />
@@ -273,13 +274,60 @@ function App() {
               <span className="text-[10px] font-bold tracking-[0.3em] text-indigo-800 uppercase">Haute Matsiatra</span>
             </span>
           </Link>
+
+          {/* --- VERSION ORDINATEUR --- */}
           <ul className="hidden md:flex space-x-8 text-[16px] font-black uppercase tracking-widest text-indigo-900 items-center">
-            {[{ path: "/", label: "Accueil" }, { path: "/a-propos", label: "À propos" }, { path: "/interventions-publiees", label: "Interventions" }, { path: "/realisations", label: "Réalisations" }, { path: "/contact", label: "Contact" }].map((l) => (
-              <li key={l.path}><NavLink to={l.path} className={({ isActive }) => isActive ? "border-b-2 border-fmfp-green pb-1 text-fmfp-green" : "hover:text-fmfp-green transition-colors"}>{l.label}</NavLink></li>
+            {navLinks.map((l) => (
+              <li key={l.path}>
+                <NavLink 
+                  to={l.path} 
+                  className={({ isActive }) => isActive ? "border-b-2 border-fmfp-green pb-1 text-fmfp-green" : "hover:text-fmfp-green transition-colors"}
+                >
+                  {l.label}
+                </NavLink>
+              </li>
             ))}
             <Link to="/login" className="ml-4 hover:text-fmfp-green"><UserCircle size={24} /></Link>
           </ul>
+
+          {/* --- ICON HAMBURGER (MOBILE IHANY) --- */}
+          <button 
+            className="md:hidden text-indigo-900 focus:outline-none"
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+          >
+            {isMenuOpen ? <X size={30} /> : <Menu size={30} />}
+          </button>
         </nav>
+
+        {/* --- MENU MOBILE (DEROULANT) --- */}
+        {isMenuOpen && (
+          <div className="md:hidden fixed inset-0 top-26.25 bg-white z-40 border-t border-gray-100 animate-in slide-in-from-right">
+            <ul className="flex flex-col space-y-6 p-10 text-[18px] font-black uppercase tracking-widest text-indigo-900">
+              {navLinks.map((l) => (
+                <li key={l.path}>
+                  <NavLink 
+                    to={l.path} 
+                    onClick={() => setIsMenuOpen(false)} // Mikatona rehefa mifindra pejy
+                    className={({ isActive }) => isActive ? "text-fmfp-green border-l-4 border-fmfp-green pl-4" : "hover:text-fmfp-green pl-4"}
+                  >
+                    {l.label}
+                  </NavLink>
+                </li>
+              ))}
+              <li className="pt-6 border-t border-gray-100">
+                <Link 
+                  to="/login" 
+                  onClick={() => setIsMenuOpen(false)}
+                  className="flex items-center space-x-3 text-indigo-900 hover:text-fmfp-green pl-4"
+                >
+                  <UserCircle size={28} />
+                  <span>Se connecter</span>
+                </Link>
+              </li>
+            </ul>
+          </div>
+        )}
+
         <main className="grow">
           <Routes>
             <Route path="/" element={<HomePage />} />
@@ -294,6 +342,7 @@ function App() {
             <Route path="/settings" element={<Parametres />} />
           </Routes>
         </main>
+
         <footer className="bg-sky-400 py-6 text-center text-indigo-950 font-bold text-[10px] uppercase tracking-[0.5em]">
           © 2026 ONG Tsinjo Aina Fianarantsoa — Madagascar
         </footer>
