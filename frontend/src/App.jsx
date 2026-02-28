@@ -309,32 +309,40 @@ function App() {
           ></div>
         )}
 
-        {/* Ny Sidebar (3.5cm ny largeur ary eo ambanin'ny navbar) */}
-        <div className={`fixed top-26.25 left-0 h-[calc(100vh-105px)] bg-white z-45 shadow-xl transition-transform duration-300 ease-in-out md:hidden flex flex-col border-r ${isMenuOpen ? 'translate-x-0' : '-translate-x-full'}`}
-             style={{ width: '132.3px' }}> {/* 3.5cm = 132.3px eo ho eo */}
-          
-          <ul className="flex flex-col items-start py-8 space-y-8 px-4 overflow-y-auto overflow-x-hidden">
-            {navLinks.map((l) => (
-              <li key={l.path} className="w-full">
-                <NavLink 
-                  to={l.path} 
-                  onClick={() => setIsMenuOpen(false)}
-                  className={({ isActive }) => 
-                    `text-[11px] font-black uppercase tracking-tight transition-colors block w-full ${isActive ? 'text-fmfp-green border-l-4 border-fmfp-green pl-2' : 'text-indigo-900 hover:text-fmfp-green pl-2'}`
-                  }
+          {/* Ny Sidebar (3.5cm ny largeur, fohy araka ny soratra ao anatiny) */}
+          <div className={`fixed top-26.25 left-0 bg-white z-45 shadow-2xl transition-transform duration-300 ease-in-out md:hidden flex flex-col border-r border-b rounded-br-2xl ${isMenuOpen ? 'translate-x-0' : '-translate-x-full'}`}
+              style={{ width: '132.3px' }}> 
+            
+            <ul className="flex flex-col items-start py-6 space-y-6 px-4">
+              {navLinks.map((l) => (
+                <li key={l.path} className="w-full">
+                  <NavLink 
+                    to={l.path} 
+                    onClick={() => setIsMenuOpen(false)}
+                    className={({ isActive }) => 
+                      `text-[11px] font-black uppercase tracking-tight transition-colors block w-full ${
+                        isActive 
+                          ? 'text-fmfp-green border-l-4 border-fmfp-green pl-2' 
+                          : 'text-indigo-900 hover:text-fmfp-green pl-2'
+                      }`
+                    }
+                  >
+                    {l.label}
+                  </NavLink>
+                </li>
+              ))}
+              <li className="pt-4 border-t border-gray-100 w-full">
+                <Link 
+                  to="/login" 
+                  onClick={() => setIsMenuOpen(false)} 
+                  className="flex items-center space-x-2 text-indigo-900 hover:text-fmfp-green pl-2"
                 >
-                  {l.label}
-                </NavLink>
+                  <UserCircle size={20} />
+                  <span className="text-[11px] font-black uppercase tracking-tight">Login</span>
+                </Link>
               </li>
-            ))}
-            <li className="pt-4 border-t w-full">
-              <Link to="/login" onClick={() => setIsMenuOpen(false)} className="flex items-center space-x-2 text-indigo-900 hover:text-fmfp-green pl-2">
-                <UserCircle size={24} />
-                <span className="text-[11px] font-black uppercase tracking-tight">Login</span>
-              </Link>
-            </li>
-          </ul>
-        </div>
+            </ul>
+          </div>
 
         {/* --- CONTENT --- */}
         <main className="grow">
