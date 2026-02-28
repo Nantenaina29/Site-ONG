@@ -273,9 +273,9 @@ const handleImageUpload = async (e) => {
     return (
         <div className="p-4 md:p-8 bg-[#f8fafc] min-h-screen font-sans text-slate-900 animate-in fade-in duration-700">
             {/* EN-TÊTE (HEADER) - DESIGN PREMIUM */}
-            <div className="flex flex-col md:flex-row justify-between items-center mb-10 bg-white p-6 rounded-[2rem] shadow-xl shadow-blue-900/5 border border-white gap-6">
+            <div className="flex flex-col md:flex-row justify-between items-center mb-10 bg-white p-6 rounded-4xl shadow-xl shadow-blue-900/5 border border-white gap-6">
                 <div className="flex items-center gap-4">
-                    <div className="bg-gradient-to-br from-indigo-500 to-blue-600 p-4 rounded-2xl text-white shadow-lg shadow-blue-200 rotate-3 hover:rotate-0 transition-transform duration-300">
+                    <div className="bg-linear-to-br from-indigo-500 to-blue-600 p-4 rounded-2xl text-white shadow-lg shadow-blue-200 rotate-3 hover:rotate-0 transition-transform duration-300">
                         <LayoutList size={32} />
                     </div>
                     <div>
@@ -299,7 +299,7 @@ const handleImageUpload = async (e) => {
                     </button>
 
                     <Link 
-                        to="/settings" 
+                        to="/Parametres" 
                         className="p-3 text-slate-400 hover:text-indigo-600 hover:bg-white rounded-2xl transition-all duration-300 hover:shadow-sm group"
                         title="Paramètres système"
                     >
