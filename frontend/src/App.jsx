@@ -172,11 +172,11 @@ const ApproachSection = () => (
         <div className="space-y-2 text-gray-700"> 
           <div className="border-l-4 border-fmfp-green pl-4 py-1">
               <p className="text-lg font-black uppercase text-green-600 mb-0.5">Épargne Collective</p>
-              <p className="text-lg leading-snug">Pour briser le cycle de l'endettement, l'ONG met en place une épargne collective...</p>
+              <p className="text-lg leading-snug">Pour briser le cycle de l'endettement, l'ONG met en place une épargne collective qui transforme les petites cotisations hebdomadaires en un capital communautaire géré en toute transparence. Ce fonds permet d'octroyer des crédits internes à taux justes, libérant ainsi les paysans de l'usure pour qu'ils retrouvent leur dignité et une totale indépendance financière.</p>
           </div>
           <div className="border-l-4 border-indigo-900 pl-4 py-1">
               <p className="text-lg font-black uppercase text-green-600 mb-0.5">Inclusion Totale</p>
-              <p className="text-lg leading-snug">Ce principe garantit que le rythme de progression de l'ensemble du groupe s'ajuste systématiquement...</p>
+              <p className="text-lg leading-snug">Ce principe garantit que le rythme de progression de l'ensemble du groupe s'ajuste systématiquement sur les capacités des membres les plus vulnérables afin de ne laisser personne de côté. En plaçant l'humain avant la performance technique, cette approche renforce la cohésion sociale et assure que chaque avancée bénéficie réellement à tous, sans exception.</p>
           </div>
         </div>
       </div>
@@ -338,7 +338,7 @@ function App() {
                   className="flex items-center space-x-2 text-indigo-900 hover:text-fmfp-green pl-2"
                 >
                   <UserCircle size={20} />
-                  <span className="text-[11px] font-black uppercase tracking-tight">Login</span>
+                  <span className="text-[11px] font-black uppercase tracking-tight">Admin</span>
                 </Link>
               </li>
             </ul>
@@ -361,7 +361,7 @@ function App() {
         </main>
 
         <footer className="bg-sky-400 py-6 text-center text-indigo-950 font-bold text-[10px] uppercase tracking-[0.5em]">
-          © {new Date().getFullYear()} ONG Tsinjo Aina Fianarantsoa — Haute Matsiatra - Madagascar
+          © {new Date().getFullYear()} ONG Tsinjo Aina Fianarantsoa — Haute Matsiatra
         </footer>
       </div>
     </Router>
