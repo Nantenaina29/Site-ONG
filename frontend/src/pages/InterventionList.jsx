@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import axios from 'axios';
 import Swal from 'sweetalert2';
+import { supabase } from '../supabaseClient';
 import { Link, useNavigate } from 'react-router-dom';
 import { PlusCircle, LogOut, LayoutList, Trash2, Edit3, Send, RefreshCcw, Settings } from 'lucide-react';
 
@@ -9,21 +9,21 @@ const InterventionList = () => {
     const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
 
+    // 1. Fanalana ny data avy amin'ny Supabase
     const loadData = useCallback(async () => {
         setLoading(true);
         try {
-            const token = localStorage.getItem('token');
-            const response = await axios.get('http://localhost:8000/api/interventions', {
-                headers: { Authorization: `Bearer ${token}` }
-            });
-    
-            console.log("Data azo:", response.data);
+            const { data, error } = await supabase
+                .from('interventions')
+                .select('*')
+                .order('created_at', { ascending: false });
 
-            const rawData = response.data.data || response.data;
+            if (error) throw error;
 
-            setInterventions(Array.isArray(rawData) ? rawData : []);
+            setInterventions(data || []);
         } catch (error) {
-            console.error("Fahadisoana:", error);
+            console.error("Fahadisoana:", error.message);
+            Swal.fire('Erreur', 'Tsy azo ny data avy amin\'ny database', 'error');
         } finally {
             setLoading(false);
         }
@@ -33,84 +33,79 @@ const InterventionList = () => {
         loadData();
     }, [loadData]);
 
-    const handleLogout = () => {
-        Swal.fire({
-          title: 'Êtes-vous sûr ?',
-          text: "Vous allez être déconnecté.",
-          icon: 'warning',
-          showCancelButton: true,
-          confirmButtonColor: '#4f46e5', 
-          cancelButtonColor: '#d33',     
-          confirmButtonText: 'Oui',
-          cancelButtonText: 'Non',
-          reverseButtons: true 
-        }).then((result) => {
-          if (result.isConfirmed) {
-            // 1. Fafana ny token
-            localStorage.removeItem('token');
-            
-            Swal.fire({
-              title: 'Déconnecté !',
-              text: 'À bientôt.',
-              icon: 'success',
-              timer: 1500,
-              showConfirmButton: false
-            });
-      
-            // 3. Mandefa any amin'ny login
-            setTimeout(() => {
-              navigate('/login');
-            }, 1500);
-          }
+    // 2. Logout mampiasa Supabase
+    const handleLogout = async () => {
+        const result = await Swal.fire({
+            title: 'Êtes-vous sûr ?',
+            text: "Vous allez être déconnecté.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#4f46e5',
+            confirmButtonText: 'Oui',
+            cancelButtonText: 'Non'
         });
-      };
 
+        if (result.isConfirmed) {
+            await supabase.auth.signOut(); // Miala amin'ny Supabase session
+            navigate('/login');
+        }
+    };
+
+    // 3. Fafana ny intervention
     const deleteIntervention = async (id) => {
         const result = await Swal.fire({
             title: 'Êtes-vous sûr ?',
             text: "Cette action est irréversible !",
             icon: 'warning',
             showCancelButton: true,
-            cancelButtonColor: '#d33',
-            confirmButtonColor: '#3085d6',
-            cancelButtonText: 'Non',
-            confirmButtonText: 'Oui'
+            confirmButtonText: 'Oui, supprimer'
         });
 
         if (result.isConfirmed) {
             try {
-                const token = localStorage.getItem('token');
-                await axios.delete(`http://127.0.0.1:8000/api/interventions/${id}`, {
-                    headers: { Authorization: `Bearer ${token}` }
-                });
+                const { error } = await supabase
+                    .from('interventions')
+                    .delete()
+                    .eq('id', id);
+
+                if (error) throw error;
+
                 Swal.fire('Supprimé !', 'L\'intervention a été supprimée.', 'success');
                 loadData(); 
             } catch (error) {
-                console.error("Détails de l'erreur:", error);
-                Swal.fire('Erreur', 'Impossible de supprimer.', 'error');
+                Swal.fire('Erreur', error.message, 'error');
             }
         }
     };
 
-    const togglePublish = async (id) => {
+    // 4. Hanovana ny statut (Publish)
+    // Fanamarihana: Tokony misy column 'is_published' (boolean) ny table-nao raha hampiasa ity
+    const togglePublish = async (id, currentStatus) => {
         try {
-            const token = localStorage.getItem('token');
-            const response = await axios.patch(`http://127.0.0.1:8000/api/interventions/${id}/publish`, {}, {
-                headers: { Authorization: `Bearer ${token}` }
-            });
-    
+            const { error } = await supabase
+                .from('interventions')
+                .update({ is_published: !currentStatus })
+                .eq('id', id);
+
+            if (error) throw error;
+
             Swal.fire({
                 title: 'Succès !',
-                text: response.data.message,
                 icon: 'success',
-                timer: 2000,
+                timer: 1500,
                 showConfirmButton: false
             });
-    
-            loadData(); // Refresh ny lisitra mba hahitana ny fiovana
+            loadData();
         } catch (error) {
-            console.error("Erreur de publication:", error);
-            Swal.fire('Erreur', 'Impossible de modifier le statut.', 'error');
+            console.error("Détails de l'erreur :", error); // Miseho menamena ao amin'ny console
+        
+            Swal.fire({
+                title: 'Erreur !',
+                text: `Impossible de modifier le statut : ${error.message || 'Une erreur est survenue'}`,
+                icon: 'error',
+                confirmButtonColor: '#ef4444', // Loko mena ho an'ny bokotra
+                confirmButtonText: 'Fermer'
+            });
         }
     };
 

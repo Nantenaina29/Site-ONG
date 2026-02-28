@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React, { useState} from 'react';
+import { supabase } from '../supabaseClient';
 import { useNavigate } from 'react-router-dom';
 import Swal from "sweetalert2";
 import { Mail, Lock, Eye, EyeOff, ShieldCheck, LogIn  } from 'lucide-react';
@@ -13,27 +13,25 @@ function Login() {
   const navigate = useNavigate();
 
   // Fanadiovana ny formulaire isaky ny miditra ny pejy
-  useEffect(() => {
-    setEmail('');
-    setPassword('');
-    setError('');
-  }, []);
-
   const handleLogin = async (e) => {
     e.preventDefault();
     setError('');
     setIsLoading(true);
   
     try {
-      const response = await axios.post('http://localhost:8000/api/login', {
-        email,
-        password
+      // 1. Ampiasao ny Supabase Auth fa tsy axios intsony
+      const { data, error: authError } = await supabase.auth.signInWithPassword({
+        email: email,
+        password: password,
       });
   
-      if (response.data.access_token) {
+      // 2. Raha misy fahadisoana avy amin'ny Supabase
+      if (authError) throw authError;
   
-        localStorage.setItem('token', response.data.access_token);
-  
+      // 3. Raha tafiditra soa aman-tsara
+      if (data.session) {
+
+        
         Swal.fire({
           icon: "success",
           title: "Connexion réussie",
@@ -51,15 +49,16 @@ function Login() {
       }
   
     } catch (err) {
-      console.error("Erreur de connexion:", err.response?.data || err.message);
-    
+      // 4. Hafatra fahadisoana amin'ny teny frantsay araka ny nangatahinao
+      console.error("Erreur de connexion:", err.message);
+  
       Swal.fire({
         icon: "error",
         title: "Erreur de connexion",
-        text: "Adresse email ou mot de passe incorrecte.",
+        text: "Adresse email ou mot de passe incorrect.", // Na err.message raha tianao ho hita ny antony
         confirmButtonColor: "#312e81"
       });
-    
+  
     } finally {
       setIsLoading(false);
     }
