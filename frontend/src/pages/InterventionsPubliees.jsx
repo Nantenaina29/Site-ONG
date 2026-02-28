@@ -1,87 +1,112 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import { Calendar, MapPin, ArrowRight } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import { supabase } from '../supabaseClient';
+import { MapPin, Calendar, ArrowRight } from 'lucide-react';
 
 const InterventionsPubliees = () => {
-  const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(true);
+    const [interventions, setInterventions] = useState([]);
+    const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    axios.get('http://127.0.0.1:8000/api/interventions')
-      .then(res => {
-        const rawData = Array.isArray(res.data) ? res.data : (res.data.data || []);
-        const publishedData = rawData.filter(item => item.is_published == 1 || item.is_published === true);
-        setData(publishedData);
-        setLoading(false);
-      })
-      .catch(err => {
-        console.error("Erreur InterventionsPubliees:", err);
-        setLoading(false);
-      });
-}, []);
+    useEffect(() => {
+        const fetchPublishedData = async () => {
+            try {
+                setLoading(true);
+                // Ny misy is_published = true ihany no alaina
+                const { data, error } = await supabase
+                    .from('interventions')
+                    .select('*')
+                    .eq('is_published', true)
+                    .order('created_at', { ascending: false });
 
-  if (loading) {
-    return (
-      <div className="h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#28a745]"></div>
-      </div>
-    );
-  }
+                if (error) throw error;
+                setInterventions(data || []);
+            } catch (err) {
+                console.error("Erreur:", err.message);
+            } finally {
+                setLoading(false);
+            }
+        };
 
-  return (
-    <div className="bg-gray-50 min-h-screen">
-  
-      <section className="bg-sky-400 py-10 text-center border-t"> 
-        <h1 className="text-4xl font-black text-indigo-900 uppercase mb-4 tracking-tight"> 
-          Nos <span className="text-white">Actions</span> sur le terrain 
-        </h1>
-        <div className="w-24 h-1 bg-indigo-900 mx-auto"></div>
-      </section>
-  
-      <section className="container mx-auto py-12 px-4 md:px-10 max-w-7xl space-y-10">
-        {data.length > 0 ? (
-          data.map((item) => (
-            <div key={item.id} className="flex flex-col md:flex-row items-start">
-              {/* Sary */}
-              <div className="md:w-1/2 lg:w-5/12 p-4">
-                <img
-                  src={item.image 
-                    ? `http://localhost:8000/storage/${item.image}` 
-                    : 'https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?q=80&w=800'}
-                  alt={item.title}
-                  className="w-full h-auto object-contain"
-                />
-              </div>
-  
-              {/* Details */}
-              <div className="flex-1 p-4 md:p-6">
-                <div className="flex items-center space-x-4 text-gray-500 text-sm uppercase font-bold mb-2">
-                  <span className="flex items-center">
-                    <Calendar size={16} className="mr-1 text-green-600"/> 
-                    {new Date(item.created_at).toLocaleDateString()}
-                  </span>
-                  <span className="flex items-center">
-                    <MapPin size={16} className="mr-1 text-green-600"/> 
-                    {item.location || 'Madagascar'}
-                  </span>
-                </div>
-                <h3 className="text-2xl font-bold text-fmfp-blue mb-2 uppercase">
-                  {item.title}
-                </h3>
-                <p className="text-gray-600 text-base leading-relaxed">
-                  {item.description}
-                </p>
-              </div>
+        fetchPublishedData();
+    }, []);
+
+    if (loading) {
+        return (
+            <div className="flex justify-center items-center min-h-screen">
+                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-600"></div>
             </div>
-          ))
-        ) : (
-          <div className="text-center py-20 bg-white rounded-3xl border border-gray-100 shadow-inner">
-            <p className="text-gray-400 italic">Aucune donnée disponible pour le moment.</p>
-          </div>
-        )}
-      </section>
-    </div>
-  );
+        );
+    }
+
+    return (
+        <div className="bg-slate-50 min-h-screen pb-20">
+            {/* Header Section */}
+            <div className="bg-indigo-700 text-white py-20 px-6 text-center mb-12">
+                <h1 className="text-4xl md:text-5xl font-black mb-4">Nos Interventions</h1>
+                <p className="text-indigo-100 max-w-2xl mx-auto font-medium">
+                    Découvrez l'impact de nos actions sur le terrain et les projets réalisés pour les communautés.
+                </p>
+            </div>
+
+            <div className="max-w-7xl mx-auto px-6">
+                {interventions.length > 0 ? (
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        {interventions.map((item) => (
+                            <div 
+                                key={item.id} 
+                                className="bg-white rounded-[2rem] overflow-hidden shadow-lg shadow-slate-200 hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 border border-slate-100 group"
+                            >
+                                {/* Image avec Overlay */}
+                                <div className="relative h-64 overflow-hidden">
+                                    <img 
+                                        src={item.image || "https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?q=80"} 
+                                        alt={item.title}
+                                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                                    />
+                                    <div className="absolute top-4 left-4">
+                                        <span className="bg-white/90 backdrop-blur px-4 py-1.5 rounded-full text-xs font-black text-indigo-600 shadow-sm uppercase tracking-widest">
+                                            Projet Réalisé
+                                        </span>
+                                    </div>
+                                </div>
+
+                                {/* Content */}
+                                <div className="p-8">
+                                    <div className="flex items-center gap-2 text-indigo-500 mb-3">
+                                        <MapPin size={16} />
+                                        <span className="text-sm font-bold uppercase tracking-wide">{item.location}</span>
+                                    </div>
+                                    
+                                    <h3 className="text-2xl font-black text-slate-800 mb-4 line-clamp-1 group-hover:text-indigo-600 transition-colors">
+                                        {item.title}
+                                    </h3>
+                                    
+                                    <p className="text-slate-500 font-medium leading-relaxed mb-6 line-clamp-3 italic">
+                                        "{item.description}"
+                                    </p>
+
+                                    <div className="pt-6 border-t border-slate-50 flex items-center justify-between">
+                                        <div className="flex items-center gap-2 text-slate-400">
+                                            <Calendar size={14} />
+                                            <span className="text-xs font-bold">
+                                                {new Date(item.created_at).toLocaleDateString('fr-FR')}
+                                            </span>
+                                        </div>
+                                        <button className="flex items-center gap-2 text-indigo-600 font-black text-sm group/btn">
+                                            Détails <ArrowRight size={16} className="group-hover/btn:translate-x-1 transition-transform" />
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                ) : (
+                    <div className="text-center py-20 bg-white rounded-[3rem] shadow-inner">
+                        <p className="text-slate-400 font-bold text-xl">Aucune intervention publiée pour le moment.</p>
+                    </div>
+                )}
+            </div>
+        </div>
+    );
 };
 
 export default InterventionsPubliees;
