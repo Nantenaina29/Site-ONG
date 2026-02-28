@@ -208,7 +208,67 @@ const InterventionList = () => {
         } finally {
             setLoading(false);
         }
+
+
+        
     };
+
+    // --- FOFAOY NY TALOHA ARY ADIKAO ITY ---
+const handleImageUpload = async (e) => {
+    const file = e.target.files?.[0]; // Maka ilay rakitra voalohany
+    if (!file) return;
+
+    // Fanamarinana raha sary tokoa ilay izy
+    if (!file.type.startsWith('image/')) {
+        Swal.fire('Erreur', 'Veuillez sélectionner uniquement des fichiers images (JPG, PNG...).', 'error');
+        return;
+    }
+
+    setActionLoading(true); // Manomboka ny loading (spinner)
+
+    try {
+        // 1. Mamorona anarana miavaka (Unique Name) mba tsy hisy hitovy
+        const fileExt = file.name.split('.').pop();
+        const fileName = `${Date.now()}-${Math.random().toString(36).substring(2, 9)}.${fileExt}`;
+        const filePath = `${fileName}`;
+
+        // 2. Upload any amin'ny Supabase Storage (Bucket "photos")
+        // MAFY: Hamarino tsara raha "photos" no anaran'ny Bucket-nao any amin'ny Supabase
+        const { error: uploadError } = await supabase.storage
+            .from('photos')
+            .upload(filePath, file);
+
+        if (uploadError) throw uploadError;
+
+        // 3. Maka ny Public URL (Lien azo ampiasaina amin'ny tranonkala)
+        const { data: urlData } = supabase.storage
+            .from('photos')
+            .getPublicUrl(filePath);
+
+        // 4. Tehirizina ao anaty formData ilay lien vao azo
+        setFormData(prev => ({
+            ...prev,
+            image: urlData.publicUrl
+        }));
+
+        Swal.fire({
+            icon: 'success',
+            title: 'Image chargée !',
+            text: 'La photo a été importée avec succès de votre dossier.',
+            timer: 2000,
+            showConfirmButton: false,
+            toast: true,
+            position: 'top-end'
+        });
+
+    } catch (err) {
+        const errorMsg = err instanceof Error ? err.message : 'Erreur inconnue';
+        console.error("Erreur d'upload:", errorMsg);
+        Swal.fire('Erreur de chargement', "Impossible d'accéder au dossier ou d'envoyer l'image.", 'error');
+    } finally {
+        setActionLoading(false); // Atsahatra ny loading
+    }
+};
 
     return (
         <div className="p-4 md:p-8 bg-[#f8fafc] min-h-screen font-sans text-slate-900 animate-in fade-in duration-700">
@@ -309,14 +369,37 @@ const InterventionList = () => {
                                 <label className="flex items-center gap-2 text-sm font-bold text-slate-700 mb-2 group-focus-within:text-indigo-600">
                                     <ImageIcon size={18} className="text-indigo-500" /> URL de l'image de couverture
                                 </label>
-                                <div className="relative">
-                                    <input 
-                                        name="image" value={formData.image} onChange={handleInputChange}
-                                        placeholder="https://images.unsplash.com/..."
-                                        className="w-full p-4 pl-12 bg-slate-50 border-2 border-slate-100 rounded-2xl focus:bg-white focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 outline-none transition-all"
-                                    />
-                                    <ImageIcon className="absolute left-4 top-4 text-slate-400" size={20} />
-                                </div>
+                                <div className="relative group">
+                            <input 
+                                type="file"
+                                accept="image/*"
+                                id="file-upload"
+                                onChange={handleImageUpload} // Function hampiakatra sary
+                                className="hidden" // Afenina ilay input ratsiratsy default
+                            />
+                            <label 
+                                htmlFor="file-upload"
+                                className="flex items-center justify-center gap-3 w-full p-4 bg-slate-50 border-2 border-dashed border-slate-200 rounded-2xl cursor-pointer group-hover:border-indigo-500 group-hover:bg-indigo-50/30 transition-all duration-300"
+                            >
+                                {actionLoading ? (
+                                    <Loader2 className="animate-spin text-indigo-600" size={24} />
+                                ) : (
+                                    <div className="flex items-center gap-3 text-slate-500 group-hover:text-indigo-600">
+                                        <ImageIcon size={24} />
+                                        <span className="font-bold">
+                                            {formData.image ? "Changer la photo" : "Choisir une photo depuis l'appareil"}
+                                        </span>
+                                    </div>
+                                )}
+                            </label>
+                            
+                            {/* Preview kely raha efa nifidy sary izy */}
+                            {formData.image && (
+                                <p className="mt-2 text-xs text-emerald-600 font-bold flex items-center gap-1">
+                                    <CheckCircle2 size={12} /> Image prête à être enregistrée
+                                </p>
+                            )}
+                        </div>
                             </div>
                         </div>
 
