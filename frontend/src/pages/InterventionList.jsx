@@ -2,12 +2,23 @@ import React, { useState, useEffect, useCallback } from 'react';
 import Swal from 'sweetalert2';
 import { supabase } from '../supabaseClient';
 import { Link, useNavigate } from 'react-router-dom';
-import { PlusCircle, LogOut, LayoutList, Trash2, Edit3, Send, RefreshCcw, Settings, MapPin } from 'lucide-react';
+import { PlusCircle, LogOut, LayoutList, Trash2, Edit3, Send, RefreshCcw, Settings, MapPin, X, Save } from 'lucide-react';
 
 const InterventionList = () => {
     const [interventions, setInterventions] = useState([]);
     const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
+
+    // --- STATES VAOVAO HO AN'NY FORMULAIRE ---
+    const [isFormOpen, setIsFormOpen] = useState(false);
+    const [editingId, setEditingId] = useState(null);
+    const [formData, setFormData] = useState({
+        title: '',
+        location: '',
+        description: '',
+        image: '',
+        is_published: false
+    });
 
     // 1. Chargement des données depuis Supabase
     const loadData = useCallback(async () => {
@@ -39,8 +50,9 @@ const InterventionList = () => {
             text: "Votre session actuelle sera fermée.",
             icon: 'warning',
             showCancelButton: true,
-            confirmButtonColor: '#4f46e5',
-            cancelButtonColor: '#d33',
+            // Eto dia loko iray ihany no tazonina (ilay mena #d33 ohatra)
+            confirmButtonColor: '#d33', 
+            cancelButtonColor: '#4f46e5', // Azonao ampiasaina amin'ny bokotra "Annuler" ilay loko manga
             confirmButtonText: 'Oui, se déconnecter',
             cancelButtonText: 'Annuler'
         });
@@ -102,6 +114,64 @@ const InterventionList = () => {
         }
     };
 
+    // --- 5. FONCTIONS VAOVAO HO AN'NY FORMULAIRE (AJOUT / MODIF) ---
+    
+    const handleInputChange = (e) => {
+        const { name, value, type, checked } = e.target;
+        setFormData({
+            ...formData,
+            [name]: type === 'checkbox' ? checked : value
+        });
+    };
+
+    const handleEdit = (item) => {
+        setEditingId(item.id);
+        setFormData({
+            title: item.title,
+            location: item.location,
+            description: item.description,
+            image: item.image || '',
+            is_published: item.is_published
+        });
+        setIsFormOpen(true);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
+    const resetForm = () => {
+        setFormData({ title: '', location: '', description: '', image: '', is_published: false });
+        setEditingId(null);
+        setIsFormOpen(false);
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setLoading(true);
+        try {
+            if (editingId) {
+                // MODIFICATION
+                const { error } = await supabase
+                    .from('interventions')
+                    .update(formData)
+                    .eq('id', editingId);
+                if (error) throw error;
+                Swal.fire('Succès', 'Intervention modifiée !', 'success');
+            } else {
+                // AJOUT
+                const { error } = await supabase
+                    .from('interventions')
+                    .insert([formData]);
+                if (error) throw error;
+                Swal.fire('Succès', 'Nouvelle intervention ajoutée !', 'success');
+            }
+            resetForm();
+            loadData();
+        } catch (error) {
+            Swal.fire('Erreur', error.message, 'error');
+        } finally {
+            setLoading(false);
+        }
+    };
+
     return (
         <div className="p-8 bg-gray-50 min-h-screen font-sans">
             {/* EN-TÊTE (HEADER) */}
@@ -119,7 +189,6 @@ const InterventionList = () => {
                 </div>
         
                 <div className="flex items-center gap-3">
-                    {/* Bouton Actualiser */}
                     <button 
                         onClick={loadData}
                         className="p-3 text-gray-500 hover:bg-gray-100 rounded-2xl transition-all"
@@ -128,7 +197,6 @@ const InterventionList = () => {
                         <RefreshCcw size={20} className={loading ? 'animate-spin' : ''} />
                     </button>
 
-                    {/* Bouton Paramètres */}
                     <Link 
                         to="/settings" 
                         className="p-3 bg-white border border-slate-100 text-slate-600 rounded-2xl shadow-sm hover:shadow-md hover:bg-slate-50 transition-all duration-300 group"
@@ -139,17 +207,16 @@ const InterventionList = () => {
                         </div>
                     </Link>
 
-                    {/* Bouton Ajouter */}
-                    <Link 
-                        to="/dashboard/new" 
+                    {/* Bouton Ajouter (Manokatra formulaire) */}
+                    <button 
+                        onClick={() => { resetForm(); setIsFormOpen(!isFormOpen); }}
                         className="p-3.5 bg-indigo-600 text-white rounded-2xl shadow-lg hover:bg-indigo-700 hover:-translate-y-1 transition-all flex items-center gap-2"
                         title="Ajouter une nouvelle intervention"
                     >
-                        <PlusCircle size={22} />
-                        <span className="font-bold hidden md:inline">Ajouter</span>
-                    </Link>
+                        {isFormOpen ? <X size={22} /> : <PlusCircle size={22} />}
+                        <span className="font-bold hidden md:inline">{isFormOpen ? 'Fermer' : 'Ajouter'}</span>
+                    </button>
 
-                    {/* Bouton Déconnexion */}
                     <button 
                         onClick={handleLogout}
                         className="p-3.5 bg-red-50 text-red-600 rounded-2xl border border-red-100 hover:bg-red-600 hover:text-white transition-all duration-300 shadow-sm"
@@ -159,6 +226,64 @@ const InterventionList = () => {
                     </button>
                 </div>
             </div>
+
+            {/* --- SECTION FORMULAIRE (VAOVAO) --- */}
+            {isFormOpen && (
+                <div className="mb-8 bg-white p-8 rounded-2xl shadow-xl border-2 border-indigo-100 animate-in fade-in slide-in-from-top-4 duration-300">
+                    <h3 className="text-xl font-bold text-gray-800 mb-6 flex items-center gap-2">
+                        {editingId ? 'Modifier l\'intervention' : 'Nouvelle Intervention'}
+                    </h3>
+                    <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div className="space-y-4">
+                            <div>
+                                <label className="block text-sm font-bold text-gray-700 mb-1">Titre</label>
+                                <input 
+                                    required name="title" value={formData.title} onChange={handleInputChange}
+                                    className="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none"
+                                />
+                            </div>
+                            <div>
+                                <label className="block text-sm font-bold text-gray-700 mb-1">Lieu</label>
+                                <input 
+                                    required name="location" value={formData.location} onChange={handleInputChange}
+                                    className="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none"
+                                />
+                            </div>
+                            <div>
+                                <label className="block text-sm font-bold text-gray-700 mb-1">Lien de l'image (URL)</label>
+                                <input 
+                                    name="image" value={formData.image} onChange={handleInputChange}
+                                    placeholder="https://..."
+                                    className="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none"
+                                />
+                            </div>
+                        </div>
+                        <div className="space-y-4">
+                            <div>
+                                <label className="block text-sm font-bold text-gray-700 mb-1">Description</label>
+                                <textarea 
+                                    required name="description" value={formData.description} onChange={handleInputChange} rows="4"
+                                    className="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none"
+                                ></textarea>
+                            </div>
+                            <div className="flex items-center gap-3 p-3 bg-indigo-50 rounded-xl">
+                                <input 
+                                    type="checkbox" name="is_published" checked={formData.is_published} onChange={handleInputChange}
+                                    className="w-5 h-5 accent-indigo-600"
+                                />
+                                <label className="text-sm font-bold text-indigo-900">Publier sur l'accueil</label>
+                            </div>
+                            <button 
+                                type="submit" disabled={loading}
+                                className="w-full p-4 bg-indigo-600 text-white rounded-xl font-bold shadow-lg hover:bg-indigo-700 transition-all flex items-center justify-center gap-2"
+                            >
+                                <Save size={20} />
+                                {editingId ? 'Mettre à jour' : 'Enregistrer l\'intervention'}
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            )}
 
             {/* SECTION TABLEAU */}
             <div className="bg-white shadow-xl rounded-2xl overflow-hidden border border-gray-100">
@@ -173,7 +298,7 @@ const InterventionList = () => {
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-gray-100">
-                            {loading ? (
+                            {loading && !isFormOpen ? (
                                 <tr>
                                     <td colSpan="4" className="px-6 py-20 text-center">
                                         <div className="flex flex-col items-center gap-3 text-gray-400">
@@ -213,7 +338,6 @@ const InterventionList = () => {
                                         </td>
                                         <td className="px-6 py-5">
                                             <div className="flex justify-center items-center gap-3">
-                                                {/* Bouton Publier / Dépublier */}
                                                 <button 
                                                     onClick={() => togglePublish(item.id, item.is_published)}
                                                     className={`p-2.5 rounded-xl transition-all ${
@@ -226,16 +350,15 @@ const InterventionList = () => {
                                                     <Send size={18} />
                                                 </button>
 
-                                                {/* Lien de Modification */}
-                                                <Link 
-                                                    to={`/dashboard/edit/${item.id}`} 
+                                                {/* Modification (Miantso handleEdit) */}
+                                                <button 
+                                                    onClick={() => handleEdit(item)}
                                                     className="p-2.5 bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white rounded-xl transition-all shadow-sm"
                                                     title="Modifier cette intervention"
                                                 >
                                                     <Edit3 size={18} />
-                                                </Link>
+                                                </button>
 
-                                                {/* Bouton de Suppression */}
                                                 <button 
                                                     onClick={() => deleteIntervention(item.id)}
                                                     className="p-2.5 bg-red-50 text-red-500 hover:bg-red-500 hover:text-white rounded-xl transition-all shadow-sm"
