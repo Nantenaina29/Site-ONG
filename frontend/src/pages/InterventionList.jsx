@@ -58,14 +58,14 @@ const InterventionList = () => {
     // 2. Déconnexion (Auth Supabase)
     const handleLogout = async () => {
         const result = await Swal.fire({
-            title: 'Souhaitez-vous vous déconnecter ?',
+            title: 'Etes-vous déconnecter ?',
             text: "Votre session actuelle sera fermée et vous devrez vous reconnecter.",
             icon: 'question',
             showCancelButton: true,
             confirmButtonColor: '#d33',
             cancelButtonColor: '#4f46e5',
-            confirmButtonText: 'Oui, déconnexion',
-            cancelButtonText: 'Annuler',
+            confirmButtonText: 'Oui',
+            cancelButtonText: 'Non',
             background: '#ffffff',
             borderRadius: '1.25rem'
         });
