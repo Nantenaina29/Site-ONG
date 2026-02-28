@@ -258,7 +258,7 @@ const InterventionList = () => {
                         <span>{isFormOpen ? 'Fermer' : 'Ajouter'}</span>
                     </button>
 
-                    <div className="w-[1px] h-8 bg-slate-200 mx-1"></div>
+                    <div className="w-px h-8 bg-slate-200 mx-1"></div>
 
                     <button 
                         onClick={handleLogout}
