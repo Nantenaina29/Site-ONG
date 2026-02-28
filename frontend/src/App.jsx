@@ -245,7 +245,7 @@ const HomePage = () => {
 
 function App() {
   const [loading, setLoading] = useState(true);
-  const [isMenuOpen, setIsMenuOpen] = useState(false); // State ho an'ny menu mobile
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   useEffect(() => { 
     const timer = setTimeout(() => setLoading(false), 400); 
@@ -264,9 +264,10 @@ function App() {
 
   return (
     <Router>
-      <div className="min-h-screen flex flex-col bg-white text-gray-900">
+      <div className="min-h-screen flex flex-col bg-white text-gray-900 relative">
+        
         {/* --- NAVBAR --- */}
-        <nav className="bg-white sticky top-0 z-50 px-6 md:px-20 py-5 flex justify-between items-center border-b shadow-sm">
+        <nav className="bg-white sticky top-0 z-40 px-6 md:px-20 py-5 flex justify-between items-center border-b shadow-sm">
           <Link to="/" className="flex items-center space-x-4 text-left">
             <img src="/Logo TAF 3D.png" alt="Logo" className="h-16 w-16 object-contain rounded-full border border-gray-100 shadow-sm" />
             <span className="text-green-600 font-black text-lg leading-none uppercase tracking-tighter">
@@ -290,44 +291,57 @@ function App() {
             <Link to="/login" className="ml-4 hover:text-fmfp-green"><UserCircle size={24} /></Link>
           </ul>
 
-          {/* --- ICON HAMBURGER (MOBILE IHANY) --- */}
+          {/* --- ICON HAMBURGER (MOBILE) --- */}
           <button 
-            className="md:hidden text-indigo-900 focus:outline-none"
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            className="md:hidden text-indigo-900 focus:outline-none p-2"
+            onClick={() => setIsMenuOpen(true)}
           >
-            {isMenuOpen ? <X size={30} /> : <Menu size={30} />}
+            <Menu size={30} />
           </button>
         </nav>
 
-        {/* --- MENU MOBILE (DEROULANT) --- */}
+        {/* --- SIDEBAR MOBILE --- */}
+        {/* Overlay (Loko maizina ao aoriany rehefa misokatra) */}
         {isMenuOpen && (
-          <div className="md:hidden fixed inset-0 top-26.25 bg-white z-40 border-t border-gray-100 animate-in slide-in-from-right">
-            <ul className="flex flex-col space-y-6 p-10 text-[18px] font-black uppercase tracking-widest text-indigo-900">
-              {navLinks.map((l) => (
-                <li key={l.path}>
-                  <NavLink 
-                    to={l.path} 
-                    onClick={() => setIsMenuOpen(false)} // Mikatona rehefa mifindra pejy
-                    className={({ isActive }) => isActive ? "text-fmfp-green border-l-4 border-fmfp-green pl-4" : "hover:text-fmfp-green pl-4"}
-                  >
-                    {l.label}
-                  </NavLink>
-                </li>
-              ))}
-              <li className="pt-6 border-t border-gray-100">
-                <Link 
-                  to="/login" 
-                  onClick={() => setIsMenuOpen(false)}
-                  className="flex items-center space-x-3 text-indigo-900 hover:text-fmfp-green pl-4"
-                >
-                  <UserCircle size={28} />
-                  <span>Se connecter</span>
-                </Link>
-              </li>
-            </ul>
-          </div>
+          <div 
+            className="fixed inset-0 bg-black/50 z-50 md:hidden" 
+            onClick={() => setIsMenuOpen(false)}
+          ></div>
         )}
 
+        {/* Ny Sidebar tenany (eo amin'ny sisiny havia) */}
+        <div className={`fixed top-0 left-0 h-full bg-white z-[60] shadow-2xl transition-transform duration-300 ease-in-out md:hidden flex flex-col ${isMenuOpen ? 'translate-x-0' : '-translate-x-full'}`}
+             style={{ width: '75.6px' }}> {/* 2cm dia eo amin'ny 75.6px eo ho eo amin'ny écran */}
+          
+          <div className="p-4 border-b flex justify-center">
+            <button onClick={() => setIsMenuOpen(false)} className="text-indigo-900">
+              <X size={24} />
+            </button>
+          </div>
+
+          <ul className="flex flex-col items-center py-8 space-y-10 overflow-y-auto">
+            {navLinks.map((l) => (
+              <li key={l.path} className="rotate-[-90deg] whitespace-nowrap">
+                <NavLink 
+                  to={l.path} 
+                  onClick={() => setIsMenuOpen(false)}
+                  className={({ isActive }) => 
+                    `text-[12px] font-black uppercase tracking-widest transition-colors ${isActive ? 'text-fmfp-green' : 'text-indigo-900 hover:text-fmfp-green'}`
+                  }
+                >
+                  {l.label}
+                </NavLink>
+              </li>
+            ))}
+            <li className="pt-4">
+              <Link to="/login" onClick={() => setIsMenuOpen(false)} className="text-indigo-900 hover:text-fmfp-green">
+                <UserCircle size={28} />
+              </Link>
+            </li>
+          </ul>
+        </div>
+
+        {/* --- CONTENT --- */}
         <main className="grow">
           <Routes>
             <Route path="/" element={<HomePage />} />
@@ -344,7 +358,7 @@ function App() {
         </main>
 
         <footer className="bg-sky-400 py-6 text-center text-indigo-950 font-bold text-[10px] uppercase tracking-[0.5em]">
-          © 2026 ONG Tsinjo Aina Fianarantsoa — Madagascar
+          © {new Date().getFullYear()} ONG Tsinjo Aina Fianarantsoa — Haute Matsiatra - Madagascar
         </footer>
       </div>
     </Router>
