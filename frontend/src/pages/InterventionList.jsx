@@ -289,7 +289,7 @@ const InterventionList = () => {
             // 3. Mise à jour du formData (Ajout des nouveaux URLs au tableau existant)
             setFormData(prev => ({
                 ...prev,
-                images: prev.images ? [...prev.images, ...publicUrls] : publicUrls
+                image: prev.image ? [...prev.image, ...publicUrls] : publicUrls
             }));
     
             Swal.fire({
