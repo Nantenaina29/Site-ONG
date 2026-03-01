@@ -193,11 +193,6 @@ const Contact = () => {
       {/* --- SECTION 3: MAP (PRECISION IDANDA FIANARANTSOA) --- */}
 
         <section className="h-[500px] w-full bg-slate-100 relative">
-          {/* Label par-dessus la map ho an'ny endrika Pro */}
-          <div className="absolute top-10 left-10 z-10 bg-white p-5 rounded-2xl shadow-2xl border border-slate-100 hidden md:block">
-              <h3 className="font-black text-slate-900 text-sm">ONG TSINJO AINA</h3>
-              <p className="text-slate-500 text-xs mt-1 italic">Siège Social - Idanda, Fianarantsoa</p>
-          </div>
           
           <iframe 
             title="ONG Location Idanda"
