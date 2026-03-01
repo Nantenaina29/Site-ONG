@@ -61,59 +61,60 @@ const TeamSection = () => {
     );
   }
   return (
-    <section className="py-24 bg-white overflow-hidden">
+    <section className="py-8 bg-[#f8fafc]"> {/* Nahena ny py-24 ho py-8 */}
       <div className="max-w-7xl mx-auto px-6">
-        {/* TITRE PREMIUM */}
-        <div className="text-center mb-20 animate-in fade-in slide-in-from-bottom-4 duration-700">
-          <h2 className="text-[10px] font-black uppercase tracking-[0.4em] text-emerald-500 mb-4">
-            Notre Équipe
+        
+        {/* TITRE SECTION - Nahena ny mb-16 ho mb-8 */}
+        <div className="mb-8">
+          <h2 className="text-[9px] font-black uppercase tracking-[0.4em] text-indigo-600 mb-1">
+            Staff & Expertise
           </h2>
-          <h3 className="text-4xl font-black text-slate-900 tracking-tighter">
-            Des experts à votre <span className="text-emerald-500">service</span>
+          <h3 className="text-xl font-black text-slate-900 tracking-tighter uppercase">
+            Ceux qui font la <span className="text-indigo-600">différence</span>
           </h3>
-          <div className="h-1.5 w-12 bg-emerald-500 mx-auto mt-6 rounded-full"></div>
         </div>
 
-        {/* GRID MEMBRES */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        {/* GRID MEMBRES - gap-4 ho an'ny espace kely kokoa */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {team.map((member, index) => (
             <div 
               key={member.id}
-              className="group relative animate-in fade-in zoom-in duration-500"
-              style={{ animationDelay: `${index * 100}ms` }} // Animation cascade
+              className="group bg-white rounded-3xl p-3 shadow-sm hover:shadow-md transition-all duration-500 border border-slate-100 flex items-center gap-4 animate-in fade-in slide-in-from-bottom-2"
+              style={{ animationDelay: `${index * 50}ms` }}
             >
-              {/* CARD CONTAINER */}
-              <div className="relative h-100 rounded-[2.5rem] overflow-hidden shadow-2xl shadow-slate-200/50 bg-slate-100 border border-white transition-all duration-500 group-hover:-translate-y-2">
-                {/* IMAGE */}
+              {/* IMAGE CONTAINER - Boribory 2.5cm (approx 96px/w-24 h-24) */}
+              <div className="relative h-16 w-16 shrink-0 rounded-full overflow-hidden bg-slate-50 border-2 border-white shadow-sm">
                 <img 
-                  src={member.img || `https://ui-avatars.com/api/?name=${member.name}&background=random`} 
+                  src={member.img || `https://ui-avatars.com/api/?name=${member.name}&background=6366f1&color=fff`} 
                   alt={member.name}
-                  className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700"
+                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                 />
-                
-                {/* OVERLAY GRADIENT */}
-                <div className="absolute inset-0 bg-linear-to-t from-slate-950 via-slate-950/20 to-transparent opacity-60 group-hover:opacity-80 transition-opacity"></div>
+              </div>
 
-                {/* INFO CONTENT */}
-                <div className="absolute bottom-0 left-0 right-0 p-8 transform translate-y-2 group-hover:translate-y-0 transition-transform">
-                  <p className="text-[9px] font-black text-emerald-400 uppercase tracking-[0.2em] mb-1">
-                    {member.role}
-                  </p>
-                  <h4 className="text-xl font-bold text-white mb-4">
-                    {member.name}
-                  </h4>
-                  
-                  {/* BORDER DÉCORATIF QUI APPARAIT AU HOVER */}
-                  <div className="w-0 group-hover:w-full h-0.5 bg-emerald-500 transition-all duration-500"></div>
-                </div>
+              {/* INFO - Atao eo anilan'ny sary (flex) mba tsy handany toerana ambony/ambany */}
+              <div className="min-w-0">
+                <h4 className="text-sm font-black text-slate-800 tracking-tight leading-tight truncate">
+                  {member.name}
+                </h4>
+                <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest truncate">
+                  {member.role}
+                </p>
               </div>
             </div>
           ))}
         </div>
+
+        {/* Empty State */}
+        {team.length === 0 && (
+          <div className="text-center py-6 bg-white rounded-3xl border border-dashed border-slate-200">
+            <p className="text-slate-400 font-bold text-[10px] uppercase tracking-widest">Aucun membre</p>
+          </div>
+        )}
+
       </div>
     </section>
   );
-};
+}
 
 const ActivitiesHome = () => {
   const activities = [
