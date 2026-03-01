@@ -153,19 +153,34 @@ const InterventionList = () => {
 
     const handleEdit = (item) => {
         setEditingId(item.id);
+        
+        // Hamarinina raha efa array ny sary avy any amin'ny DB
+        // Raha string izy (data taloha), dia avadika [string]
+        const imageArray = Array.isArray(item.image) 
+            ? item.image 
+            : (item.image ? [item.image] : []);
+
         setFormData({
-            title: item.title,
-            location: item.location,
-            description: item.description,
-            image: item.image || '',
-            is_published: item.is_published
+            title: item.title || '',
+            location: item.location || '',
+            description: item.description || '',
+            image: imageArray, // Array foana eto
+            is_published: item.is_published || false
         });
+        
         setIsFormOpen(true);
         window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
     const resetForm = () => {
-        setFormData({ title: '', location: '', description: '', image: '', is_published: false });
+        // Image dia atao [] (Empty Array) fa tsy '' (Empty String) intsony
+        setFormData({ 
+            title: '', 
+            location: '', 
+            description: '', 
+            image: [], 
+            is_published: false 
+        });
         setEditingId(null);
         setIsFormOpen(false);
     };
@@ -173,12 +188,22 @@ const InterventionList = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
+
         try {
+            // Fanomanana ny data halefa any amin'ny Supabase
+            // Manery ny 'image' ho lasa Array [url1, url2...]
+            const dataToSubmit = {
+                ...formData,
+                image: Array.isArray(formData.image) ? formData.image : [formData.image]
+            };
+
             if (editingId) {
+                // MODIFICATION (UPDATE)
                 const { error: updateError } = await supabase
                     .from('interventions')
-                    .update(formData)
+                    .update(dataToSubmit)
                     .eq('id', editingId);
+                
                 if (updateError) throw updateError;
                 
                 Swal.fire({
@@ -188,9 +213,11 @@ const InterventionList = () => {
                     confirmButtonColor: '#4f46e5'
                 });
             } else {
+                // AJOUT (INSERT)
                 const { error: insertError } = await supabase
                     .from('interventions')
-                    .insert([formData]);
+                    .insert([dataToSubmit]); // Insert dia mila array ny zavatra ampidirina
+                
                 if (insertError) throw insertError;
                 
                 Swal.fire({
@@ -200,17 +227,24 @@ const InterventionList = () => {
                     confirmButtonColor: '#4f46e5'
                 });
             }
+
             resetForm();
-            loadData();
+            loadData(); // Mamerina ny lisitra vaovao avy any amin'ny DB
+
         } catch (err) {
-            const msg = err instanceof Error ? err.message : 'Une erreur est survenue lors de l\'enregistrement';
-            Swal.fire('Erreur technique', msg, 'error');
+            // Asehoy ny hafatra mazava avy amin'ny Supabase raha misy error
+            const errorMsg = err.message || 'Une erreur est survenue lors de l\'enregistrement';
+            console.error("Supabase Error Details:", err);
+            
+            Swal.fire({
+                title: 'Erreur technique',
+                text: errorMsg,
+                icon: 'error',
+                confirmButtonColor: '#ef4444'
+            });
         } finally {
             setLoading(false);
-        }
-
-
-        
+        } 
     };
 
     // --- FOFAOY NY TALOHA ARY ADIKAO ITY ---
