@@ -209,28 +209,41 @@ function Login() {
                 </div>
   
                 <div className="space-y-1.5">
-                  <div className="flex justify-between items-center px-1">
-                    <label className="text-[10px] font-black text-indigo-950 uppercase tracking-widest">
+                    <label className="text-[10px] font-black text-indigo-950 uppercase tracking-widest ml-1">
                       Mot de passe
                     </label>
-                    <button 
-                      type="button"
-                      onClick={handleSendCode}
-                      className="text-[10px] font-bold text-indigo-600 hover:underline"
-                    >
-                      Mot de passe oublié ?
-                    </button>
-                  </div>
-                  <div className="relative">
-                    <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
-                    <input 
-                      type={showPassword ? "text" : "password"}
-                      className="w-full pl-11 pr-11 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-4 focus:ring-indigo-50 text-sm outline-none transition-all"
-                      placeholder="Mot de passe"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      required
-                    />
+                    
+                    {/* 1. Ny Input (miaraka amin'ny icon Lock sy Eye) */}
+                    <div className="relative">
+                      <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
+                      <input 
+                        type={showPassword ? "text" : "password"}
+                        className="w-full pl-11 pr-11 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-4 focus:ring-indigo-50 text-sm outline-none transition-all"
+                        placeholder="Mot de passe"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        required
+                      />
+                      <button 
+                        type="button"
+                        onClick={() => setShowPassword(!showPassword)}
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-indigo-600 p-1"
+                      >
+                        {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                      </button>
+                    </div>
+
+                    {/* 2. Ny bokotra Mot de passe oublié (eo ambany mitongilana miankavanana) */}
+                    <div className="flex justify-end px-1">
+                      <button 
+                        type="button"
+                        onClick={handleSendCode}
+                        className="text-[10px] font-bold text-indigo-600 hover:text-indigo-800 hover:underline transition-colors"
+                      >
+                        Mot de passe oublié ?
+                      </button>
+
+
                     <button 
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
