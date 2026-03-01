@@ -87,7 +87,7 @@ const Parametres = () => {
                 if (error) throw error;
             }
 
-            Swal.fire({ icon: 'success', title: 'Vita soa aman-tsara!', showConfirmButton: false, timer: 1500 });
+            Swal.fire({ icon: 'success', title: 'Membre ajouté avec succès !', showConfirmButton: false, timer: 1500 });
             setIsModalOpen(false);
             setEditingItem(null);
             setFormData({ name: '', role: '', image: null });
@@ -102,20 +102,20 @@ const Parametres = () => {
     // 5. Supprimer
     const handleDelete = async (id) => {
         const result = await Swal.fire({
-            title: 'Hofafana ve ity mpikambana ity?',
-            text: "Tsy azo averina intsony io!",
+            title: 'Supprimer ce membre ?',
+            text: "Cette action est irréversible !!",
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#4f46e5',
             cancelButtonColor: '#ef4444',
-            confirmButtonText: 'Eny, fafao!'
+            confirmButtonText: 'Oui'
         });
 
         if (result.isConfirmed) {
             const { error } = await supabase.from('teams').delete().eq('id', id);
             if (!error) {
                 fetchTeam();
-                Swal.fire('Voafafa!', '', 'success');
+                Swal.fire('Supprimé!', '', 'success');
             }
         }
     };
