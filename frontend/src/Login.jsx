@@ -11,6 +11,7 @@ function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  
 
   // Fanadiovana ny formulaire isaky ny miditra ny pejy
   const handleLogin = async (e) => {
@@ -63,6 +64,26 @@ function Login() {
       setIsLoading(false);
     }
   };
+
+  const handleForgotPassword = async () => {
+    // 1. Vérification
+    if (!email) {
+      alert("Veuillez saisir votre adresse e-mail.");
+      return;
+    }
+
+    // 2. Envoi de l'email via Supabase
+    const { error } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: `${window.location.origin}/update-password`,
+    });
+
+    // 3. Gestion de la réponse
+    if (error) {
+      alert("Erreur : " + error.message);
+    } else {
+      alert("Un lien de réinitialisation a été envoyé à votre e-mail.");
+    }
+  }; // <--- Hamarino tsara io semikolôna sy fononteny io
 
   return (
     <div className="h-screen w-full flex items-center justify-center bg-gray-50 overflow-hidden p-4">
@@ -142,14 +163,15 @@ function Login() {
                     onChange={(e) => setPassword(e.target.value)}
                     required
                   />
-                  <div className="flex justify-end mt-2">
-                  <Link 
-                    to="/forgot-password" 
-                    className="text-xs font-bold text-indigo-600 hover:text-indigo-800 transition-colors hover:underline"
-                  >
-                    Mot de passe oublié ?
-                  </Link>
-                </div>
+              <div className="flex justify-end mb-6">
+                        <button 
+                          type="button"
+                          onClick={handleForgotPassword}
+                          className="text-xs font-semibold text-indigo-600 hover:text-indigo-500 hover:underline"
+                        >
+                          Mot de passe oublié ?
+                        </button>
+                      </div>
                   <button 
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
