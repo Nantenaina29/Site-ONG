@@ -44,7 +44,7 @@ const NosActivites = () => {
       icon: <Sprout size={24} />,
       img: "/Formation.jpg",
       desc: "Nous formons les membres aux bases de l'agroécologie pour augmenter la production familiale.",
-      details: "Fabrication de compost, haies vives et banques de semences communautaires sont au cœur de l'action ho an'ny sakafo mahasalama.",
+      details: "Fabrication de compost, haies vives et banques de semences communautaires sont au cœur de l'action pour une alimentation saine et durable.",
       points: ["Compostage & Haies vives", "Semences locales", "Éducation nutritionnelle", "Adaptation au climat"],
       themeColor: "text-green-600",
       bgColor: "bg-green-600"
@@ -56,7 +56,7 @@ const NosActivites = () => {
       icon: <Network size={24} />,
       img: "/Dvpmt.JPG",
       desc: "Le Réseau Tsinjo Aina regroupe les GS pour porter des plaidoyers au niveau communal.",
-      details: "Les membres intègrent les Structures Locales de Concertation (SLC) mba hisian'ny fanatsarana ny fiainana eny ifotony.",
+      details: "Les membres intègrent les Structures Locales de Concertation (SLC) pour agir sur le foncier, les droits civiques et l'accès aux services de base.",
       points: ["Conseils entre groupes", "Plaidoyer via la SLC", "Sécurisation foncière", "Diagnostic participatif"],
       themeColor: "text-blue-600",
       bgColor: "bg-blue-600"
@@ -66,26 +66,27 @@ const NosActivites = () => {
   return (
     <main className="bg-white min-h-screen font-sans">
       
-      {/* --- HERO SECTION (TRUE SEAMLESS CROSSFADE) --- */}
+      {/* --- HERO SECTION (NO-GAP SLIDESHOW) --- */}
       <div className="relative h-[50vh] min-h-[400px] flex items-center overflow-hidden bg-white">
         <div className="absolute inset-0 z-0">
-          <div className="slideshow-engine">
-            <div className="slide-layer" style={{ backgroundImage: "url('/GS.jpg')" }}></div>
-            <div className="slide-layer" style={{ backgroundImage: "url('/Formation.jpg')" }}></div>
-            <div className="slide-layer" style={{ backgroundImage: "url('/Dvpmt.JPG')" }}></div>
-            <div className="slide-layer" style={{ backgroundImage: "url('/Epargne.jpg')" }}></div>
+          <div className="slideshow-infinite">
+            {/* Averina indroa ny sary voalohany amin'ny farany mba tsy hisy fahatapahana */}
+            <div className="slide-item" style={{ backgroundImage: "url('/GS.jpg')" }}></div>
+            <div className="slide-item" style={{ backgroundImage: "url('/Formation.jpg')" }}></div>
+            <div className="slide-item" style={{ backgroundImage: "url('/Dvpmt.JPG')" }}></div>
+            <div className="slide-item" style={{ backgroundImage: "url('/Epargne.jpg')" }}></div>
           </div>
-          {/* Overlay maivana be mba ho hita tsara ny sary */}
+          {/* Overlay mazava fa tsy bleumarine */}
           <div className="absolute inset-0 bg-blue-900/10 z-10"></div>
           <div className="absolute inset-0 bg-gradient-to-t from-white via-transparent to-transparent z-10"></div>
         </div>
         
         <div className="container mx-auto px-6 md:px-20 relative z-20">
-          <button onClick={() => navigate(-1)} className="group flex items-center space-x-2 text-white bg-black/20 hover:bg-black/40 px-3 py-1 rounded-full w-fit mb-6 transition-all backdrop-blur-sm">
+          <button onClick={() => navigate(-1)} className="group flex items-center space-x-2 text-white hover:text-emerald-400 mb-6 transition-all drop-shadow-md">
             <ArrowLeft size={16} />
             <span className="text-[10px] font-black uppercase tracking-[0.3em]">Retour</span>
           </button>
-          <h1 className="text-5xl md:text-7xl font-black text-white leading-none tracking-tighter mb-4 drop-shadow-lg">
+          <h1 className="text-5xl md:text-7xl font-black text-white leading-none tracking-tighter mb-4 drop-shadow-2xl">
             NOS <span className="text-emerald-400">ACTIVITÉS.</span>
           </h1>
           <p className="text-white max-w-xl text-sm md:text-base font-bold leading-relaxed border-l-4 border-emerald-400 pl-4 drop-shadow-md">
@@ -99,17 +100,15 @@ const NosActivites = () => {
         <div className="grid grid-cols-1 gap-24">
           {activites.map((item, index) => (
             <article key={item.id} className={`flex flex-col ${index % 2 === 0 ? 'lg:flex-row' : 'lg:flex-row-reverse'} gap-12 items-center`}>
-              {/* Image Side - Full Color */}
               <div className="w-full lg:w-1/2 relative group">
                 <div className="overflow-hidden rounded-3xl shadow-2xl aspect-[4/3] border-4 border-slate-50">
-                  <img src={item.img} alt={item.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                  <img src={item.img} alt={item.title} className="w-full h-full object-cover" />
                 </div>
                 <div className={`absolute -bottom-4 ${index % 2 === 0 ? '-right-4' : '-left-4'} p-4 ${item.bgColor} text-white rounded-2xl shadow-xl z-10`}>
                   {item.icon}
                 </div>
               </div>
 
-              {/* Text Side - Black Paragraphs */}
               <div className="w-full lg:w-1/2 space-y-5">
                 <span className={`${item.themeColor} font-black text-[11px] uppercase tracking-[0.3em]`}>{item.subtitle}</span>
                 <h2 className="text-3xl md:text-4xl font-black text-black uppercase leading-tight">{item.title}</h2>
@@ -121,9 +120,9 @@ const NosActivites = () => {
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-4">
                   {item.points.map((point, pIdx) => (
-                    <div key={pIdx} className="flex items-center space-x-2">
+                    <div key={pIdx} className="flex items-center space-x-2 group">
                       <CheckCircle2 size={16} className="text-emerald-500 shrink-0" />
-                      <span className="text-[11px] font-black text-black uppercase">{point}</span>
+                      <span className="text-[11px] font-black text-black uppercase tracking-tight">{point}</span>
                     </div>
                   ))}
                 </div>
@@ -133,10 +132,10 @@ const NosActivites = () => {
         </div>
       </div>
 
-      {/* --- FORMATIONS (CLEAN) --- */}
+      {/* --- FORMATION LIST --- */}
       <div className="bg-blue-50 py-10 border-y-2 border-blue-100">
         <div className="container mx-auto px-6 md:px-20 flex flex-col md:flex-row items-center justify-center gap-6">
-          <h3 className="text-xs font-black text-blue-900 uppercase tracking-[0.4em]">Formations Offertes :</h3>
+          <h3 className="text-xs font-black text-blue-900 uppercase tracking-[0.4em]">Formations :</h3>
           <div className="flex flex-wrap justify-center gap-2">
             {["Gestion", "Agroécologie", "Genre", "Nutrition", "Plaidoyer", "Climat"].map((f, i) => (
               <div key={i} className="px-5 py-2 bg-white border-2 border-blue-100 text-[10px] font-black text-blue-800 uppercase rounded-full shadow-sm">
@@ -147,14 +146,17 @@ const NosActivites = () => {
         </div>
       </div>
 
-      {/* --- CTA --- */}
-      <div className="container mx-auto px-6 md:px-15 py-15">
-        <div className="bg-blue-900 rounded-[3rem] p-12 md:p-16 text-center relative overflow-hidden shadow-2xl">
+      {/* --- CALL TO ACTION --- */}
+      <div className="container mx-auto px-6 md:px-13 py-13">
+        <div className="bg-blue-900 rounded-[3rem] p-8 md:p-16 text-center relative overflow-hidden shadow-2xl">
           <div className="relative z-10">
-            <h2 className="text-3xl md:text-5xl font-black text-white uppercase tracking-tighter mb-4">Rejoignez l'action.</h2>
+            <h2 className="text-3xl md:text-5xl font-black text-white uppercase tracking-tighter mb-4">Bâtissons l'autonomie.</h2>
+            <p className="text-blue-100 text-sm mb-10 max-w-xl mx-auto font-medium">
+              Nous ciblons les personnes les plus démunies pour transformer l'exclusion en force collective.
+            </p>
             <button 
               onClick={() => navigate('/contact')}
-              className="bg-emerald-400 text-blue-900 px-12 py-5 font-black uppercase text-[11px] tracking-[0.2em] hover:bg-white transition-all rounded-full shadow-xl inline-flex items-center gap-3 mt-6"
+              className="bg-emerald-400 text-blue-900 px-12 py-5 font-black uppercase text-[11px] tracking-[0.2em] hover:bg-white transition-all rounded-full shadow-xl inline-flex items-center gap-3"
             >
               <span>Travailler avec nous</span>
               <ArrowRight size={18} />
@@ -163,35 +165,35 @@ const NosActivites = () => {
         </div>
       </div>
 
-      {/* --- THE FIX: NO-GAP CSS ENGINE --- */}
+      {/* --- CSS SYSTEME SEAMLESS --- */}
       <style dangerouslySetInnerHTML={{ __html: `
-        .slideshow-engine {
+        .slideshow-infinite {
           position: absolute;
           inset: 0;
           width: 100%;
           height: 100%;
         }
-        .slide-layer {
+        .slide-item {
           position: absolute;
           inset: 0;
           background-size: cover;
           background-position: center;
           opacity: 0;
-          /* 12s total cycle (3s per image) */
-          animation: crossFadeInfinite 12s infinite linear;
+          /* Sary 4 * 4 segondra = 16s total loop */
+          animation: crossFadeLoop 16s infinite ease-in-out;
         }
 
-        /* Overlap timings to eliminate the 1s blank gap */
-        .slide-layer:nth-child(1) { animation-delay: 0s; }
-        .slide-layer:nth-child(2) { animation-delay: 3s; }
-        .slide-layer:nth-child(3) { animation-delay: 6s; }
-        .slide-layer:nth-child(4) { animation-delay: 9s; }
+        /* Ny elanelana (timing) dia natao mifanindry tsara (overlapping) mba tsy hisy loko mipoitra */
+        .slide-item:nth-child(1) { animation-delay: 0s; }
+        .slide-item:nth-child(2) { animation-delay: 4s; }
+        .slide-item:nth-child(3) { animation-delay: 8s; }
+        .slide-item:nth-child(4) { animation-delay: 12s; }
 
-        @keyframes crossFadeInfinite {
+        @keyframes crossFadeLoop {
           0% { opacity: 0; }
-          4% { opacity: 1; }   /* Transitions quickly in 0.5s */
-          25% { opacity: 1; }  /* Stays fully visible */
-          29% { opacity: 0; }  /* Transitions out while next is already in */
+          5% { opacity: 1; }   /* Miseho haingana */
+          25% { opacity: 1; }  /* Mijery 4 segondra */
+          30% { opacity: 0; }  /* Manjavona tsikelikely eo ambonin'ny manaraka */
           100% { opacity: 0; }
         }
       `}} />
