@@ -28,19 +28,21 @@ const Realisations = () => {
         <div className="min-h-screen bg-white overflow-x-hidden">
             {/* --- 1. EN-TÊTE (HERO SECTION) --- */}
             <div className="bg-slate-900 py-20 px-6 text-center text-white relative overflow-hidden">
-                <div className="absolute inset-0 opacity-20">
-                    <img 
-                        src="/Real.jpg" 
-                        alt="Background" 
-                        className="w-full h-full object-cover" 
-                    />
-                </div>
+            <div className="absolute inset-0 opacity-50"> {/* Ovay eto ny opacity */}
+                <img 
+                    src="/Real.jpg" 
+                    alt="Background" 
+                    className="w-full h-full object-cover" 
+                />
+            </div>
                 <div className="relative z-10">
                     <h1 className="text-4xl md:text-6xl font-black mb-4 tracking-tighter uppercase">
                         NOS RÉALISATIONS
                     </h1>
                     <p className="text-slate-400 max-w-xl mx-auto text-lg font-medium">
-                        Découvrez nos actions sur le terrain à travers cette galerie animée.
+                    Chaque image capturée ici est le témoin d'un engagement profond et d'une volonté inébranlable d'apporter un changement durable. 
+                        À travers nos interventions stratégiques et nos projets de proximité, nous transformons des défis complexes en opportunités concrètes 
+                        pour les communautés locales.
                     </p>
                 </div>
             </div>
