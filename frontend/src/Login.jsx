@@ -274,11 +274,11 @@ function Login() {
                     <KeyRound className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
                     <input 
                       type="text"
-                      className="w-full pl-11 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-4 focus:ring-indigo-50 text-sm outline-none transition-all text-center font-bold tracking-[0.5em]"
-                      placeholder="000000"
+                      className="w-full pl-4 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-4 focus:ring-indigo-50 text-sm outline-none transition-all text-center font-bold tracking-[0.5em]"
+                      placeholder="00000000" // Natao 8 ny aotra
                       value={otp}
                       onChange={(e) => setOtp(e.target.value)}
-                      maxLength={6}
+                      maxLength={8} // Nalalahana ho 8 araka ny nasehon'ny Supabase
                       required
                     />
                   </div>
