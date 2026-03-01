@@ -83,7 +83,7 @@ const TeamSection = () => {
               style={{ animationDelay: `${index * 50}ms` }}
             >
               {/* IMAGE CONTAINER - Boribory 2.5cm (approx 96px/w-24 h-24) */}
-              <div className="relative h-16 w-16 shrink-0 rounded-full overflow-hidden bg-slate-50 border-2 border-white shadow-sm">
+              <div className="relative h-20 w-20 shrink-0 rounded-full overflow-hidden bg-slate-50 border-2 border-white shadow-sm">
                 <img 
                   src={member.img || `https://ui-avatars.com/api/?name=${member.name}&background=6366f1&color=fff`} 
                   alt={member.name}
