@@ -191,21 +191,23 @@ const Contact = () => {
       </section>
 
       {/* --- SECTION 3: MAP (PRECISION IDANDA FIANARANTSOA) --- */}
-      <section className="h-[500px] w-full bg-slate-100 relative">
-        {/* Label par-dessus la map pour faire pro */}
-        <div className="absolute top-10 left-10 z-10 bg-white p-5 rounded-2xl shadow-2xl border border-slate-100 hidden md:block">
-           <h3 className="font-black text-slate-900 text-sm">ONG TSINJO AINA</h3>
-           <p className="text-slate-500 text-xs mt-1 italic">Siège Social - Idanda</p>
-        </div>
-        
-        <iframe 
-          title="ONG Location"
-          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3701.38575932585!2d47.085!3d-21.455!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjHCsDI3JzE4LjAiUyA0N8KwMDUnMDYuMCJF!5e0!3m2!1sfr!2smg!4v1700000000000!5m2!1sfr!2smg"
-          className="w-full h-full grayscale contrast-125 hover:grayscale-0 transition-all duration-1000 border-none"
-          allowFullScreen="" 
-          loading="lazy"
-        ></iframe>
-      </section>
+
+        <section className="h-[500px] w-full bg-slate-100 relative">
+          {/* Label par-dessus la map ho an'ny endrika Pro */}
+          <div className="absolute top-10 left-10 z-10 bg-white p-5 rounded-2xl shadow-2xl border border-slate-100 hidden md:block">
+              <h3 className="font-black text-slate-900 text-sm">ONG TSINJO AINA</h3>
+              <p className="text-slate-500 text-xs mt-1 italic">Siège Social - Idanda, Fianarantsoa</p>
+          </div>
+          
+          <iframe 
+            title="ONG Location Idanda"
+            src="https://maps.app.goo.gl/NDfc8e7Sf9LcWsv78"
+            className="w-full h-full grayscale contrast-125 hover:grayscale-0 transition-all duration-1000 border-none"
+            allowFullScreen="" 
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+          ></iframe>
+        </section>
 
       {/* --- CSS ANIMATIONS --- */}
       <style>{`
