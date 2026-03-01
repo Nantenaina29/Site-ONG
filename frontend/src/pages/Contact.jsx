@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { Mail, Phone, MapPin, Send, Facebook, Twitter, Instagram, Loader2 } from 'lucide-react';
+import { Mail, Phone, MapPin, Send, Facebook, Twitter, Instagram, Loader2, MessageSquare } from 'lucide-react';
 import Swal from 'sweetalert2';
-import axios from 'axios';
+import { supabase } from '../supabaseClient';
 
 const Contact = () => {
   const [loading, setLoading] = useState(false);
@@ -9,136 +9,141 @@ const Contact = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true); 
-  
+    setLoading(true);
+
     try {
+      // Ampidirina mivantana ao amin'ny table 'messages' (na 'contact') ao amin'ny Supabase
+      const { error } = await supabase
+        .from('contact_messages') // Hamarino raha ity no anaran'ny table-nao
+        .insert([
+          { 
+            name: form.name, 
+            email: form.email, 
+            subject: form.subject, 
+            message: form.message,
+            created_at: new Date()
+          }
+        ]);
 
-      await axios.post('http://127.0.0.1:8000/api/contact', form); 
-      
-      setLoading(false); 
+      if (error) throw error;
 
+      setLoading(false);
       Swal.fire({
         title: 'Message envoyé !',
-        text: 'Merci de nous avoir contactés. Nous vous répondrons dans les plus brefs délais.',
+        text: 'Votre message a été bien enregistré. Notre équipe vous contactera.',
         icon: 'success',
-        confirmButtonColor: '#4f46e5'
+        confirmButtonColor: '#0f172a'
       });
-      
-      // 3. Fafana ny formulaire
       setForm({ name: '', email: '', subject: '', message: '' });
-      
+
     } catch (err) {
-      // 4. Vonoy koa ny loading eto raha nisy erreur
-      setLoading(false); 
+      setLoading(false);
       console.error(err);
-      
       Swal.fire({
         title: 'Erreur !',
-        text: 'Une erreur est survenue lors de l\'envoi.',
-        icon: 'error',
-        confirmButtonColor: '#ef4444'
+        text: 'Impossible d\'enregistrer le message. Verifiez.',
+        icon: 'error'
       });
     }
   };
-
   return (
-    <div className="bg-white min-h-screen">
-      {/* --- SECTION 1: HEADER --- */}
-      <section className="bg-sky-400 py-10 text-center border-t">
-        <div className="container mx-auto px-4">
-          <h1 className="text-3xl md:text-4xl font-black uppercase mb-2 tracking-tighter text-indigo-900">
-            Contactez-<span className="text-indigo-700">nous</span>
+    <div className="bg-white min-h-screen font-sans">
+      {/* --- SECTION 1: HEADER MIARAKA AMIN'NY ANIMATION --- */}
+      <section className="bg-slate-50 py-24 text-center border-b border-slate-100 overflow-hidden">
+        <div className="container mx-auto px-4 relative">
+          {/* Animated Background Element */}
+          <div className="absolute -top-10 left-1/2 -translate-x-1/2 w-64 h-64 bg-indigo-500/5 rounded-full blur-3xl animate-pulse"></div>
+          
+          <h1 className="relative z-10 text-5xl md:text-7xl font-black uppercase mb-6 tracking-tighter text-slate-900 animate-fade-in-up">
+            Contactez-<span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-emerald-500">nous</span>
           </h1>
-          <p className="text-indigo-950 max-w-2xl mx-auto text-lg font-medium leading-tight">
+          <p className="relative z-10 text-slate-600 max-w-2xl mx-auto text-lg md:text-xl font-light leading-relaxed animate-fade-in">
             Vous avez un projet, une question ou vous souhaitez soutenir nos actions ? 
-            Notre équipe est à votre écoute.
+            Notre équipe est à votre entière disposition pour vous accompagner.
           </p>
         </div>
       </section>
 
       {/* --- SECTION 2: INFOS & FORMULAIRE --- */}
-      <section className="container mx-auto py-20 px-6 lg:px-20">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-16">
+      <section className="container mx-auto py-24 px-6 lg:px-20">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-20">
           
-          {/* ANKAVIA: COORDONNÉES */}
-          <div className="lg:col-span-1 space-y-10">
+          {/* ANKAVIA: COORDONNÉES (SORATRA MAINTY) */}
+          <div className="lg:col-span-1 space-y-12">
             <div>
-              <h2 className="text-2xl font-black text-indigo-900 uppercase mb-8 tracking-tight border-b-4 border-emerald-500 inline-block">
+              <h2 className="text-sm font-black text-indigo-600 uppercase tracking-[0.3em] mb-8 flex items-center gap-3">
+                <MessageSquare size={18} />
                 Nos Coordonnées
               </h2>
-              <div className="space-y-8">
-                <div className="flex items-start gap-5">
-                  <div className="bg-emerald-50 p-4 rounded-2xl text-emerald-600">
-                    <MapPin size={28} />
+              <div className="space-y-10">
+                <div className="flex items-start gap-6 group">
+                  <div className="bg-slate-900 p-4 rounded-2xl text-white group-hover:bg-emerald-500 transition-colors duration-300">
+                    <MapPin size={24} />
                   </div>
                   <div>
-                    <h4 className="font-bold text-indigo-900 uppercase text-lg tracking-widest mb-1">Adresse</h4>
-                    <p className="text-gray-700 font-medium">Lot 602/3306 Idanda Fianarantsoa 301, Madagascar</p>
+                    <h4 className="font-bold text-slate-900 uppercase text-xs tracking-widest mb-2 opacity-50">Adresse</h4>
+                    <p className="text-slate-900 font-bold text-lg leading-snug">Lot 602/3306 Idanda,<br />Fianarantsoa 301, Madagascar</p>
                   </div>
                 </div>
 
-                <div className="flex items-start gap-5">
-                  <div className="bg-blue-50 p-4 rounded-2xl text-indigo-600">
-                    <Phone size={28} />
+                <div className="flex items-start gap-6 group">
+                  <div className="bg-slate-900 p-4 rounded-2xl text-white group-hover:bg-indigo-600 transition-colors duration-300">
+                    <Phone size={24} />
                   </div>
                   <div>
-                    <h4 className="font-bold text-indigo-900 uppercase text-lg tracking-widest mb-1">Téléphone</h4>
-                    <p className="text-gray-700 font-medium">+261 34 12 530 74</p>
-                    <p className="text-gray-700 font-medium">+261 38 30 083 74</p>
+                    <h4 className="font-bold text-slate-900 uppercase text-xs tracking-widest mb-2 opacity-50">Téléphone</h4>
+                    <p className="text-slate-900 font-bold text-lg">+261 34 12 530 74</p>
+                    <p className="text-slate-900 font-bold text-lg">+261 38 30 083 74</p>
                   </div>
                 </div>
 
-                <div className="flex items-start gap-5">
-                  <div className="bg-gray-50 p-4 rounded-2xl text-gray-700">
-                    <Mail size={28} />
+                <div className="flex items-start gap-6 group">
+                  <div className="bg-slate-900 p-4 rounded-2xl text-white group-hover:bg-sky-500 transition-colors duration-300">
+                    <Mail size={24} />
                   </div>
                   <div>
-                    <h4 className="font-bold text-indigo-900 uppercase text-lg tracking-widest mb-1">E-mail</h4>
-                    <p className="text-gray-700 font-medium">tsinjoainafi@yahoo.com</p>
+                    <h4 className="font-bold text-slate-900 uppercase text-xs tracking-widest mb-2 opacity-50">E-mail</h4>
+                    <p className="text-slate-900 font-bold text-lg underline decoration-indigo-500/30">tsinjoainafi@yahoo.com</p>
                   </div>
                 </div>
               </div>
             </div>
 
             {/* SOCIAL MEDIA */}
-            <div>
-              <h4 className="font-bold text-indigo-900 uppercase text-xs tracking-widest mb-4">Suivez-nous</h4>
+            <div className="pt-8 border-t border-slate-100">
+              <h4 className="font-bold text-slate-400 uppercase text-[10px] tracking-[0.4em] mb-6">Suivez notre impact</h4>
               <div className="flex gap-4">
-                <a href="#" className="p-3 bg-gray-100 rounded-full hover:bg-emerald-500 hover:text-white transition-all">
-                  <Facebook size={20} />
-                </a>
-                <a href="#" className="p-3 bg-gray-100 rounded-full hover:bg-emerald-500 hover:text-white transition-all">
-                  <Twitter size={20} />
-                </a>
-                <a href="#" className="p-3 bg-gray-100 rounded-full hover:bg-emerald-500 hover:text-white transition-all">
-                  <Instagram size={20} />
-                </a>
+                {[Facebook, Twitter, Instagram].map((Icon, i) => (
+                  <a key={i} href="#" className="p-4 bg-slate-50 rounded-full text-slate-900 hover:bg-slate-900 hover:text-white transition-all duration-300">
+                    <Icon size={20} />
+                  </a>
+                ))}
               </div>
             </div>
           </div>
 
-          {/* ANKAVANANA: FORMULAIRE */}
+          {/* ANKAVANANA: FORMULAIRE (CLEAN & PRO) */}
           <div className="lg:col-span-2">
-            <div className="bg-white p-10 rounded-[2.5rem] shadow-2xl shadow-indigo-900/5 border border-gray-100">
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="space-y-1">
-                    <label className="block text-lg font-black text-indigo-900  tracking-widest ml-1 opacity-70">Nom Complet</label>
+            <div className="bg-white p-8 md:p-12 rounded-[3rem] shadow-xl shadow-slate-200/50 border border-slate-50 relative overflow-hidden">
+              <form onSubmit={handleSubmit} className="space-y-8 relative z-10">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  <div className="space-y-2">
+                    <label className="text-xs font-black text-slate-900 uppercase tracking-widest ml-1">Nom Complet</label>
                     <input 
                       type="text" 
-                      className="w-full p-4 bg-gray-50 border border-gray-100 rounded-xl outline-none focus:ring-2 focus:ring-emerald-500 focus:bg-white transition-all"
-                      placeholder="Votre nom..."
+                      className="w-full p-5 bg-slate-50 border-none rounded-2xl outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white transition-all text-slate-900 font-medium"
+                      placeholder="Ex: Jean Ralambo"
                       value={form.name}
                       onChange={(e) => setForm({...form, name: e.target.value})}
                       required
                     />
                   </div>
-                  <div className="space-y-1">
-                    <label className="block text-lg font-black text-indigo-900  tracking-widest ml-1 opacity-70">Adresse E-mail</label>
+                  <div className="space-y-2">
+                    <label className="text-xs font-black text-slate-900 uppercase tracking-widest ml-1">Adresse E-mail</label>
                     <input 
                       type="email" 
-                      className="w-full p-4 bg-gray-50 border border-gray-100 rounded-xl outline-none focus:ring-2 focus:ring-emerald-500 focus:bg-white transition-all"
-                      placeholder="Votre adresse email"
+                      className="w-full p-5 bg-slate-50 border-none rounded-2xl outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white transition-all text-slate-900 font-medium"
+                      placeholder="email@exemple.com"
                       value={form.email}
                       onChange={(e) => setForm({...form, email: e.target.value})}
                       required
@@ -146,24 +151,24 @@ const Contact = () => {
                   </div>
                 </div>
 
-                <div className="space-y-1">
-                  <label className="block text-lg font-black text-indigo-900 tracking-widest ml-1 opacity-70">Sujet</label>
+                <div className="space-y-2">
+                  <label className="text-xs font-black text-slate-900 uppercase tracking-widest ml-1">Sujet</label>
                   <input 
                     type="text" 
-                    className="w-full p-4 bg-gray-50 border border-gray-100 rounded-xl outline-none focus:ring-2 focus:ring-emerald-500 focus:bg-white transition-all"
-                    placeholder="De quoi s'agit-il ?"
+                    className="w-full p-5 bg-slate-50 border-none rounded-2xl outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white transition-all text-slate-900 font-medium"
+                    placeholder="Comment pouvons-nous vous aider ?"
                     value={form.subject}
                     onChange={(e) => setForm({...form, subject: e.target.value})}
                     required
                   />
                 </div>
 
-                <div className="space-y-1">
-                  <label className="block text-lg font-black text-indigo-900 uppercase tracking-widest ml-1 opacity-70">Message</label>
+                <div className="space-y-2">
+                  <label className="text-xs font-black text-slate-900 uppercase tracking-widest ml-1">Message</label>
                   <textarea 
                     rows="5" 
-                    className="w-full p-4 bg-gray-50 border border-gray-100 rounded-xl outline-none focus:ring-2 focus:ring-emerald-500 focus:bg-white transition-all resize-none"
-                    placeholder="Écrivez votre message ici..."
+                    className="w-full p-5 bg-slate-50 border-none rounded-2xl outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white transition-all resize-none text-slate-900 font-medium"
+                    placeholder="Détaillez votre demande ici..."
                     value={form.message}
                     onChange={(e) => setForm({...form, message: e.target.value})}
                     required
@@ -173,7 +178,7 @@ const Contact = () => {
                 <button 
                   type="submit" 
                   disabled={loading}
-                  className="w-full bg-indigo-950 text-white py-5 rounded-xl font-black uppercase tracking-[0.2em] text-[12px] shadow-lg shadow-indigo-900/20 hover:bg-emerald-600 hover:-translate-y-1 active:scale-95 transition-all flex items-center justify-center gap-3 disabled:bg-gray-400 disabled:translate-y-0"
+                  className="w-full bg-slate-900 text-white py-6 rounded-2xl font-black uppercase tracking-[0.3em] text-xs shadow-2xl shadow-slate-900/20 hover:bg-indigo-600 hover:-translate-y-1 active:scale-95 transition-all flex items-center justify-center gap-4 disabled:bg-slate-300"
                 >
                   {loading ? <Loader2 className="animate-spin" /> : <Send size={18} />}
                   Envoyer le Message
@@ -185,16 +190,40 @@ const Contact = () => {
         </div>
       </section>
 
-      {/* --- SECTION 3: MAP --- */}
-      <section className="h-[450px] w-full bg-gray-200">
+      {/* --- SECTION 3: MAP (PRECISION IDANDA FIANARANTSOA) --- */}
+      <section className="h-[500px] w-full bg-slate-100 relative">
+        {/* Label par-dessus la map pour faire pro */}
+        <div className="absolute top-10 left-10 z-10 bg-white p-5 rounded-2xl shadow-2xl border border-slate-100 hidden md:block">
+           <h3 className="font-black text-slate-900 text-sm">ONG TSINJO AINA</h3>
+           <p className="text-slate-500 text-xs mt-1 italic">Siège Social - Idanda</p>
+        </div>
+        
         <iframe 
           title="ONG Location"
-          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14841.411656515814!2d47.085816!3d-21.459385!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x21e7befd64115597%3A0x6b90740a6e343467!2sFianarantsoa!5e0!3m2!1sfr!2smg!4v1708550000000!5m2!1sfr!2smg"
-          className="w-full h-full grayscale hover:grayscale-0 transition-all duration-700 border-none"
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3701.38575932585!2d47.085!3d-21.455!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjHCsDI3JzE4LjAiUyA0N8KwMDUnMDYuMCJF!5e0!3m2!1sfr!2smg!4v1700000000000!5m2!1sfr!2smg"
+          className="w-full h-full grayscale contrast-125 hover:grayscale-0 transition-all duration-1000 border-none"
           allowFullScreen="" 
           loading="lazy"
         ></iframe>
       </section>
+
+      {/* --- CSS ANIMATIONS --- */}
+      <style>{`
+        @keyframes fade-in-up {
+          from { opacity: 0; transform: translateY(30px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fade-in {
+          from { opacity: 0; }
+          to { opacity: 1; }
+        }
+        .animate-fade-in-up {
+          animation: fade-in-up 1s ease-out forwards;
+        }
+        .animate-fade-in {
+          animation: fade-in 1.5s ease-out forwards;
+        }
+      `}</style>
     </div>
   );
 };
