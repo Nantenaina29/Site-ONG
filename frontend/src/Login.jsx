@@ -243,14 +243,6 @@ function Login() {
                         Mot de passe oublié ?
                       </button>
 
-
-                    <button 
-                      type="button"
-                      onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-indigo-600 p-1"
-                    >
-                      {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
-                    </button>
                   </div>
                 </div>
   
