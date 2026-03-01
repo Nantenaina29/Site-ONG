@@ -1,9 +1,115 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { supabase } from '../supabaseClient'; // Hamarino ny path
+import { supabase } from '../supabaseClient'; 
 import { Plus, Edit, Trash2, Settings, Save, X, Loader2, ArrowLeft, User, Mail, Lock, Camera, ShieldCheck } from 'lucide-react';
 import Swal from 'sweetalert2';
 
+// 1. COMPONENT MITOKANA HO AN'NY ADMIN PROFILE (MBA HADIO NY CODE)
+const AdminProfile = ({ adminUser }) => {
+    const [newEmail, setNewEmail] = useState(adminUser?.email || '');
+    const [newPassword, setNewPassword] = useState('');
+    const [loading, setLoading] = useState(false);
+
+    // Mba hanavaozana ny email rehefa miova ny adminUser avy any amin'ny parent
+    useEffect(() => {
+        if (adminUser?.email) setNewEmail(adminUser.email);
+    }, [adminUser]);
+
+    const handleUpdateProfile = async () => {
+        setLoading(true);
+        try {
+            const updates = {};
+            if (newEmail !== adminUser.email) updates.email = newEmail;
+            if (newPassword.length > 0) {
+                if (newPassword.length < 6) throw new Error("Le mot de passe doit faire au moins 6 caractères.");
+                updates.password = newPassword;
+            }
+
+            if (Object.keys(updates).length === 0) {
+                Swal.fire('Info', 'Aucune modification détectée.', 'info');
+                return;
+            }
+
+            const { error } = await supabase.auth.updateUser(updates);
+            if (error) throw error;
+
+            Swal.fire({
+                title: 'Profil mis à jour !',
+                text: updates.email ? 'Un email de confirmation a été envoyé à la nouvelle adresse.' : 'Mot de passe modifié avec succès.',
+                icon: 'success',
+                confirmButtonColor: '#059669'
+            });
+            setNewPassword(''); 
+        } catch (error) {
+            Swal.fire('Erreur', error.message, 'error');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    return (
+        <div className="bg-emerald-950 rounded-[2.5rem] p-8 text-white shadow-xl relative overflow-hidden border border-emerald-900/50">
+            <div className="absolute top-0 right-0 p-4 opacity-5 text-emerald-400">
+                <ShieldCheck size={120} />
+            </div>
+
+            <h2 className="text-xs font-black uppercase tracking-[0.2em] mb-8 text-emerald-400">
+                Compte Administrateur
+            </h2>
+            
+            <div className="space-y-6 relative z-10">
+                <div className="flex flex-col gap-1">
+                    <label className="text-[10px] font-black text-emerald-500/70 uppercase tracking-widest ml-1">Nom d'affichage</label>
+                    <div className="flex items-center gap-3 bg-emerald-900/20 p-4 rounded-2xl border border-emerald-800/30 backdrop-blur-sm">
+                        <User size={16} className="text-emerald-500" />
+                        <span className="text-sm font-bold text-emerald-100">
+                            {adminUser?.email?.split('@')[0] || 'Admin'}
+                        </span>
+                    </div>
+                </div>
+
+                <div className="flex flex-col gap-1">
+                    <label className="text-[10px] font-black text-emerald-500/70 uppercase tracking-widest ml-1">Nouvel Email</label>
+                    <div className="flex items-center gap-3 bg-emerald-900/30 p-1 rounded-2xl border border-emerald-700/50 focus-within:border-emerald-500 transition-all">
+                        <div className="pl-4"><Mail size={16} className="text-emerald-500" /></div>
+                        <input 
+                            type="email"
+                            value={newEmail}
+                            onChange={(e) => setNewEmail(e.target.value)}
+                            className="bg-transparent border-none text-sm p-3 w-full outline-none text-white font-medium"
+                            placeholder="Nouvel email"
+                        />
+                    </div>
+                </div>
+
+                <div className="flex flex-col gap-1">
+                    <label className="text-[10px] font-black text-emerald-500/70 uppercase tracking-widest ml-1">Nouveau Mot de passe</label>
+                    <div className="flex items-center gap-3 bg-emerald-900/30 p-1 rounded-2xl border border-emerald-700/50 focus-within:border-emerald-500 transition-all">
+                        <div className="pl-4"><Lock size={16} className="text-emerald-500" /></div>
+                        <input 
+                            type="password"
+                            value={newPassword}
+                            onChange={(e) => setNewPassword(e.target.value)}
+                            className="bg-transparent border-none text-sm p-3 w-full outline-none text-white font-medium"
+                            placeholder="••••••••"
+                        />
+                    </div>
+                </div>
+
+                <button 
+                    onClick={handleUpdateProfile}
+                    disabled={loading}
+                    className="w-full mt-4 bg-emerald-600 hover:bg-emerald-500 disabled:bg-emerald-800 py-4 rounded-2xl font-black text-[10px] uppercase tracking-widest transition-all shadow-lg shadow-emerald-950/50 flex items-center justify-center gap-2"
+                >
+                    {loading ? <Loader2 className="animate-spin" size={16} /> : <Save size={16} />}
+                    Mettre à jour les accès
+                </button>
+            </div>
+        </div>
+    );
+};
+
+// 2. MAIN COMPONENT: PARAMETRES
 const Parametres = () => {
     const [team, setTeam] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -11,13 +117,10 @@ const Parametres = () => {
     const [editingItem, setEditingItem] = useState(null); 
     const [formData, setFormData] = useState({ name: '', role: '', image: null });
     const [uploading, setUploading] = useState(false);
-
-    // Compte Admin avy amin'ny Supabase Auth
     const [adminUser, setAdminUser] = useState(null);
 
     const navigate = useNavigate();
 
-    // 1. Alaina ny Ekipa avy amin'ny DB
     const fetchTeam = useCallback(async () => {
         try {
             setLoading(true);
@@ -35,7 +138,6 @@ const Parametres = () => {
         }
     }, []);
 
-    // 2. Alaina ny mombamomba ny Admin (Login)
     const fetchAdmin = useCallback(async () => {
         const { data: { user } } = await supabase.auth.getUser();
         if (user) setAdminUser(user);
@@ -46,7 +148,6 @@ const Parametres = () => {
         fetchTeam();
     }, [fetchAdmin, fetchTeam]);
 
-    // 3. Fonction handefasana sary any amin'ny Storage
     const uploadImage = async (file) => {
         const fileExt = file.name.split('.').pop();
         const fileName = `${Math.random()}.${fileExt}`;
@@ -62,7 +163,6 @@ const Parametres = () => {
         return data.publicUrl;
     };
 
-    // 4. Enregistrer (Ajouter na Modifier)
     const handleSubmit = async (e) => {
         e.preventDefault();
         setUploading(true);
@@ -87,7 +187,7 @@ const Parametres = () => {
                 if (error) throw error;
             }
 
-            Swal.fire({ icon: 'success', title: 'Membre ajouté avec succès !', showConfirmButton: false, timer: 1500 });
+            Swal.fire({ icon: 'success', title: 'Action réussie !', showConfirmButton: false, timer: 1500 });
             setIsModalOpen(false);
             setEditingItem(null);
             setFormData({ name: '', role: '', image: null });
@@ -99,7 +199,6 @@ const Parametres = () => {
         }
     };
 
-    // 5. Supprimer
     const handleDelete = async (id) => {
         const result = await Swal.fire({
             title: 'Supprimer ce membre ?',
@@ -122,7 +221,6 @@ const Parametres = () => {
 
     return (
         <div className="p-4 md:p-8 bg-[#f8fafc] min-h-screen">
-            {/* HEADER MODERNE */}
             <div className="max-w-7xl mx-auto flex justify-between items-center mb-10">
                 <div className="flex items-center gap-4">
                     <div className="p-3 bg-indigo-600 rounded-2xl shadow-lg shadow-indigo-200 text-white">
@@ -139,8 +237,7 @@ const Parametres = () => {
             </div>
 
             <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8">
-                
-                {/* --- SEZINA EKIPA (70%) --- */}
+                {/* SEZINA EKIPA (70%) */}
                 <div className="lg:col-span-8 space-y-6">
                     <div className="bg-white rounded-[2.5rem] border border-slate-100 shadow-sm overflow-hidden">
                         <div className="p-6 border-b border-slate-50 flex justify-between items-center bg-slate-50/50">
@@ -198,41 +295,13 @@ const Parametres = () => {
                     </div>
                 </div>
 
-                {/* --- SEZINA ADMIN (30%) --- */}
-                <div className="lg:col-span-4 space-y-6">
-                    <div className="bg-indigo-950 rounded-[2.5rem] p-8 text-white shadow-xl relative overflow-hidden">
-                        <div className="absolute top-0 right-0 p-4 opacity-10"><ShieldCheck size={80} /></div>
-                        <h2 className="text-xs font-black uppercase tracking-[0.2em] mb-8 text-indigo-300">Compte Administrateur</h2>
-                        
-                        <div className="space-y-6 relative z-10">
-                            <div className="flex flex-col gap-1">
-                                <label className="text-[10px] font-black text-indigo-400 uppercase tracking-widest">Nom d'affichage</label>
-                                <div className="flex items-center gap-3 bg-white/5 p-3 rounded-2xl border border-white/10">
-                                    <User size={16} className="text-indigo-400" />
-                                    <span className="text-sm font-bold">{adminUser?.email?.split('@')[0] || 'Admin'}</span>
-                                </div>
-                            </div>
-
-                            <div className="flex flex-col gap-1">
-                                <label className="text-[10px] font-black text-indigo-400 uppercase tracking-widest">Email de connexion</label>
-                                <div className="flex items-center gap-3 bg-white/5 p-3 rounded-2xl border border-white/10">
-                                    <Mail size={16} className="text-indigo-400" />
-                                    <span className="text-sm font-medium opacity-80">{adminUser?.email}</span>
-                                </div>
-                            </div>
-
-                            <button 
-                                onClick={() => Swal.fire('Sécurité', 'Le lien de réinitialisation a été envoyé à votre email.', 'info')}
-                                className="w-full mt-4 bg-indigo-600 hover:bg-indigo-500 py-4 rounded-2xl font-black text-[10px] uppercase tracking-widest transition-all shadow-lg shadow-indigo-900/50 flex items-center justify-center gap-2"
-                            >
-                                <Lock size={14} /> Modifier le mot de passe
-                            </button>
-                        </div>
-                    </div>
+                {/* SEZINA ADMIN (30%) */}
+                <div className="lg:col-span-4">
+                    <AdminProfile adminUser={adminUser} />
                 </div>
             </div>
 
-            {/* MODAL AJOUT / MODIF */}
+            {/* MODAL */}
             {isModalOpen && (
                 <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-md z-50 flex items-center justify-center p-4">
                     <div className="bg-white w-full max-w-lg rounded-[3rem] p-10 shadow-2xl animate-in fade-in zoom-in duration-300">
@@ -251,12 +320,10 @@ const Parametres = () => {
                                 <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-2">Nom & Prénom</label>
                                 <input type="text" placeholder="Ex: Jean Ralambo" required className="w-full p-4 bg-slate-50 border border-slate-100 rounded-2xl outline-none focus:ring-4 focus:ring-indigo-600/10 focus:border-indigo-600 transition-all font-bold text-slate-700" value={formData.name} onChange={(e) => setFormData({...formData, name: e.target.value})} />
                             </div>
-
                             <div className="space-y-1">
                                 <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-2">Poste occupé</label>
                                 <input type="text" placeholder="Ex: Directeur Technique" required className="w-full p-4 bg-slate-50 border border-slate-100 rounded-2xl outline-none focus:ring-4 focus:ring-indigo-600/10 focus:border-indigo-600 transition-all font-bold text-slate-700" value={formData.role} onChange={(e) => setFormData({...formData, role: e.target.value})} />
                             </div>
-
                             <div className="space-y-1">
                                 <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-2">Photo de profil</label>
                                 <div className="relative group">
@@ -267,7 +334,6 @@ const Parametres = () => {
                                     </div>
                                 </div>
                             </div>
-
                             <button 
                                 type="submit" 
                                 disabled={uploading}
