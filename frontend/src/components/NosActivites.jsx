@@ -66,23 +66,23 @@ const NosActivites = () => {
   return (
     <main className="bg-white min-h-screen font-sans">
       
-      {/* --- HERO SECTION (INFINITE SEAMLESS SLIDESHOW) --- */}
-      <div className="relative h-[50vh] min-h-[400px] flex items-center overflow-hidden bg-black">
+      {/* --- HERO SECTION (NO-GAP SLIDESHOW) --- */}
+      <div className="relative h-[50vh] min-h-[400px] flex items-center overflow-hidden bg-white">
         <div className="absolute inset-0 z-0">
-          <div className="absolute inset-0 bg-blue-900/20 z-10"></div>
-          <div className="absolute inset-0 bg-gradient-to-t from-white via-transparent to-transparent z-10"></div>
-          
-          <div className="slideshow-wrapper">
-            {/* Ny sary efatra ampiasaina */}
-            <div className="slide" style={{ backgroundImage: "url('/GS.jpg')" }}></div>
-            <div className="slide" style={{ backgroundImage: "url('/Formation.jpg')" }}></div>
-            <div className="slide" style={{ backgroundImage: "url('/Dvpmt.JPG')" }}></div>
-            <div className="slide" style={{ backgroundImage: "url('/Epargne.jpg')" }}></div>
+          <div className="slideshow-infinite">
+            {/* Averina indroa ny sary voalohany amin'ny farany mba tsy hisy fahatapahana */}
+            <div className="slide-item" style={{ backgroundImage: "url('/GS.jpg')" }}></div>
+            <div className="slide-item" style={{ backgroundImage: "url('/Formation.jpg')" }}></div>
+            <div className="slide-item" style={{ backgroundImage: "url('/Dvpmt.JPG')" }}></div>
+            <div className="slide-item" style={{ backgroundImage: "url('/Epargne.jpg')" }}></div>
           </div>
+          {/* Overlay mazava fa tsy bleumarine */}
+          <div className="absolute inset-0 bg-blue-900/10 z-10"></div>
+          <div className="absolute inset-0 bg-gradient-to-t from-white via-transparent to-transparent z-10"></div>
         </div>
         
         <div className="container mx-auto px-6 md:px-20 relative z-20">
-          <button onClick={() => navigate(-1)} className="group flex items-center space-x-2 text-white hover:text-emerald-400 mb-6 transition-all drop-shadow-lg">
+          <button onClick={() => navigate(-1)} className="group flex items-center space-x-2 text-white hover:text-emerald-400 mb-6 transition-all drop-shadow-md">
             <ArrowLeft size={16} />
             <span className="text-[10px] font-black uppercase tracking-[0.3em]">Retour</span>
           </button>
@@ -113,16 +113,16 @@ const NosActivites = () => {
                 <span className={`${item.themeColor} font-black text-[11px] uppercase tracking-[0.3em]`}>{item.subtitle}</span>
                 <h2 className="text-3xl md:text-4xl font-black text-black uppercase leading-tight">{item.title}</h2>
                 
-                <div className="space-y-4">
-                  <p className="text-lg font-bold text-black leading-snug">{item.desc}</p>
-                  <p className="text-black text-base leading-relaxed opacity-90">{item.details}</p>
+                <div className="space-y-4 text-black">
+                  <p className="text-lg font-bold leading-snug">{item.desc}</p>
+                  <p className="text-base leading-relaxed opacity-95">{item.details}</p>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-4">
                   {item.points.map((point, pIdx) => (
                     <div key={pIdx} className="flex items-center space-x-2 group">
                       <CheckCircle2 size={16} className="text-emerald-500 shrink-0" />
-                      <span className="text-[11px] font-black text-black uppercase">{point}</span>
+                      <span className="text-[11px] font-black text-black uppercase tracking-tight">{point}</span>
                     </div>
                   ))}
                 </div>
@@ -132,7 +132,7 @@ const NosActivites = () => {
         </div>
       </div>
 
-      {/* --- FORMATION LIST (NO SPACE) --- */}
+      {/* --- FORMATION LIST --- */}
       <div className="bg-blue-50 py-10 border-y-2 border-blue-100">
         <div className="container mx-auto px-6 md:px-20 flex flex-col md:flex-row items-center justify-center gap-6">
           <h3 className="text-xs font-black text-blue-900 uppercase tracking-[0.4em]">Formations :</h3>
@@ -148,7 +148,7 @@ const NosActivites = () => {
 
       {/* --- CALL TO ACTION --- */}
       <div className="container mx-auto px-6 md:px-20 py-20">
-        <div className="bg-blue-900 rounded-[3rem] p-12 md:p-16 text-center relative overflow-hidden shadow-2xl">
+        <div className="bg-blue-900 rounded-[3rem] p-8 md:p-16 text-center relative overflow-hidden shadow-2xl">
           <div className="relative z-10">
             <h2 className="text-3xl md:text-5xl font-black text-white uppercase tracking-tighter mb-4">Bâtissons l'autonomie.</h2>
             <p className="text-blue-100 text-sm mb-10 max-w-xl mx-auto font-medium">
@@ -165,34 +165,35 @@ const NosActivites = () => {
         </div>
       </div>
 
-      {/* --- CSS FOR PERFECT SEAMLESS LOOP --- */}
+      {/* --- CSS SYSTEME SEAMLESS --- */}
       <style dangerouslySetInnerHTML={{ __html: `
-        .slideshow-wrapper {
-          position: relative;
+        .slideshow-infinite {
+          position: absolute;
+          inset: 0;
           width: 100%;
           height: 100%;
         }
-        .slide {
+        .slide-item {
           position: absolute;
           inset: 0;
           background-size: cover;
           background-position: center;
           opacity: 0;
-          /* 12 segondra ny total (sary 4 * 3 segondra) */
-          animation: seamlessLoop 12s infinite linear;
+          /* Sary 4 * 4 segondra = 16s total loop */
+          animation: crossFadeLoop 16s infinite ease-in-out;
         }
 
-        /* Ny fanalahidy: mifanindry tsara ny sary */
-        .slide:nth-child(1) { animation-delay: 0s; }
-        .slide:nth-child(2) { animation-delay: 3s; }
-        .slide:nth-child(3) { animation-delay: 6s; }
-        .slide:nth-child(4) { animation-delay: 9s; }
+        /* Ny elanelana (timing) dia natao mifanindry tsara (overlapping) mba tsy hisy loko mipoitra */
+        .slide-item:nth-child(1) { animation-delay: 0s; }
+        .slide-item:nth-child(2) { animation-delay: 4s; }
+        .slide-item:nth-child(3) { animation-delay: 8s; }
+        .slide-item:nth-child(4) { animation-delay: 12s; }
 
-        @keyframes seamlessLoop {
+        @keyframes crossFadeLoop {
           0% { opacity: 0; }
-          5% { opacity: 1; }
-          25% { opacity: 1; }
-          30% { opacity: 0; }
+          5% { opacity: 1; }   /* Miseho haingana */
+          25% { opacity: 1; }  /* Mijery 4 segondra */
+          30% { opacity: 0; }  /* Manjavona tsikelikely eo ambonin'ny manaraka */
           100% { opacity: 0; }
         }
       `}} />
