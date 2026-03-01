@@ -190,15 +190,18 @@ const InterventionList = () => {
         setLoading(true);
 
         try {
-            // Fanomanana ny data halefa any amin'ny Supabase
-            // Manery ny 'image' ho lasa Array [url1, url2...]
+            // 1. Diovina ny data: Ny anarana ao amin'ny DB dia 'image' (tsy misy s)
+            // Tsy maintsy esorina izay key tsy misy ao amin'ny DB (ohatra: raha nisy 'images' tao amin'ny state)
             const dataToSubmit = {
-                ...formData,
+                title: formData.title,
+                location: formData.location,
+                description: formData.description,
+                is_published: formData.is_published,
+                // Manery azy ho Array foana ho an'ny column 'image'
                 image: Array.isArray(formData.image) ? formData.image : [formData.image]
             };
 
             if (editingId) {
-                // MODIFICATION (UPDATE)
                 const { error: updateError } = await supabase
                     .from('interventions')
                     .update(dataToSubmit)
@@ -208,40 +211,31 @@ const InterventionList = () => {
                 
                 Swal.fire({
                     title: 'Modification réussie',
-                    text: 'Les informations ont été mises à jour avec succès.',
                     icon: 'success',
                     confirmButtonColor: '#4f46e5'
                 });
             } else {
-                // AJOUT (INSERT)
                 const { error: insertError } = await supabase
                     .from('interventions')
-                    .insert([dataToSubmit]); // Insert dia mila array ny zavatra ampidirina
+                    .insert([dataToSubmit]);
                 
                 if (insertError) throw insertError;
                 
                 Swal.fire({
                     title: 'Enregistré !',
-                    text: 'La nouvelle intervention a été ajoutée à la base de données.',
                     icon: 'success',
                     confirmButtonColor: '#4f46e5'
                 });
             }
 
             resetForm();
-            loadData(); // Mamerina ny lisitra vaovao avy any amin'ny DB
+            loadData();
 
         } catch (err) {
-            // Asehoy ny hafatra mazava avy amin'ny Supabase raha misy error
-            const errorMsg = err.message || 'Une erreur est survenue lors de l\'enregistrement';
-            console.error("Supabase Error Details:", err);
-            
-            Swal.fire({
-                title: 'Erreur technique',
-                text: errorMsg,
-                icon: 'error',
-                confirmButtonColor: '#ef4444'
-            });
+            console.error("Supabase Error:", err);
+            // Raha mbola miteny 'images' (misy s) izy, dia midika izany fa misy 
+            // confusion ao amin'ny schema cache an'ny Supabase.
+            Swal.fire('Erreur technique', err.message, 'error');
         } finally {
             setLoading(false);
         } 
@@ -289,7 +283,7 @@ const InterventionList = () => {
             // 3. Mise à jour du formData (Ajout des nouveaux URLs au tableau existant)
             setFormData(prev => ({
                 ...prev,
-                image: prev.image ? [...prev.image, ...publicUrls] : publicUrls
+                images: prev.images ? [...prev.images, ...publicUrls] : publicUrls
             }));
     
             Swal.fire({
