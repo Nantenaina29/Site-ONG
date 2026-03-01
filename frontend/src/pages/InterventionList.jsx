@@ -243,33 +243,29 @@ const InterventionList = () => {
 
     // --- FOFAOY NY TALOHA ARY ADIKAO ITY ---
     const handleImageUpload = async (e) => {
-        const files = Array.from(e.target.files || []); // Récupérer tous les fichiers choisis
+        const files = Array.from(e.target.files || []);
         if (files.length === 0) return;
     
-        // 1. Vérification : Est-ce que ce sont bien des images ?
         const allAreImages = files.every(file => file.type.startsWith('image/'));
         if (!allAreImages) {
-            Swal.fire('Erreur', 'Veuillez sélectionner uniquement des fichiers images (JPG, PNG...).', 'error');
+            Swal.fire('Erreur', 'Veuillez sélectionner uniquement des fichiers images.', 'error');
             return;
         }
     
         setActionLoading(true);
     
         try {
-            // 2. Utilisation de Promise.all pour gérer plusieurs uploads simultanément
             const uploadPromises = files.map(async (file) => {
                 const fileExt = file.name.split('.').pop();
                 const fileName = `${Date.now()}-${Math.random().toString(36).substring(2, 9)}.${fileExt}`;
                 const filePath = `${fileName}`;
     
-                // Upload vers Supabase (Bucket "photos")
                 const { error: uploadError } = await supabase.storage
                     .from('photos')
                     .upload(filePath, file);
     
                 if (uploadError) throw uploadError;
     
-                // Récupération de l'URL publique
                 const { data: urlData } = supabase.storage
                     .from('photos')
                     .getPublicUrl(filePath);
@@ -277,25 +273,24 @@ const InterventionList = () => {
                 return urlData.publicUrl;
             });
     
-            // Attendre que tous les fichiers soient uploadés
             const publicUrls = await Promise.all(uploadPromises);
     
-            // 3. Mise à jour du formData (Ajout des nouveaux URLs au tableau existant)
+            // FANITSIANA ETO: 'image' no ampiasaina fa tsy 'images'
             setFormData(prev => ({
                 ...prev,
-                images: prev.images ? [...prev.images, ...publicUrls] : publicUrls
+                image: Array.isArray(prev.image) ? [...prev.image, ...publicUrls] : publicUrls
             }));
     
             Swal.fire({
                 title: 'Succès',
-                text: `${files.length} image(s) téléchargée(s) avec succès !`,
+                text: `${files.length} image(s) téléchargée(s) !`,
                 icon: 'success',
-                confirmButtonText: 'OK'
+                timer: 1500,
+                showConfirmButton: false
             });
     
         } catch (error) {
-            console.error("Erreur d'upload:", error);
-            Swal.fire('Erreur', "Une erreur est survenue lors de l'envoi des images : " + error.message, 'error');
+            Swal.fire('Erreur', error.message, 'error');
         } finally {
             setActionLoading(false);
         }
@@ -513,34 +508,27 @@ const InterventionList = () => {
                                         className="group hover:bg-slate-50/80 transition-all duration-300 animate-in fade-in slide-in-from-left duration-500"
                                         style={{ animationDelay: `${index * 50}ms` }}
                                     >
-                                        <td className="px-8 py-6">
-                                            <div className="relative w-20 h-20 overflow-hidden rounded-2xl shadow-md group-hover:shadow-xl group-hover:scale-105 transition-all duration-500">
-                                                <img 
-                                                    /* 1. Ampiasaina ny sary voalohany raha array ny item.images, raha tsy izany dia ilay sary default */
-                                                    src={(item.images && item.images.length > 0) 
-                                                        ? item.images[0] 
-                                                        : "https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?q=80&w=300&h=300&fit=crop"} 
-                                                    className="w-full h-full object-cover"
-                                                    alt={item.title}
-                                                />
+                                       <td className="px-8 py-6">
+                                        <div className="relative w-20 h-20 overflow-hidden rounded-2xl shadow-md group-hover:shadow-xl group-hover:scale-105 transition-all duration-500">
+                                            <img 
+                                                /* FANITSIANA ETO: item.image no ampiasaina */
+                                                src={(item.image && Array.isArray(item.image) && item.image.length > 0) 
+                                                    ? item.image[0] 
+                                                    : (typeof item.image === 'string' && item.image !== '' ? item.image : "https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?q=80&w=300&h=300&fit=crop")} 
+                                                className="w-full h-full object-cover"
+                                                alt={item.title}
+                                            />
 
-                                                {/* 2. Overlay ho an'ny sary maromaro (+X) */}
-                                                {item.images && item.images.length > 1 && (
-                                                    <div className="absolute inset-0 bg-slate-900/40 flex items-center justify-center backdrop-blur-[1px]">
-                                                        <span className="text-white font-black text-lg drop-shadow-md">
-                                                            +{item.images.length - 1}
-                                                        </span>
-                                                    </div>
-                                                )}
-
-                                                {/* 3. Overlay ho an'ny EyeOff (raha tsy published) */}
-                                                {!item.is_published && (
-                                                    <div className={`absolute inset-0 bg-slate-900/60 flex items-center justify-center ${item.images && item.images.length > 1 ? 'pt-8' : ''}`}>
-                                                        <EyeOff size={16} className="text-white opacity-80" />
-                                                    </div>
-                                                )}
-                                            </div>
-                                        </td>
+                                            {/* Overlay ho an'ny sary maromaro */}
+                                            {Array.isArray(item.image) && item.image.length > 1 && (
+                                                <div className="absolute inset-0 bg-slate-900/40 flex items-center justify-center backdrop-blur-[1px]">
+                                                    <span className="text-white font-black text-lg">
+                                                        +{item.image.length - 1}
+                                                    </span>
+                                                </div>
+                                            )}
+                                        </div>
+                                    </td>
                                         <td className="px-8 py-6">
                                             <div className="text-slate-900 font-black text-lg group-hover:text-indigo-600 transition-colors">{item.title}</div>
                                             <div className="flex items-center gap-1.5 text-indigo-500 text-sm font-bold mt-1 bg-indigo-50 w-fit px-3 py-1 rounded-full">
