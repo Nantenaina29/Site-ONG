@@ -66,12 +66,22 @@ const InterventionsPubliees = () => {
                 {interventions.length > 0 ? (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
                         {interventions.map((item) => {
-                            // Fiarovana ny sary: avadika array foana na inona na inona format ao amin'ny DB
-                            const images = Array.isArray(item.image) 
-                                ? item.image 
-                                : (typeof item.image === 'string' && item.image.startsWith('[') 
-                                    ? JSON.parse(item.image) 
-                                    : [item.image].filter(Boolean));
+                            // Fiarovana ny sary
+                            let images = [];
+                            try {
+                                if (Array.isArray(item.image)) {
+                                    images = item.image;
+                                } else if (typeof item.image === 'string') {
+                                    if (item.image.startsWith('[')) {
+                                        images = JSON.parse(item.image);
+                                    } else {
+                                        images = [item.image];
+                                    }
+                                }
+                            } catch  {
+                                images = [];
+                            }
+                            images = images.filter(Boolean);
                             
                             const mainImage = images[0] || "https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?q=80";
                             const extraCount = images.length > 1 ? images.length - 1 : 0;
@@ -150,7 +160,7 @@ const InterventionsPubliees = () => {
                 )}
             </div>
 
-            {/* MODAL - FIXED WHITE SCREEN ISSUE */}
+            {/* MODAL - FIXED SECTION */}
             {selectedItem && (
                 <div 
                     className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-8 bg-slate-900/95 backdrop-blur-md animate-in fade-in zoom-in duration-300"
@@ -163,12 +173,12 @@ const InterventionsPubliees = () => {
                         {/* Close Button */}
                         <button 
                             onClick={() => setSelectedItem(null)}
-                            className="absolute top-6 right-6 z-50 p-3 bg-slate-100 hover:bg-indigo-600 hover:text-white rounded-2xl transition-all duration-300 shadow-lg"
+                            className="absolute top-6 right-6 z-50 p-3 bg-slate-100 hover:bg-indigo-600 hover:text-white rounded-2xl transition-all duration-300 shadow-lg group"
                         >
-                            <X size={24} strokeWidth={3} />
+                            <X size={24} strokeWidth={3} className="group-hover:rotate-90 transition-transform duration-300" />
                         </button>
 
-                        <div className="overflow-y-auto custom-scrollbar p-8 md:p-14">
+                        <div className="overflow-y-auto p-8 md:p-14">
                             <div className="flex items-center gap-2 text-indigo-600 mb-4">
                                 <MapPin size={22} strokeWidth={3} />
                                 <span className="font-black uppercase tracking-[0.2em] text-sm">{selectedItem.location}</span>
@@ -178,9 +188,14 @@ const InterventionsPubliees = () => {
                                 {selectedItem.title}
                             </h2>
                             
-                            {/* Grid Photos */}
+                            {/* Grid Photos - Corrected Parsing for Modal */}
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
-                                {(Array.isArray(selectedItem.image) ? selectedItem.image : [selectedItem.image]).filter(Boolean).map((img, idx) => (
+                                {(Array.isArray(selectedItem.image) 
+                                    ? selectedItem.image 
+                                    : (typeof selectedItem.image === 'string' && selectedItem.image.startsWith('[') 
+                                        ? JSON.parse(selectedItem.image) 
+                                        : [selectedItem.image])
+                                ).filter(Boolean).map((img, idx) => (
                                     <div key={idx} className="group relative rounded-[2rem] overflow-hidden h-80 shadow-lg border border-slate-100">
                                         <img 
                                             src={img} 
@@ -191,7 +206,7 @@ const InterventionsPubliees = () => {
                                 ))}
                             </div>
 
-                            <div className="bg-indigo-50/50 p-8 md:p-12 rounded-[2.5rem] border border-indigo-100">
+                            <div className="bg-indigo-50/50 p-8 md:p-12 rounded-[2.5rem] border border-indigo-100 mb-8">
                                 <h4 className="text-xl font-black text-indigo-900 mb-6 flex items-center gap-3">
                                     <div className="w-8 h-1 bg-indigo-600 rounded-full"></div>
                                     Description du projet
@@ -201,12 +216,11 @@ const InterventionsPubliees = () => {
                                 </p>
                             </div>
 
-                            <div className="mt-12 pt-8 border-t border-slate-100 flex flex-wrap items-center justify-between gap-4 text-slate-400 font-bold text-sm">
+                            <div className="mt-4 pt-8 border-t border-slate-100 flex flex-wrap items-center justify-between gap-4 text-slate-400 font-bold text-sm">
                                 <div className="flex items-center gap-2">
                                     <Calendar size={18} />
                                     <span>Publié le {new Date(selectedItem.created_at).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })}</span>
                                 </div>
-                                {/* NOHITSIANA TETO: String() no nampiana mba tsy ho crash intsony */}
                                 <span className="bg-slate-100 px-4 py-2 rounded-xl text-slate-500 italic">
                                     ID: #{String(selectedItem.id).slice(0, 8)}
                                 </span>
