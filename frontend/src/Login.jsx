@@ -123,7 +123,7 @@ function Login() {
     const { error } = await supabase.auth.verifyOtp({
       email: email,
       token: otp,
-      type: 'magiclink'
+      type: 'recovery'
     });
   
     Swal.close();
