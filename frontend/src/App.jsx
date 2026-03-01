@@ -83,7 +83,7 @@ const TeamSection = () => {
               style={{ animationDelay: `${index * 100}ms` }} // Animation cascade
             >
               {/* CARD CONTAINER */}
-              <div className="relative h-[400px] rounded-[2.5rem] overflow-hidden shadow-2xl shadow-slate-200/50 bg-slate-100 border border-white transition-all duration-500 group-hover:-translate-y-2">
+              <div className="relative h-100 rounded-[2.5rem] overflow-hidden shadow-2xl shadow-slate-200/50 bg-slate-100 border border-white transition-all duration-500 group-hover:-translate-y-2">
                 {/* IMAGE */}
                 <img 
                   src={member.img || `https://ui-avatars.com/api/?name=${member.name}&background=random`} 
@@ -92,7 +92,7 @@ const TeamSection = () => {
                 />
                 
                 {/* OVERLAY GRADIENT */}
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent opacity-60 group-hover:opacity-80 transition-opacity"></div>
+                <div className="absolute inset-0 bg-linear-to-t from-slate-950 via-slate-950/20 to-transparent opacity-60 group-hover:opacity-80 transition-opacity"></div>
 
                 {/* INFO CONTENT */}
                 <div className="absolute bottom-0 left-0 right-0 p-8 transform translate-y-2 group-hover:translate-y-0 transition-transform">
