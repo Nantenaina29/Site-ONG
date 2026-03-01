@@ -56,22 +56,31 @@ const InterventionsPubliees = () => {
                                 className="bg-white rounded-4xl overflow-hidden shadow-lg shadow-slate-200 hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 border border-slate-100 group"
                             >
                                 {/* Image avec Overlay */}
-                                <div className="relative h-64 overflow-hidden">
-                                <img 
-                                    src={
-                                        Array.isArray(item.image) 
-                                        ? item.image[0] // Raha lisitra izy dia ny voalohany alaina
-                                        : (item.image || "https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?q=80")
-                                    } 
-                                    alt={item.title}
-                                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                                />
-                                    <div className="absolute top-4 left-4">
+                            <div className="relative h-64 overflow-hidden flex gap-2">
+                                {Array.isArray(item.image) ? (
+                                    item.image.map((sary, index) => (
+                                        <img 
+                                            key={index}
+                                            src={sary} 
+                                            alt={`${item.title} - ${index}`}
+                                            className="w-full h-full object-cover" 
+                                        />
+                                    ))
+                                ) : (
+                                    // Raha sary iray fotsiny izy (String)
+                                    <img 
+                                        src={item.image || "https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?q=80"} 
+                                        alt={item.title}
+                                        className="w-full h-full object-cover"
+                                    />
+                                )}
+                                
+                                <div className="absolute top-4 left-4">
                                         <span className="bg-white/90 backdrop-blur px-4 py-1.5 rounded-full text-xs font-black text-indigo-600 shadow-sm uppercase tracking-widest">
                                             Projet Réalisé
                                         </span>
                                     </div>
-                                </div>
+                            </div>
 
                                 {/* Content */}
                                 <div className="p-8">
