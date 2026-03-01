@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { 
   ArrowLeft, CheckCircle2, Sprout, Users, 
-  Landmark, Coins, Network, ArrowRight 
+  Coins, Network, ArrowRight 
 } from 'lucide-react';
 
 const NosActivites = () => {
@@ -19,15 +19,11 @@ const NosActivites = () => {
       subtitle: "L'Humain au cœur du système",
       icon: <Users size={24} />,
       img: "/GS.jpg",
-      desc: "La base de l'Action Tsinjo Aina repose sur la constitution de groupes informels.",
-      details: "Chaque groupe se structure avec un bureau permanent (Président, Trésorier, Secrétaire) élu de manière ouverte et transparente[cite: 8, 9]. C'est une cellule d'apprentissage des vertus de la démocratie directe[cite: 12].",
-      points: [
-        "Solidarité et confiance mutuelle [cite: 3]",
-        "Décisions prises par consensus [cite: 14]",
-        "Rapport hommes/femmes équilibré [cite: 6]",
-        "Règlement intérieur évolutif [cite: 18]"
-      ],
-      color: "bg-indigo-900"
+      desc: "La base de l'Action Tsinjo Aina repose sur la constitution de groupes informels soudés par la confiance.",
+      details: "Chaque groupe se structure avec un bureau permanent (Président, Trésorier, Secrétaire) élu de manière transparente. C'est une cellule d'apprentissage de la démocratie directe.",
+      points: ["Solidarité et confiance", "Décisions par consensus", "Équilibre hommes/femmes", "Règlement évolutif"],
+      themeColor: "text-blue-700",
+      bgColor: "bg-blue-700"
     },
     {
       id: "02",
@@ -35,15 +31,11 @@ const NosActivites = () => {
       subtitle: "Autodéfense économique",
       icon: <Coins size={24} />,
       img: "/Epargne.jpg",
-      desc: "L'épargne commune est l'arme principale de libération et d'autodéfense des membres.",
-      details: "Elle permet d'octroyer des crédits pour des besoins vitaux comme la nourriture en période de soudure, les médicaments ou l'écolage[cite: 55, 58]. Le taux d'intérêt est maintenu très modeste pour aider les plus vulnérables[cite: 86].",
-      points: [
-        "Épargne en riz ou monétaire [cite: 23]",
-        "Lutte contre les usuriers [cite: 54]",
-        "Principe 'On suit le plus faible' [cite: 33]",
-        "Gestion rigoureuse et transparente "
-      ],
-      color: "bg-emerald-600"
+      desc: "L'épargne commune est l'arme principale de libération des membres face aux usuriers.",
+      details: "Elle permet d'octroyer des crédits pour des besoins vitaux (nourriture, santé, écolage). Le principe 'On suit le plus faible' garantit l'inclusion de tous.",
+      points: ["Épargne en riz ou argent", "Lutte contre l'usure", "Inclusion des vulnérables", "Gestion rigoureuse"],
+      themeColor: "text-emerald-600",
+      bgColor: "bg-emerald-600"
     },
     {
       id: "03",
@@ -51,15 +43,11 @@ const NosActivites = () => {
       subtitle: "Produire pour nourrir sainement",
       icon: <Sprout size={24} />,
       img: "/Formation.jpg",
-      desc: "Nous formons les membres aux bases de l'agroécologie pour diminuer les charges familiales[cite: 131, 133].",
-      details: "L'accent est mis sur la fabrication de compost, l'installation de haies vives et la création de banques de semences communautaires[cite: 132, 135]. L'objectif est une alimentation saine issue de la production locale[cite: 133, 136].",
-      points: [
-        "Compostage et haies vives [cite: 132]",
-        "Banques de semences locales [cite: 134]",
-        "Éducation nutritionnelle [cite: 142]",
-        "Adaptation au climat [cite: 139]"
-      ],
-      color: "bg-green-700"
+      desc: "Nous formons les membres aux bases de l'agroécologie pour augmenter la production familiale.",
+      details: "Fabrication de compost, haies vives et banques de semences communautaires sont au cœur de l'action pour une alimentation saine et durable.",
+      points: ["Compostage & Haies vives", "Semences locales", "Éducation nutritionnelle", "Adaptation au climat"],
+      themeColor: "text-green-600",
+      bgColor: "bg-green-600"
     },
     {
       id: "04",
@@ -67,75 +55,75 @@ const NosActivites = () => {
       subtitle: "Une voix pour les exclus",
       icon: <Network size={24} />,
       img: "/Dvpmt.JPG",
-      desc: "Le Réseau Tsinjo Aina regroupe les groupements de proximité pour des échanges réguliers[cite: 97, 98].",
-      details: "Il permet de porter des thématiques majeures : droits civiques, sécurisation foncière, et accès à l'eau potable[cite: 112, 113, 115, 116]. Les membres intègrent les Structures Locales de Concertation (SLC)[cite: 126].",
-      points: [
-        "Conseils mutuels entre groupes [cite: 106]",
-        "Lobbying et plaidoyer via la SLC [cite: 126]",
-        "Sécurisation foncière [cite: 115]",
-        "Diagnostic approfondi des problèmes [cite: 121]"
-      ],
-      color: "bg-amber-600"
+      desc: "Le Réseau Tsinjo Aina regroupe les GS pour porter des plaidoyers au niveau communal.",
+      details: "Les membres intègrent les Structures Locales de Concertation (SLC) pour agir sur le foncier, les droits civiques et l'accès aux services de base.",
+      points: ["Conseils entre groupes", "Plaidoyer via la SLC", "Sécurisation foncière", "Diagnostic participatif"],
+      themeColor: "text-blue-600",
+      bgColor: "bg-blue-600"
     }
   ];
 
   return (
     <main className="bg-white min-h-screen font-sans">
       
-      {/* --- HERO SECTION (PERFECT SLIDESHOW) --- */}
-      <div className="relative h-[55vh] min-h-[400px] flex items-center overflow-hidden">
-        {/* CSS-only Infinite Slideshow Background */}
+      {/* --- HERO SECTION (ULTRA-SMOOTH SLIDESHOW) --- */}
+      <div className="relative h-[50vh] min-h-[400px] flex items-center overflow-hidden bg-slate-900">
         <div className="absolute inset-0 z-0">
-          <div className="slideshow-container h-full w-full">
-            <div className="slide" style={{ backgroundImage: "url('/GS.jpg')" }}></div>
-            <div className="slide" style={{ backgroundImage: "url('/Formation.jpg')" }}></div>
-            <div className="slide" style={{ backgroundImage: "url('/Dvpmt.JPG')" }}></div>
-            <div className="slide" style={{ backgroundImage: "url('/Epargne.jpg')" }}></div>
+          <div className="hero-slideshow">
+            <div className="hero-slide" style={{ backgroundImage: "url('/GS.jpg')" }}></div>
+            <div className="hero-slide" style={{ backgroundImage: "url('/Formation.jpg')" }}></div>
+            <div className="hero-slide" style={{ backgroundImage: "url('/Dvpmt.JPG')" }}></div>
+            <div className="hero-slide" style={{ backgroundImage: "url('/Epargne.jpg')" }}></div>
           </div>
-          <div className="absolute inset-0 bg-indigo-950/40"></div>
-          <div className="absolute inset-0 bg-gradient-to-b from-transparent to-white"></div>
+          {/* Overlay color Manga/Dark blue mix */}
+          <div className="absolute inset-0 bg-blue-950/40"></div>
+          <div className="absolute inset-0 bg-gradient-to-t from-white via-transparent to-transparent"></div>
         </div>
         
-        <div className="container mx-auto px-6 md:px-20 relative z-10 pt-10">
-          <button onClick={() => navigate(-1)} className="group flex items-center space-x-2 text-white hover:text-emerald-400 mb-6 transition-colors">
-            <ArrowLeft size={14} />
-            <span className="text-[9px] font-bold uppercase tracking-[0.3em]">Retour</span>
+        <div className="container mx-auto px-6 md:px-20 relative z-10">
+          <button onClick={() => navigate(-1)} className="group flex items-center space-x-2 text-white/90 hover:text-emerald-400 mb-6 transition-all">
+            <ArrowLeft size={16} />
+            <span className="text-[10px] font-black uppercase tracking-[0.3em]">Retour</span>
           </button>
-          <h1 className="text-5xl md:text-7xl font-black text-white leading-[0.9] tracking-tighter mb-4 drop-shadow-lg">
-            NOS <span className="text-emerald-400 italic">ACTIVITÉS.</span>
+          <h1 className="text-5xl md:text-7xl font-black text-white leading-none tracking-tighter mb-4 drop-shadow-2xl">
+            NOS <span className="text-emerald-400">ACTIVITÉS.</span>
           </h1>
-          <p className="text-white max-w-xl text-sm md:text-base font-medium leading-relaxed border-l-2 border-emerald-400 pl-4 drop-shadow-md">
-            Transformer la précarité en souveraineté à travers l'effort propre et la solidarité communautaire.
+          <p className="text-white max-w-xl text-sm md:text-base font-bold leading-relaxed border-l-4 border-emerald-400 pl-4">
+            Transformer la précarité en souveraineté à travers l'effort propre et la solidarité.
           </p>
         </div>
       </div>
 
-      {/* --- CONTENT SECTION --- */}
-      <div className="container mx-auto px-6 md:px-20 -mt-16 pb-12 relative z-20">
-        <div className="grid grid-cols-1 gap-20">
+      {/* --- CONTENT SECTION (CLEAN & PROFESSIONAL) --- */}
+      <div className="container mx-auto px-6 md:px-20 pt-16 pb-12">
+        <div className="grid grid-cols-1 gap-24">
           {activites.map((item, index) => (
-            <article key={item.id} className={`flex flex-col ${index % 2 === 0 ? 'lg:flex-row' : 'lg:flex-row-reverse'} gap-10 items-center animate-fade-in`}>
-              <div className="w-full lg:w-1/2 group relative">
-                <div className="overflow-hidden rounded-2xl shadow-xl aspect-[4/3]">
-                  <img src={item.img} alt={item.title} className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700" />
+            <article key={item.id} className={`flex flex-col ${index % 2 === 0 ? 'lg:flex-row' : 'lg:flex-row-reverse'} gap-12 items-center`}>
+              {/* Image (NO Grayscale - FULL COLOR) */}
+              <div className="w-full lg:w-1/2 relative group">
+                <div className="overflow-hidden rounded-3xl shadow-2xl aspect-[4/3] border-4 border-slate-50">
+                  <img src={item.img} alt={item.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
                 </div>
-                <div className={`absolute -bottom-4 ${index % 2 === 0 ? '-right-4' : '-left-4'} p-4 ${item.color} text-white rounded-xl shadow-xl`}>
+                <div className={`absolute -bottom-4 ${index % 2 === 0 ? '-right-4' : '-left-4'} p-4 ${item.bgColor} text-white rounded-2xl shadow-xl z-10`}>
                   {item.icon}
                 </div>
               </div>
 
-              <div className="w-full lg:w-1/2 space-y-4">
-                <span className="text-emerald-600 font-bold text-[10px] uppercase tracking-widest">{item.subtitle}</span>
-                <h2 className="text-2xl md:text-3xl font-black text-indigo-950 uppercase leading-tight">{item.title}</h2>
-                <div className="space-y-3 text-slate-600 text-sm md:text-base leading-relaxed">
-                  <p className="font-bold text-slate-800">{item.desc}</p>
-                  <p>{item.details}</p>
+              {/* Text (Mainty ny paragraphe) */}
+              <div className="w-full lg:w-1/2 space-y-5">
+                <span className={`${item.themeColor} font-black text-[11px] uppercase tracking-[0.3em]`}>{item.subtitle}</span>
+                <h2 className="text-3xl md:text-4xl font-black text-slate-900 uppercase leading-tight">{item.title}</h2>
+                
+                <div className="space-y-4">
+                  <p className="text-lg font-bold text-slate-900 leading-snug">{item.desc}</p>
+                  <p className="text-slate-900 text-base leading-relaxed opacity-90">{item.details}</p>
                 </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-2">
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-4">
                   {item.points.map((point, pIdx) => (
-                    <div key={pIdx} className="flex items-start space-x-2">
-                      <CheckCircle2 size={14} className="text-emerald-500 mt-1 shrink-0" />
-                      <span className="text-[11px] font-semibold text-slate-700 leading-tight">{point}</span>
+                    <div key={pIdx} className="flex items-center space-x-2 group">
+                      <CheckCircle2 size={16} className="text-emerald-500 shrink-0" />
+                      <span className="text-[11px] font-black text-slate-900 uppercase group-hover:text-blue-600 transition-colors">{point}</span>
                     </div>
                   ))}
                 </div>
@@ -145,72 +133,68 @@ const NosActivites = () => {
         </div>
       </div>
 
-      {/* --- FORMATIONS LIST (ULTRA COMPACT) --- */}
-      <div className="bg-slate-50 py-8 border-y border-slate-100">
-        <div className="container mx-auto px-6 md:px-20 flex flex-col md:flex-row items-center justify-center gap-4">
-          <h3 className="text-[10px] font-black text-indigo-950 uppercase tracking-[0.2em]">Modules :</h3>
-          <div className="flex flex-wrap justify-center gap-2">
-            {["Gestion Familiale [cite: 138]", "Changement Climatique [cite: 139]", "Genre [cite: 140]", "Agroécologie [cite: 141]", "Nutrition [cite: 142]", "Plaidoyer [cite: 143]"].map((f, i) => (
-              <span key={i} className="px-3 py-1 bg-white border border-slate-200 text-[9px] font-bold text-slate-500 uppercase rounded-md">{f}</span>
+      {/* --- FORMATION LIST (NO SPACE) --- */}
+      <div className="bg-blue-50 py-12 border-y-2 border-blue-100">
+        <div className="container mx-auto px-6 md:px-20 text-center">
+          <h3 className="text-xs font-black text-blue-900 uppercase tracking-[0.4em] mb-8">Modules de Formation Professionnels</h3>
+          <div className="flex flex-wrap justify-center gap-3">
+            {["Gestion de Temps", "Agroécologie", "Genre & Inclusion", "Nutrition", "Plaidoyer SLC", "Climat"].map((f, i) => (
+              <div key={i} className="px-6 py-2 bg-white border-2 border-blue-200 text-[10px] font-black text-blue-800 uppercase rounded-full shadow-sm">
+                {f}
+              </div>
             ))}
           </div>
         </div>
       </div>
 
-      {/* --- CALL TO ACTION (MODERN & SLIM) --- */}
-      <div className="container mx-auto px-6 md:px-20 py-12">
-        <div className="bg-indigo-950 rounded-[2.5rem] p-10 md:p-12 text-center relative overflow-hidden shadow-2xl">
+      {/* --- CALL TO ACTION (BLUE & GREEN) --- */}
+      <div className="container mx-auto px-6 md:px-20 py-20">
+        <div className="bg-blue-900 rounded-[3rem] p-12 md:p-16 text-center relative overflow-hidden shadow-2xl">
+          <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-500/20 blur-[100px] rounded-full"></div>
           <div className="relative z-10">
-            <h2 className="text-2xl md:text-3xl font-black text-white uppercase mb-3">Rejoignez le mouvement.</h2>
-            <p className="text-indigo-200 text-xs mb-8 max-w-lg mx-auto">
-              Nous ciblons les plus démunis et exclus pour favoriser l'inclusion au sein du groupe[cite: 129, 36].
+            <h2 className="text-3xl md:text-5xl font-black text-white uppercase tracking-tighter mb-6">Bâtissons l'autonomie.</h2>
+            <p className="text-blue-100 text-sm md:text-base mb-10 max-w-xl mx-auto font-medium">
+              Notre action cible prioritairement les personnes les plus démunies pour transformer l'exclusion en force collective.
             </p>
             <button 
               onClick={() => navigate('/contact')}
-              className="group inline-flex items-center space-x-4 bg-emerald-400 text-indigo-950 px-10 py-4 font-black uppercase text-[10px] tracking-widest hover:bg-white transition-all rounded-full"
+              className="bg-emerald-400 text-blue-950 px-12 py-5 font-black uppercase text-[11px] tracking-[0.2em] hover:bg-white hover:scale-105 transition-all rounded-full shadow-xl inline-flex items-center gap-3"
             >
-              <span>Contactez l'ONG</span>
-              <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
+              <span>Travailler avec nous</span>
+              <ArrowRight size={18} />
             </button>
           </div>
         </div>
       </div>
 
-      {/* --- STYLES FOR SEAMLESS SLIDESHOW --- */}
+      {/* --- PERFECT CSS SLIDESHOW & STYLES --- */}
       <style dangerouslySetInnerHTML={{ __html: `
-        .slideshow-container {
-          position: relative;
+        .hero-slideshow {
+          position: absolute;
           width: 100%;
           height: 100%;
         }
-        .slide {
+        .hero-slide {
           position: absolute;
           width: 100%;
           height: 100%;
           background-size: cover;
           background-position: center;
           opacity: 0;
-          animation: slideAnim 12s infinite;
+          animation: crossfade 12s infinite;
         }
-        .slide:nth-child(1) { animation-delay: 0s; }
-        .slide:nth-child(2) { animation-delay: 3s; }
-        .slide:nth-child(3) { animation-delay: 6s; }
-        .slide:nth-child(4) { animation-delay: 9s; }
+        /* Sary mifandimby tsy misy fahatarana */
+        .hero-slide:nth-child(1) { animation-delay: 0s; }
+        .hero-slide:nth-child(2) { animation-delay: 3s; }
+        .hero-slide:nth-child(3) { animation-delay: 6s; }
+        .hero-slide:nth-child(4) { animation-delay: 9s; }
 
-        @keyframes slideAnim {
-          0% { opacity: 0; transform: scale(1); }
-          5% { opacity: 1; }
+        @keyframes crossfade {
+          0% { opacity: 0; }
+          8% { opacity: 1; }
           25% { opacity: 1; }
-          30% { opacity: 0; transform: scale(1.1); }
+          33% { opacity: 0; }
           100% { opacity: 0; }
-        }
-        
-        .animate-fade-in {
-          animation: fadeIn 1s ease-out forwards;
-        }
-        @keyframes fadeIn {
-          from { opacity: 0; transform: translateY(20px); }
-          to { opacity: 1; transform: translateY(0); }
         }
       `}} />
     </main>
