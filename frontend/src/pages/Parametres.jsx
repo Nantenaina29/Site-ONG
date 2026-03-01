@@ -1,16 +1,19 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../supabaseClient'; 
-import { Plus, Edit, Trash2, Settings, Save, X, Loader2, ArrowLeft, User, Mail, Lock, Camera, ShieldCheck } from 'lucide-react';
+import { 
+    Plus, Edit, Trash2, Settings, Save, X, Loader2, ArrowLeft, 
+    User, Mail, Lock, Camera, ShieldCheck, Eye, EyeOff 
+} from 'lucide-react';
 import Swal from 'sweetalert2';
 
-// 1. COMPONENT MITOKANA HO AN'NY ADMIN PROFILE (MBA HADIO NY CODE)
+// 1. COMPONENT MITOKANA HO AN'NY ADMIN PROFILE
 const AdminProfile = ({ adminUser }) => {
     const [newEmail, setNewEmail] = useState(adminUser?.email || '');
     const [newPassword, setNewPassword] = useState('');
+    const [showPassword, setShowPassword] = useState(false);
     const [loading, setLoading] = useState(false);
 
-    // Mba hanavaozana ny email rehefa miova ny adminUser avy any amin'ny parent
     useEffect(() => {
         if (adminUser?.email) setNewEmail(adminUser.email);
     }, [adminUser]);
@@ -24,22 +27,14 @@ const AdminProfile = ({ adminUser }) => {
                 if (newPassword.length < 6) throw new Error("Le mot de passe doit faire au moins 6 caractères.");
                 updates.password = newPassword;
             }
-
             if (Object.keys(updates).length === 0) {
                 Swal.fire('Info', 'Aucune modification détectée.', 'info');
                 return;
             }
-
             const { error } = await supabase.auth.updateUser(updates);
             if (error) throw error;
-
-            Swal.fire({
-                title: 'Profil mis à jour !',
-                text: updates.email ? 'Un email de confirmation a été envoyé à la nouvelle adresse.' : 'Mot de passe modifié avec succès.',
-                icon: 'success',
-                confirmButtonColor: '#059669'
-            });
-            setNewPassword(''); 
+            Swal.fire({ title: 'Profil mis à jour !', icon: 'success', confirmButtonColor: '#10b981' });
+            setNewPassword('');
         } catch (error) {
             Swal.fire('Erreur', error.message, 'error');
         } finally {
@@ -48,62 +43,82 @@ const AdminProfile = ({ adminUser }) => {
     };
 
     return (
-        <div className="bg-emerald-950 rounded-[2.5rem] p-8 text-white shadow-xl relative overflow-hidden border border-emerald-900/50">
-            <div className="absolute top-0 right-0 p-4 opacity-5 text-emerald-400">
-                <ShieldCheck size={120} />
+        <div className="bg-white/80 backdrop-blur-2xl rounded-[3rem] p-8 shadow-[0_20px_50px_rgba(0,0,0,0.05)] border border-white/50 relative overflow-hidden animate-in fade-in slide-in-from-bottom-8 duration-1000">
+            <div className="absolute -top-10 -right-10 p-4 opacity-[0.03] text-slate-900 rotate-12">
+                <ShieldCheck size={200} />
             </div>
 
-            <h2 className="text-xs font-black uppercase tracking-[0.2em] mb-8 text-emerald-400">
-                Compte Administrateur
-            </h2>
-            
-            <div className="space-y-6 relative z-10">
-                <div className="flex flex-col gap-1">
-                    <label className="text-[10px] font-black text-emerald-500/70 uppercase tracking-widest ml-1">Nom d'affichage</label>
-                    <div className="flex items-center gap-3 bg-emerald-900/20 p-4 rounded-2xl border border-emerald-800/30 backdrop-blur-sm">
-                        <User size={16} className="text-emerald-500" />
-                        <span className="text-sm font-bold text-emerald-100">
-                            {adminUser?.email?.split('@')[0] || 'Admin'}
-                        </span>
-                    </div>
+            <div className="relative z-10">
+                <div className="flex items-center gap-3 mb-8">
+                    <div className="h-2 w-2 bg-emerald-500 rounded-full animate-pulse"></div>
+                    <h2 className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400">
+                        Sécurité Administrateur
+                    </h2>
                 </div>
-
-                <div className="flex flex-col gap-1">
-                    <label className="text-[10px] font-black text-emerald-500/70 uppercase tracking-widest ml-1">Nouvel Email</label>
-                    <div className="flex items-center gap-3 bg-emerald-900/30 p-1 rounded-2xl border border-emerald-700/50 focus-within:border-emerald-500 transition-all">
-                        <div className="pl-4"><Mail size={16} className="text-emerald-500" /></div>
-                        <input 
-                            type="email"
-                            value={newEmail}
-                            onChange={(e) => setNewEmail(e.target.value)}
-                            className="bg-transparent border-none text-sm p-3 w-full outline-none text-white font-medium"
-                            placeholder="Nouvel email"
-                        />
+                
+                <div className="space-y-6">
+                    <div className="flex flex-col gap-2">
+                        <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Admin Actuel</label>
+                        <div className="flex items-center gap-3 bg-slate-50/50 p-4 rounded-2xl border border-slate-100/50 backdrop-blur-sm">
+                            <div className="bg-white p-2 rounded-xl shadow-sm text-slate-400">
+                                <User size={14} />
+                            </div>
+                            <span className="text-sm font-bold text-slate-700">
+                                {adminUser?.email?.split('@')[0] || 'Admin'}
+                            </span>
+                        </div>
                     </div>
-                </div>
 
-                <div className="flex flex-col gap-1">
-                    <label className="text-[10px] font-black text-emerald-500/70 uppercase tracking-widest ml-1">Nouveau Mot de passe</label>
-                    <div className="flex items-center gap-3 bg-emerald-900/30 p-1 rounded-2xl border border-emerald-700/50 focus-within:border-emerald-500 transition-all">
-                        <div className="pl-4"><Lock size={16} className="text-emerald-500" /></div>
-                        <input 
-                            type="password"
-                            value={newPassword}
-                            onChange={(e) => setNewPassword(e.target.value)}
-                            className="bg-transparent border-none text-sm p-3 w-full outline-none text-white font-medium"
-                            placeholder="••••••••"
-                        />
+                    <div className="flex flex-col gap-2">
+                        <label className="text-[10px] font-black text-emerald-600 uppercase tracking-widest ml-1">Modifier l'Email</label>
+                        <div className="group flex items-center gap-3 bg-white p-1 rounded-2xl border border-slate-200 focus-within:border-emerald-500 focus-within:ring-4 focus-within:ring-emerald-500/10 transition-all duration-300 shadow-sm">
+                            <div className="pl-4 text-slate-300 group-focus-within:text-emerald-500 transition-colors">
+                                <Mail size={16} />
+                            </div>
+                            <input 
+                                type="email"
+                                value={newEmail}
+                                onChange={(e) => setNewEmail(e.target.value)}
+                                className="bg-transparent border-none text-sm p-3 w-full outline-none text-slate-700 font-bold placeholder:text-slate-300"
+                                placeholder="Nouvel email"
+                            />
+                        </div>
                     </div>
-                </div>
 
-                <button 
-                    onClick={handleUpdateProfile}
-                    disabled={loading}
-                    className="w-full mt-4 bg-emerald-600 hover:bg-emerald-500 disabled:bg-emerald-800 py-4 rounded-2xl font-black text-[10px] uppercase tracking-widest transition-all shadow-lg shadow-emerald-950/50 flex items-center justify-center gap-2"
-                >
-                    {loading ? <Loader2 className="animate-spin" size={16} /> : <Save size={16} />}
-                    Mettre à jour les accès
-                </button>
+                    <div className="flex flex-col gap-2">
+                        <label className="text-[10px] font-black text-emerald-600 uppercase tracking-widest ml-1">Nouveau mot de passe</label>
+                        <div className="group flex items-center gap-3 bg-white p-1 rounded-2xl border border-slate-200 focus-within:border-emerald-500 focus-within:ring-4 focus-within:ring-emerald-500/10 transition-all duration-300 shadow-sm">
+                            <div className="pl-4 text-slate-300 group-focus-within:text-emerald-500 transition-colors">
+                                <Lock size={16} />
+                            </div>
+                            <input 
+                                type={showPassword ? "text" : "password"}
+                                value={newPassword}
+                                onChange={(e) => setNewPassword(e.target.value)}
+                                className="bg-transparent border-none text-sm p-3 w-full outline-none text-slate-700 font-bold placeholder:text-slate-300"
+                                placeholder="••••••••"
+                            />
+                            <button 
+                                type="button"
+                                onClick={() => setShowPassword(!showPassword)}
+                                className="pr-4 text-slate-400 hover:text-emerald-600 transition-colors"
+                            >
+                                {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                            </button>
+                        </div>
+                    </div>
+
+                    <button 
+                        onClick={handleUpdateProfile}
+                        disabled={loading}
+                        className="group relative w-full mt-4 overflow-hidden rounded-[1.5rem] bg-slate-900 py-5 font-black text-[10px] uppercase tracking-[0.2em] text-white shadow-xl shadow-slate-200 transition-all duration-500 hover:bg-emerald-600 disabled:opacity-50"
+                    >
+                        <div className="relative z-10 flex items-center justify-center gap-3">
+                            {loading ? <Loader2 className="animate-spin" size={16} /> : <><Save size={16} /> <span>Mettre à jour</span></>}
+                        </div>
+                        <div className="absolute inset-0 translate-x-[-100%] bg-white/10 transition-transform duration-1000 group-hover:translate-x-[100%]"></div>
+                    </button>
+                </div>
             </div>
         </div>
     );
@@ -168,16 +183,11 @@ const Parametres = () => {
         setUploading(true);
         try {
             let imageUrl = editingItem?.img;
-
             if (formData.image) {
                 imageUrl = await uploadImage(formData.image);
             }
 
-            const payload = {
-                name: formData.name,
-                role: formData.role,
-                img: imageUrl
-            };
+            const payload = { name: formData.name, role: formData.role, img: imageUrl };
 
             if (editingItem) {
                 const { error } = await supabase.from('teams').update(payload).eq('id', editingItem.id);
@@ -207,14 +217,21 @@ const Parametres = () => {
             showCancelButton: true,
             confirmButtonColor: '#4f46e5',
             cancelButtonColor: '#ef4444',
-            confirmButtonText: 'Oui'
+            confirmButtonText: 'Oui',
+            cancelButtonText: 'Non', 
+            reverseButtons: true    
         });
 
         if (result.isConfirmed) {
             const { error } = await supabase.from('teams').delete().eq('id', id);
             if (!error) {
                 fetchTeam();
-                Swal.fire('Supprimé!', '', 'success');
+                Swal.fire({
+                    title: 'Supprimé!',
+                    icon: 'success',
+                    timer: 1000,
+                    showConfirmButton: false
+                });
             }
         }
     };
@@ -237,7 +254,6 @@ const Parametres = () => {
             </div>
 
             <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8">
-                {/* SEZINA EKIPA (70%) */}
                 <div className="lg:col-span-8 space-y-6">
                     <div className="bg-white rounded-[2.5rem] border border-slate-100 shadow-sm overflow-hidden">
                         <div className="p-6 border-b border-slate-50 flex justify-between items-center bg-slate-50/50">
@@ -281,10 +297,29 @@ const Parametres = () => {
                                                     </span>
                                                 </td>
                                                 <td className="px-6 py-4 text-right">
-                                                    <div className="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                                                        <button onClick={() => { setEditingItem(member); setFormData({name: member.name, role: member.role, image: null}); setIsModalOpen(true); }} className="p-2 bg-white text-blue-600 rounded-lg shadow-sm border border-slate-100 hover:scale-110 transition-transform"><Edit size={16} /></button>
-                                                        <button onClick={() => handleDelete(member.id)} className="p-2 bg-white text-red-500 rounded-lg shadow-sm border border-slate-100 hover:scale-110 transition-transform"><Trash2 size={16} /></button>
-                                                    </div>
+                                                <div className="flex justify-end gap-3">
+        {/* EDIT BUTTON - Loko manga maivana hita maso foana */}
+        <button 
+            onClick={() => { 
+                setEditingItem(member); 
+                setFormData({name: member.name, role: member.role, image: null}); 
+                setIsModalOpen(true); 
+            }} 
+            className="p-2.5 bg-blue-50/50 text-blue-600 rounded-xl border border-blue-100/50 hover:bg-blue-600 hover:text-white hover:shadow-lg hover:shadow-blue-200 transition-all duration-300 group/edit"
+            title="Modifier"
+        >
+            <Edit size={16} className="group-hover/edit:scale-110 transition-transform" />
+        </button>
+
+        {/* DELETE BUTTON - Loko mena maivana hita maso foana */}
+        <button 
+            onClick={() => handleDelete(member.id)} 
+            className="p-2.5 bg-red-50/50 text-red-500 rounded-xl border border-red-100/50 hover:bg-red-500 hover:text-white hover:shadow-lg hover:shadow-red-200 transition-all duration-300 group/del"
+            title="Supprimer"
+        >
+            <Trash2 size={16} className="group-hover/del:scale-110 transition-transform" />
+        </button>
+    </div>
                                                 </td>
                                             </tr>
                                         ))}
@@ -295,23 +330,18 @@ const Parametres = () => {
                     </div>
                 </div>
 
-                {/* SEZINA ADMIN (30%) */}
                 <div className="lg:col-span-4">
                     <AdminProfile adminUser={adminUser} />
                 </div>
             </div>
 
-            {/* MODAL */}
             {isModalOpen && (
                 <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-md z-50 flex items-center justify-center p-4">
                     <div className="bg-white w-full max-w-lg rounded-[3rem] p-10 shadow-2xl animate-in fade-in zoom-in duration-300">
                         <div className="flex justify-between items-center mb-8">
-                            <div>
-                                <h3 className="text-2xl font-black text-slate-900 uppercase tracking-tighter">
-                                    {editingItem ? 'Modifier' : 'Nouveau'} <span className="text-indigo-600">Membre</span>
-                                </h3>
-                                <div className="h-1 w-12 bg-indigo-600 rounded-full mt-1"></div>
-                            </div>
+                            <h3 className="text-2xl font-black text-slate-900 uppercase tracking-tighter">
+                                {editingItem ? 'Modifier' : 'Nouveau'} <span className="text-indigo-600">Membre</span>
+                            </h3>
                             <button onClick={() => setIsModalOpen(false)} className="p-2 hover:bg-slate-100 rounded-full transition-colors"><X size={24} className="text-slate-400" /></button>
                         </div>
                         
