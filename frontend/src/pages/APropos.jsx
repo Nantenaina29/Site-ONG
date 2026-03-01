@@ -154,7 +154,7 @@ const APropos = () => {
             <p className="text-indigo-200 font-bold mb-8 text-xs md:text-sm uppercase tracking-widest">
               Rejoignez-nous pour un développement humain durable.
             </p>
-            <Link to="/realisations" className="inline-flex items-center space-x-3 text-emerald-400 font-black uppercase text-xs tracking-widest border-b border-emerald-400 pb-1 hover:text-white hover:border-white transition-all">
+            <Link to="./activites" className="inline-flex items-center space-x-3 text-emerald-400 font-black uppercase text-xs tracking-widest border-b border-emerald-400 pb-1 hover:text-white hover:border-white transition-all">
               <span>Voir nos réalisations</span>
               <ArrowRight size={14} />
             </Link>
