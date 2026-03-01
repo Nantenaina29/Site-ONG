@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link, NavLink } from 'react-router-dom';
 import { UserCircle, Menu, X } from 'lucide-react';
-import { supabase } from '../supabaseClient';
+import { supabase } from './supabaseClient';
 
 // --- PAGES ---
 import Login from './Login';
