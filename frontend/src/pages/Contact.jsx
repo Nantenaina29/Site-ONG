@@ -201,7 +201,7 @@ const Contact = () => {
           
           <iframe 
             title="ONG Location Idanda"
-            src="https://maps.app.goo.gl/NDfc8e7Sf9LcWsv78"
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4480.389744985139!2d47.08137711192371!3d-21.44773352810447!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x21e7bf81bbb385a1%3A0x70141182c49e987f!2sONG%20TSINJO%20AINA!5e0!3m2!1sfr!2smg!4v1772344636197!5m2!1sfr!2smg"
             className="w-full h-full grayscale contrast-125 hover:grayscale-0 transition-all duration-1000 border-none"
             allowFullScreen="" 
             loading="lazy"
