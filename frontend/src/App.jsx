@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link, NavLink } from 'react-router-dom';
 import { UserCircle, Menu, X } from 'lucide-react';
 import { supabase } from './supabaseClient';
+import { useTranslation } from 'react-i18next'; // Nampiana ity
+import './i18n';
 
 // --- PAGES ---
 import Login from './Login';
@@ -260,6 +262,8 @@ const HomePage = () => {
 function App() {
   const [loading, setLoading] = useState(true);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isLangOpen, setIsLangOpen] = useState(false); // Ho an'ny saina
+  const { t, i18n } = useTranslation();
 
   useEffect(() => { 
     const timer = setTimeout(() => setLoading(false), 400); 
@@ -267,14 +271,28 @@ function App() {
   }, []);
 
   const navLinks = [
-    { path: "/", label: "Accueil" },
-    { path: "/a-propos", label: "À propos" },
-    { path: "/interventions-publiees", label: "Interventions" },
-    { path: "/realisations", label: "Réalisations" },
-    { path: "/contact", label: "Contact" }
+    { path: "/", label: t('nav.home', "Accueil") },
+    { path: "/a-propos", label: t('nav.about', "À propos") },
+    { path: "/interventions-publiees", label: t('nav.interventions', "Interventions") },
+    { path: "/realisations", label: t('nav.realisations', "Réalisations") },
+    { path: "/contact", label: t('nav.contact', "Contact") }
   ];
 
-  if (loading) return <div className="h-screen flex items-center justify-center bg-white font-black uppercase text-[10px] tracking-widest text-fmfp-green">Chargement...</div>;
+  const languages = [
+    { code: 'fr', name: 'Français', flag: '🇫🇷' },
+    { code: 'mg', name: 'Malagasy', flag: '🇲🇬' },
+    { code: 'en', name: 'English', flag: '🇺🇸' },
+    { code: 'es', name: 'Español', flag: '🇪🇸' }
+  ];
+
+  const changeLanguage = (lng) => {
+    i18n.changeLanguage(lng);
+    setIsLangOpen(false);
+  };
+
+  const currentLang = languages.find(l => l.code === i18n.language) || languages[0];
+
+  if (loading) return <div className="h-screen flex items-center justify-center bg-white font-black uppercase text-[10px] tracking-widest text-green-600">Chargement...</div>;
 
   return (
     <Router>
@@ -291,72 +309,101 @@ function App() {
           </Link>
 
           {/* --- VERSION ORDINATEUR --- */}
-          <ul className="hidden md:flex space-x-8 text-[16px] font-black uppercase tracking-widest text-indigo-900 items-center">
-            {navLinks.map((l) => (
-              <li key={l.path}>
-                <NavLink 
-                  to={l.path} 
-                  className={({ isActive }) => isActive ? "border-b-2 border-fmfp-green pb-1 text-fmfp-green" : "hover:text-fmfp-green transition-colors"}
-                >
-                  {l.label}
-                </NavLink>
-              </li>
-            ))}
-            <Link to="/login" className="ml-4 hover:text-fmfp-green"><UserCircle size={24} /></Link>
-          </ul>
-
-          {/* --- ICON HAMBURGER (MOBILE) --- */}
-          <button 
-            className="md:hidden text-indigo-900 focus:outline-none p-2"
-            onClick={() => setIsMenuOpen(!isMenuOpen)} // Afaka akatona eto koa
-          >
-            {isMenuOpen ? <X size={30} /> : <Menu size={30} />}
-          </button>
-        </nav>
-
-        {/* --- SIDEBAR MOBILE --- */}
-        {/* Overlay (Miseho eo ambanin'ny navbar koa ny overlay) */}
-        {isMenuOpen && (
-          <div 
-            className="fixed inset-0 top-26.25 bg-black/30 z-40 md:hidden" 
-            onClick={() => setIsMenuOpen(false)}
-          ></div>
-        )}
-
-          {/* Ny Sidebar (3.5cm ny largeur, fohy araka ny soratra ao anatiny) */}
-          <div className={`fixed top-26.25 left-0 bg-white z-45 shadow-2xl transition-transform duration-300 ease-in-out md:hidden flex flex-col border-r border-b rounded-br-2xl ${isMenuOpen ? 'translate-x-0' : '-translate-x-full'}`}
-              style={{ width: '132.3px' }}> 
-            
-            <ul className="flex flex-col items-start py-6 space-y-6 px-4">
+          <div className="hidden md:flex items-center space-x-8">
+            <ul className="flex space-x-8 text-[14px] font-black uppercase tracking-widest text-indigo-900 items-center">
               {navLinks.map((l) => (
-                <li key={l.path} className="w-full">
+                <li key={l.path}>
                   <NavLink 
                     to={l.path} 
-                    onClick={() => setIsMenuOpen(false)}
-                    className={({ isActive }) => 
-                      `text-[11px] font-black uppercase tracking-tight transition-colors block w-full ${
-                        isActive 
-                          ? 'text-fmfp-green border-l-4 border-fmfp-green pl-2' 
-                          : 'text-indigo-900 hover:text-fmfp-green pl-2'
-                      }`
-                    }
+                    className={({ isActive }) => isActive ? "border-b-2 border-green-600 pb-1 text-green-600" : "hover:text-green-600 transition-colors"}
                   >
                     {l.label}
                   </NavLink>
                 </li>
               ))}
-              <li className="pt-4 border-t border-gray-100 w-full">
-                <Link 
-                  to="/login" 
-                  onClick={() => setIsMenuOpen(false)} 
-                  className="flex items-center space-x-2 text-indigo-900 hover:text-fmfp-green pl-2"
-                >
-                  <UserCircle size={20} />
-                  <span className="text-[11px] font-black uppercase tracking-tight">Admin</span>
-                </Link>
-              </li>
             </ul>
+
+            <div className="flex items-center space-x-4 border-l pl-6 border-gray-200">
+              {/* LANGUAGE SELECTOR */}
+              <div className="relative">
+                <button 
+                  onClick={() => setIsLangOpen(!isLangOpen)}
+                  className="flex items-center space-x-1 bg-gray-50 px-3 py-1.5 rounded-full hover:bg-gray-100 transition-all border"
+                >
+                  <span className="text-xl">{currentLang.flag}</span>
+                  <ChevronDown size={14} className={`text-indigo-900 transition-transform ${isLangOpen ? 'rotate-180' : ''}`} />
+                </button>
+
+                {isLangOpen && (
+                  <div className="absolute right-0 mt-3 w-40 bg-white shadow-2xl rounded-2xl border border-gray-100 overflow-hidden py-2 animate-in fade-in zoom-in-95">
+                    {languages.map((lang) => (
+                      <button
+                        key={lang.code}
+                        onClick={() => changeLanguage(lang.code)}
+                        className="w-full flex items-center space-x-3 px-4 py-2.5 hover:bg-green-50 text-left transition-colors"
+                      >
+                        <span className="text-xl">{lang.flag}</span>
+                        <span className="text-[10px] font-black text-indigo-900 uppercase">{lang.name}</span>
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              <Link to="/login" className="text-indigo-900 hover:text-green-600 transition-colors">
+                <UserCircle size={28} />
+              </Link>
+            </div>
           </div>
+
+          {/* --- ICON HAMBURGER (MOBILE) --- */}
+          <button className="md:hidden text-indigo-900 focus:outline-none p-2" onClick={() => setIsMenuOpen(!isMenuOpen)}>
+            {isMenuOpen ? <X size={30} /> : <Menu size={30} />}
+          </button>
+        </nav>
+
+        {/* --- SIDEBAR MOBILE --- */}
+        {isMenuOpen && (
+          <div className="fixed inset-0 top-26.25 bg-black/30 z-40 md:hidden" onClick={() => setIsMenuOpen(false)}></div>
+        )}
+
+        <div className={`fixed top-26.25 left-0 bg-white z-45 shadow-2xl transition-transform duration-300 ease-in-out md:hidden flex flex-col border-r border-b rounded-br-2xl ${isMenuOpen ? 'translate-x-0' : '-translate-x-full'}`}
+             style={{ width: '150px' }}> 
+          
+          <ul className="flex flex-col items-start py-6 space-y-6 px-4">
+            {navLinks.map((l) => (
+              <li key={l.path} className="w-full">
+                <NavLink 
+                  to={l.path} 
+                  onClick={() => setIsMenuOpen(false)}
+                  className={({ isActive }) => 
+                    `text-[11px] font-black uppercase tracking-tight transition-colors block w-full ${
+                      isActive ? 'text-green-600 border-l-4 border-green-600 pl-2' : 'text-indigo-900 hover:text-green-600 pl-2'
+                    }`
+                  }
+                >
+                  {l.label}
+                </NavLink>
+              </li>
+            ))}
+            
+            {/* Langue amin'ny Mobile */}
+            <li className="pt-4 border-t border-gray-100 w-full flex flex-wrap gap-2 px-2">
+              {languages.map((lang) => (
+                <button key={lang.code} onClick={() => changeLanguage(lang.code)} className="text-xl">
+                  {lang.flag}
+                </button>
+              ))}
+            </li>
+
+            <li className="pt-4 border-t border-gray-100 w-full">
+              <Link to="/login" onClick={() => setIsMenuOpen(false)} className="flex items-center space-x-2 text-indigo-900 hover:text-green-600 pl-2">
+                <UserCircle size={20} />
+                <span className="text-[11px] font-black uppercase tracking-tight">Admin</span>
+              </Link>
+            </li>
+          </ul>
+        </div>
 
         {/* --- CONTENT --- */}
         <main className="grow">
