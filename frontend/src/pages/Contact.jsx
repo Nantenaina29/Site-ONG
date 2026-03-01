@@ -81,7 +81,7 @@ const Contact = () => {
                     <MapPin size={24} />
                   </div>
                   <div>
-                    <h4 className="font-bold text-slate-900 uppercase text-xs tracking-widest mb-2 opacity-50">Adresse</h4>
+                    <h4 className="font-bold text-slate-900  text-lg tracking-widest mb-2 opacity-50">Adresse</h4>
                     <p className="text-slate-900 font-bold text-lg leading-snug">Lot 602/3306 Idanda,<br />Fianarantsoa 301, Madagascar</p>
                   </div>
                 </div>
@@ -91,7 +91,7 @@ const Contact = () => {
                     <Phone size={24} />
                   </div>
                   <div>
-                    <h4 className="font-bold text-slate-900 uppercase text-xs tracking-widest mb-2 opacity-50">Téléphone</h4>
+                    <h4 className="font-bold text-slate-900  text-lg tracking-widest mb-2 opacity-50">Téléphone</h4>
                     <p className="text-slate-900 font-bold text-lg">+261 34 12 530 74</p>
                     <p className="text-slate-900 font-bold text-lg">+261 38 30 083 74</p>
                   </div>
@@ -102,7 +102,7 @@ const Contact = () => {
                     <Mail size={24} />
                   </div>
                   <div>
-                    <h4 className="font-bold text-slate-900 uppercase text-xs tracking-widest mb-2 opacity-50">E-mail</h4>
+                    <h4 className="font-bold text-slate-900  text-lg tracking-widest mb-2 opacity-50">E-mail</h4>
                     <p className="text-slate-900 font-bold text-lg underline decoration-indigo-500/30">tsinjoainafi@yahoo.com</p>
                   </div>
                 </div>
@@ -111,7 +111,7 @@ const Contact = () => {
 
             {/* SOCIAL MEDIA */}
             <div className="pt-8 border-t border-slate-100">
-              <h4 className="font-bold text-slate-400 uppercase text-[10px] tracking-[0.4em] mb-6">Suivez notre impact</h4>
+              <h4 className="font-bold text-slate-400 uppercase text-black tracking-[0.4em] mb-6">Suivez notre impact</h4>
               <div className="flex gap-4">
                 {[Facebook, Twitter, Instagram].map((Icon, i) => (
                   <a key={i} href="#" className="p-4 bg-slate-50 rounded-full text-slate-900 hover:bg-slate-900 hover:text-white transition-all duration-300">
@@ -192,7 +192,7 @@ const Contact = () => {
 
       {/* --- SECTION 3: MAP (PRECISION IDANDA FIANARANTSOA) --- */}
 
-        <section className="h-[500px] w-full bg-slate-100 relative">
+        <section className="h-125 w-full bg-slate-100 relative">
           
           <iframe 
             title="ONG Location Idanda"

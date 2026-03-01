@@ -214,61 +214,64 @@ const InterventionList = () => {
     };
 
     // --- FOFAOY NY TALOHA ARY ADIKAO ITY ---
-const handleImageUpload = async (e) => {
-    const file = e.target.files?.[0]; // Maka ilay rakitra voalohany
-    if (!file) return;
-
-    // Fanamarinana raha sary tokoa ilay izy
-    if (!file.type.startsWith('image/')) {
-        Swal.fire('Erreur', 'Veuillez sélectionner uniquement des fichiers images (JPG, PNG...).', 'error');
-        return;
-    }
-
-    setActionLoading(true); // Manomboka ny loading (spinner)
-
-    try {
-        // 1. Mamorona anarana miavaka (Unique Name) mba tsy hisy hitovy
-        const fileExt = file.name.split('.').pop();
-        const fileName = `${Date.now()}-${Math.random().toString(36).substring(2, 9)}.${fileExt}`;
-        const filePath = `${fileName}`;
-
-        // 2. Upload any amin'ny Supabase Storage (Bucket "photos")
-        // MAFY: Hamarino tsara raha "photos" no anaran'ny Bucket-nao any amin'ny Supabase
-        const { error: uploadError } = await supabase.storage
-            .from('photos')
-            .upload(filePath, file);
-
-        if (uploadError) throw uploadError;
-
-        // 3. Maka ny Public URL (Lien azo ampiasaina amin'ny tranonkala)
-        const { data: urlData } = supabase.storage
-            .from('photos')
-            .getPublicUrl(filePath);
-
-        // 4. Tehirizina ao anaty formData ilay lien vao azo
-        setFormData(prev => ({
-            ...prev,
-            image: urlData.publicUrl
-        }));
-
-        Swal.fire({
-            icon: 'success',
-            title: 'Image chargée !',
-            text: 'La photo a été importée avec succès de votre dossier.',
-            timer: 2000,
-            showConfirmButton: false,
-            toast: true,
-            position: 'top-end'
-        });
-
-    } catch (err) {
-        const errorMsg = err instanceof Error ? err.message : 'Erreur inconnue';
-        console.error("Erreur d'upload:", errorMsg);
-        Swal.fire('Erreur de chargement', "Impossible d'accéder au dossier ou d'envoyer l'image.", 'error');
-    } finally {
-        setActionLoading(false); // Atsahatra ny loading
-    }
-};
+    const handleImageUpload = async (e) => {
+        const files = Array.from(e.target.files || []); // Récupérer tous les fichiers choisis
+        if (files.length === 0) return;
+    
+        // 1. Vérification : Est-ce que ce sont bien des images ?
+        const allAreImages = files.every(file => file.type.startsWith('image/'));
+        if (!allAreImages) {
+            Swal.fire('Erreur', 'Veuillez sélectionner uniquement des fichiers images (JPG, PNG...).', 'error');
+            return;
+        }
+    
+        setActionLoading(true);
+    
+        try {
+            // 2. Utilisation de Promise.all pour gérer plusieurs uploads simultanément
+            const uploadPromises = files.map(async (file) => {
+                const fileExt = file.name.split('.').pop();
+                const fileName = `${Date.now()}-${Math.random().toString(36).substring(2, 9)}.${fileExt}`;
+                const filePath = `${fileName}`;
+    
+                // Upload vers Supabase (Bucket "photos")
+                const { error: uploadError } = await supabase.storage
+                    .from('photos')
+                    .upload(filePath, file);
+    
+                if (uploadError) throw uploadError;
+    
+                // Récupération de l'URL publique
+                const { data: urlData } = supabase.storage
+                    .from('photos')
+                    .getPublicUrl(filePath);
+    
+                return urlData.publicUrl;
+            });
+    
+            // Attendre que tous les fichiers soient uploadés
+            const publicUrls = await Promise.all(uploadPromises);
+    
+            // 3. Mise à jour du formData (Ajout des nouveaux URLs au tableau existant)
+            setFormData(prev => ({
+                ...prev,
+                images: prev.images ? [...prev.images, ...publicUrls] : publicUrls
+            }));
+    
+            Swal.fire({
+                title: 'Succès',
+                text: `${files.length} image(s) téléchargée(s) avec succès !`,
+                icon: 'success',
+                confirmButtonText: 'OK'
+            });
+    
+        } catch (error) {
+            console.error("Erreur d'upload:", error);
+            Swal.fire('Erreur', "Une erreur est survenue lors de l'envoi des images : " + error.message, 'error');
+        } finally {
+            setActionLoading(false);
+        }
+    };
 
     return (
         <div className="p-4 md:p-8 bg-[#f8fafc] min-h-screen font-sans text-slate-900 animate-in fade-in duration-700">
@@ -344,7 +347,7 @@ const handleImageUpload = async (e) => {
                         {/* Colonne Gauche */}
                         <div className="space-y-6">
                             <div className="group">
-                                <label className="flex items-center gap-2 text-sm font-bold text-slate-700 mb-2 transition-colors group-focus-within:text-indigo-600">
+                                <label className="flex items-center gap-2 text-sm font-bold text-black mb-2 transition-colors group-focus-within:text-indigo-600">
                                     <Type size={18} className="text-indigo-500" /> Titre du projet
                                 </label>
                                 <input 
@@ -355,7 +358,7 @@ const handleImageUpload = async (e) => {
                             </div>
 
                             <div className="group">
-                                <label className="flex items-center gap-2 text-sm font-bold text-slate-700 mb-2 group-focus-within:text-indigo-600">
+                                <label className="flex items-center gap-2 text-sm font-bold text-black mb-2 group-focus-within:text-indigo-600">
                                     <MapPin size={18} className="text-indigo-500" /> Localisation précise
                                 </label>
                                 <input 
@@ -366,47 +369,55 @@ const handleImageUpload = async (e) => {
                             </div>
 
                             <div className="group">
-                                <label className="flex items-center gap-2 text-sm font-bold text-slate-700 mb-2 group-focus-within:text-indigo-600">
-                                    <ImageIcon size={18} className="text-indigo-500" /> URL de l'image de couverture
+                            <label className="flex items-center gap-2 text-sm font-bold text-black mb-2 group-focus-within:text-indigo-600">
+                                <ImageIcon size={18} className="text-indigo-500" /> URL des images de couverture
+                            </label>
+                            <div className="relative group">
+                                <input 
+                                    type="file"
+                                    accept="image/*"
+                                    id="file-upload"
+                                    multiple // <--- Eto no mampisy an'ilay safidy maromaro
+                                    onChange={handleImageUpload} 
+                                    className="hidden" 
+                                />
+                                <label 
+                                    htmlFor="file-upload"
+                                    className="flex items-center justify-center gap-3 w-full p-4 bg-slate-50 border-2 border-dashed border-slate-200 rounded-2xl cursor-pointer group-hover:border-indigo-500 group-hover:bg-indigo-50/30 transition-all duration-300"
+                                >
+                                    {actionLoading ? (
+                                        <Loader2 className="animate-spin text-indigo-600" size={24} />
+                                    ) : (
+                                        <div className="flex items-center gap-3 text-slate-500 group-hover:text-indigo-600">
+                                            <ImageIcon size={24} />
+                                            <span className="font-bold">
+                                                {/* Ovaina ny soratra raha efa misy sary voafidy */}
+                                                {formData.images && formData.images.length > 0 
+                                                    ? `${formData.images.length} sary voafidy` 
+                                                    : "Choisir des photos depuis l'appareil"}
+                                            </span>
+                                        </div>
+                                    )}
                                 </label>
-                                <div className="relative group">
-                            <input 
-                                type="file"
-                                accept="image/*"
-                                id="file-upload"
-                                onChange={handleImageUpload} // Function hampiakatra sary
-                                className="hidden" // Afenina ilay input ratsiratsy default
-                            />
-                            <label 
-                                htmlFor="file-upload"
-                                className="flex items-center justify-center gap-3 w-full p-4 bg-slate-50 border-2 border-dashed border-slate-200 rounded-2xl cursor-pointer group-hover:border-indigo-500 group-hover:bg-indigo-50/30 transition-all duration-300"
-                            >
-                                {actionLoading ? (
-                                    <Loader2 className="animate-spin text-indigo-600" size={24} />
-                                ) : (
-                                    <div className="flex items-center gap-3 text-slate-500 group-hover:text-indigo-600">
-                                        <ImageIcon size={24} />
-                                        <span className="font-bold">
-                                            {formData.image ? "Changer la photo" : "Choisir une photo depuis l'appareil"}
-                                        </span>
+                                
+                                {/* Preview ho an'ny sary maromaro */}
+                                {formData.images && formData.images.length > 0 && (
+                                    <div className="mt-3 grid grid-cols-4 gap-2">
+                                        {/* Ohatra fotsiny ity raha te hanao preview kely ianao */}
+                                        <p className="col-span-4 text-xs text-emerald-600 font-bold flex items-center gap-1">
+                                            <CheckCircle2 size={12} /> {formData.images.length} images prêtes à être enregistrées
+                                        </p>
                                     </div>
                                 )}
-                            </label>
-                            
-                            {/* Preview kely raha efa nifidy sary izy */}
-                            {formData.image && (
-                                <p className="mt-2 text-xs text-emerald-600 font-bold flex items-center gap-1">
-                                    <CheckCircle2 size={12} /> Image prête à être enregistrée
-                                </p>
-                            )}
-                        </div>
+                            </div>
+
                             </div>
                         </div>
 
                         {/* Colonne Droite */}
                         <div className="space-y-6">
                             <div className="group">
-                                <label className="flex items-center gap-2 text-sm font-bold text-slate-700 mb-2 group-focus-within:text-indigo-600">
+                                <label className="flex items-center gap-2 text-sm font-bold text-black mb-2 group-focus-within:text-indigo-600">
                                     <AlignLeft size={18} className="text-indigo-500" /> Description détaillée
                                 </label>
                                 <textarea 
@@ -447,7 +458,7 @@ const handleImageUpload = async (e) => {
                 <div className="overflow-x-auto">
                     <table className="min-w-full">
                         <thead>
-                            <tr className="bg-slate-50/50 text-slate-400 uppercase text-[11px] font-black tracking-[0.15em]">
+                            <tr className="bg-slate-50/50 text-black uppercase text-[11px] font-black tracking-[0.15em]">
                                 <th className="px-8 py-6 text-left">Aperçu Visuel</th>
                                 <th className="px-8 py-6 text-left">Détails de l'intervention</th>
                                 <th className="px-8 py-6 text-left">Description</th>
@@ -463,7 +474,7 @@ const handleImageUpload = async (e) => {
                                                 <div className="w-16 h-16 border-4 border-indigo-100 border-t-indigo-600 rounded-full animate-spin"></div>
                                                 <RefreshCcw className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-indigo-600" size={20} />
                                             </div>
-                                            <span className="font-bold text-slate-400 tracking-widest uppercase text-xs">Synchronisation avec Supabase...</span>
+                                            <span className="font-bold text-slate-400 tracking-widest uppercase text-xs">Synchronisation...</span>
                                         </div>
                                     </td>
                                 </tr>
@@ -477,12 +488,26 @@ const handleImageUpload = async (e) => {
                                         <td className="px-8 py-6">
                                             <div className="relative w-20 h-20 overflow-hidden rounded-2xl shadow-md group-hover:shadow-xl group-hover:scale-105 transition-all duration-500">
                                                 <img 
-                                                    src={item.image || "https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?q=80&w=300&h=300&fit=crop"} 
+                                                    /* 1. Ampiasaina ny sary voalohany raha array ny item.images, raha tsy izany dia ilay sary default */
+                                                    src={(item.images && item.images.length > 0) 
+                                                        ? item.images[0] 
+                                                        : "https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?q=80&w=300&h=300&fit=crop"} 
                                                     className="w-full h-full object-cover"
                                                     alt={item.title}
                                                 />
+
+                                                {/* 2. Overlay ho an'ny sary maromaro (+X) */}
+                                                {item.images && item.images.length > 1 && (
+                                                    <div className="absolute inset-0 bg-slate-900/40 flex items-center justify-center backdrop-blur-[1px]">
+                                                        <span className="text-white font-black text-lg drop-shadow-md">
+                                                            +{item.images.length - 1}
+                                                        </span>
+                                                    </div>
+                                                )}
+
+                                                {/* 3. Overlay ho an'ny EyeOff (raha tsy published) */}
                                                 {!item.is_published && (
-                                                    <div className="absolute inset-0 bg-slate-900/60 flex items-center justify-center">
+                                                    <div className={`absolute inset-0 bg-slate-900/60 flex items-center justify-center ${item.images && item.images.length > 1 ? 'pt-8' : ''}`}>
                                                         <EyeOff size={16} className="text-white opacity-80" />
                                                     </div>
                                                 )}
