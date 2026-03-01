@@ -52,7 +52,7 @@ const EventCalendar = () => {
           {/* Vaovao 1 */}
           <div className="group border-l-4 border-fmfp-green pl-6 py-1">
             <span className="text-[10px] font-black text-indigo-900 uppercase tracking-widest">Dernière minute</span>
-            <h4 className="font-bold text-green-600 uppercase text-lg leading-tight mt-1">Lancement de la banque de semences</h4>
+            <h4 className="font-bold text-green-600 uppercase text-lg leading-tight mt-1">Multiplication et conservation des semences locales</h4>
             <p className="text-sm text-gray-600 mt-2">La banque de semences communautaire assure la souveraineté alimentaire en permettant 
               aux paysans d'emprunter des variétés locales résilientes et de les rembourser en nature après la récolte. Ce système solidaire
                élimine la dépendance aux intrants industriels coûteux, garantissant ainsi une autonomie financière immédiate aux familles.
