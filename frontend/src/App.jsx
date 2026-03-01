@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link, NavLink } from 'react-router-dom';
 import { UserCircle, Menu, X } from 'lucide-react';
-import axios from 'axios';
+import { supabase } from '../supabaseClient';
 
 // --- PAGES ---
 import Login from './Login';
@@ -27,72 +27,85 @@ const TeamSection = () => {
   const [team, setTeam] = useState([]);
   const [teamLoading, setTeamLoading] = useState(true);
 
-  const defaultTeam = [
-    { id: 'd1', name: "Jean Pierre", role: "Directeur", img: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=80&w=200" },
-    { id: 'd2', name: "Marie Louise", role: "Secrétaire", img: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=200" },
-    { id: 'd3', name: "Tahina Andriana", role: "Coordonnateur", img: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=200" },
-    { id: 'd4', name: "Soa Fenitra", role: "Responsable Social", img: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=200" },
-  ];
-
   useEffect(() => {
     const fetchTeam = async () => {
       try {
-        const response = await axios.get('http://localhost:8000/api/teams');
-        const incomingData = response.data.data || response.data;
-        if (Array.isArray(incomingData) && incomingData.length > 0) {
-          setTeam(incomingData.sort((a, b) => a.id - b.id));
-        } else {
-          setTeam(defaultTeam);
+        setTeamLoading(true);
+        // Alaina mivantana avy amin'ny Supabase ny data
+        const { data, error } = await supabase
+          .from('teams')
+          .select('*')
+          .order('id', { ascending: true }); // Milahatra manaraka ny ID avy hatrany
+
+        if (error) throw error;
+
+        if (data && data.length > 0) {
+          setTeam(data);
         }
       } catch (err) {
-        console.error(err);
-        setTeam(defaultTeam);
+        console.error("Error fetching team:", err.message);
       } finally {
         setTeamLoading(false);
       }
     };
+
     fetchTeam();
   }, []);
 
   if (teamLoading) {
     return (
       <div className="py-24 text-center flex flex-col justify-center items-center bg-white">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600 mb-4"></div>
-        <p className="text-slate-400 font-medium">Chargement de l'équipe...</p>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-500 mb-4"></div>
+        <p className="text-slate-400 font-medium tracking-widest text-[10px] uppercase">Chargement de l'équipe...</p>
       </div>
     );
   }
-
   return (
-    <section className="py-20 bg-slate-50">
-      <div className="container mx-auto px-4">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl font-black text-green-600 uppercase tracking-tighter mb-4">Notre Équipe</h2>
-          <div className="min-h-7.5 flex items-center justify-center">
-            <p className="text-lg md:text-xl font-bold text-slate-600 tracking-tight">
-              Une équipe dévouée pour vous accompagner
-            </p>
-          </div>
-          <div className="h-1.5 w-20 bg-indigo-600 mx-auto mt-4 rounded-full shadow-sm"></div>
+    <section className="py-24 bg-white overflow-hidden">
+      <div className="max-w-7xl mx-auto px-6">
+        {/* TITRE PREMIUM */}
+        <div className="text-center mb-20 animate-in fade-in slide-in-from-bottom-4 duration-700">
+          <h2 className="text-[10px] font-black uppercase tracking-[0.4em] text-emerald-500 mb-4">
+            Notre Équipe
+          </h2>
+          <h3 className="text-4xl font-black text-slate-900 tracking-tighter">
+            Des experts à votre <span className="text-emerald-500">service</span>
+          </h3>
+          <div className="h-1.5 w-12 bg-emerald-500 mx-auto mt-6 rounded-full"></div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12">
-          {team.map((member) => (
-            <div key={member.id} className="group flex flex-col items-center">
-              <div className="relative w-48 h-48 mb-6">
-                <div className="absolute inset-0 bg-indigo-100 rounded-full shadow-inner"></div>
-                <div className="relative w-full h-full rounded-full overflow-hidden border-4 border-white shadow-xl">
-                  <img 
-                    src={member.img && member.img.startsWith('http') ? member.img : `http://localhost:8000/storage/${member.img}`} 
-                    alt={member.name} 
-                    className="w-full h-full object-cover" 
-                    onError={(e) => { e.target.src = `https://ui-avatars.com/api/?name=${member.name}&background=random`; }} 
-                  />
+        {/* GRID MEMBRES */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          {team.map((member, index) => (
+            <div 
+              key={member.id}
+              className="group relative animate-in fade-in zoom-in duration-500"
+              style={{ animationDelay: `${index * 100}ms` }} // Animation cascade
+            >
+              {/* CARD CONTAINER */}
+              <div className="relative h-[400px] rounded-[2.5rem] overflow-hidden shadow-2xl shadow-slate-200/50 bg-slate-100 border border-white transition-all duration-500 group-hover:-translate-y-2">
+                {/* IMAGE */}
+                <img 
+                  src={member.img || `https://ui-avatars.com/api/?name=${member.name}&background=random`} 
+                  alt={member.name}
+                  className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700"
+                />
+                
+                {/* OVERLAY GRADIENT */}
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent opacity-60 group-hover:opacity-80 transition-opacity"></div>
+
+                {/* INFO CONTENT */}
+                <div className="absolute bottom-0 left-0 right-0 p-8 transform translate-y-2 group-hover:translate-y-0 transition-transform">
+                  <p className="text-[9px] font-black text-emerald-400 uppercase tracking-[0.2em] mb-1">
+                    {member.role}
+                  </p>
+                  <h4 className="text-xl font-bold text-white mb-4">
+                    {member.name}
+                  </h4>
+                  
+                  {/* BORDER DÉCORATIF QUI APPARAIT AU HOVER */}
+                  <div className="w-0 group-hover:w-full h-0.5 bg-emerald-500 transition-all duration-500"></div>
                 </div>
-              </div>
-              <div className="text-center">
-                <h3 className="text-xl font-black text-indigo-950">{member.name}</h3>
-                <p className="text-slate-500 font-bold text-xs uppercase tracking-[0.2em] mt-1">{member.role}</p>
               </div>
             </div>
           ))}
