@@ -111,12 +111,12 @@ const AdminProfile = ({ adminUser }) => {
                     <button 
                         onClick={handleUpdateProfile}
                         disabled={loading}
-                        className="group relative w-full mt-4 overflow-hidden rounded-[1.5rem] bg-slate-900 py-5 font-black text-[10px] uppercase tracking-[0.2em] text-white shadow-xl shadow-slate-200 transition-all duration-500 hover:bg-emerald-600 disabled:opacity-50"
+                        className="group relative w-full mt-4 overflow-hidden rounded-3xl bg-slate-900 py-5 font-black text-[10px] uppercase tracking-[0.2em] text-white shadow-xl shadow-slate-200 transition-all duration-500 hover:bg-emerald-600 disabled:opacity-50"
                     >
                         <div className="relative z-10 flex items-center justify-center gap-3">
                             {loading ? <Loader2 className="animate-spin" size={16} /> : <><Save size={16} /> <span>Mettre à jour</span></>}
                         </div>
-                        <div className="absolute inset-0 translate-x-[-100%] bg-white/10 transition-transform duration-1000 group-hover:translate-x-[100%]"></div>
+                        <div className="absolute inset-0 -translate-x-full bg-white/10 transition-transform duration-1000 group-hover:translate-x-full"></div>
                     </button>
                 </div>
             </div>
@@ -274,7 +274,7 @@ const Parametres = () => {
                             ) : (
                                 <table className="w-full">
                                     <thead>
-                                        <tr className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">
+                                        <tr className="text-[10px] font-black text-black uppercase tracking-[0.2em]">
                                             <th className="px-6 py-4 text-left">Profil</th>
                                             <th className="px-6 py-4 text-left">Poste / Rôle</th>
                                             <th className="px-6 py-4 text-right">Actions</th>
@@ -298,28 +298,28 @@ const Parametres = () => {
                                                 </td>
                                                 <td className="px-6 py-4 text-right">
                                                 <div className="flex justify-end gap-3">
-        {/* EDIT BUTTON - Loko manga maivana hita maso foana */}
-        <button 
-            onClick={() => { 
-                setEditingItem(member); 
-                setFormData({name: member.name, role: member.role, image: null}); 
-                setIsModalOpen(true); 
-            }} 
-            className="p-2.5 bg-blue-50/50 text-blue-600 rounded-xl border border-blue-100/50 hover:bg-blue-600 hover:text-white hover:shadow-lg hover:shadow-blue-200 transition-all duration-300 group/edit"
-            title="Modifier"
-        >
-            <Edit size={16} className="group-hover/edit:scale-110 transition-transform" />
-        </button>
+                                                {/* EDIT BUTTON - Loko manga maivana hita maso foana */}
+                                                <button 
+                                                    onClick={() => { 
+                                                        setEditingItem(member); 
+                                                        setFormData({name: member.name, role: member.role, image: null}); 
+                                                        setIsModalOpen(true); 
+                                                    }} 
+                                                    className="p-2.5 bg-blue-50/50 text-blue-600 rounded-xl border border-blue-100/50 hover:bg-blue-600 hover:text-white hover:shadow-lg hover:shadow-blue-200 transition-all duration-300 group/edit"
+                                                    title="Modifier"
+                                                >
+                                                    <Edit size={16} className="group-hover/edit:scale-110 transition-transform" />
+                                                </button>
 
-        {/* DELETE BUTTON - Loko mena maivana hita maso foana */}
-        <button 
-            onClick={() => handleDelete(member.id)} 
-            className="p-2.5 bg-red-50/50 text-red-500 rounded-xl border border-red-100/50 hover:bg-red-500 hover:text-white hover:shadow-lg hover:shadow-red-200 transition-all duration-300 group/del"
-            title="Supprimer"
-        >
-            <Trash2 size={16} className="group-hover/del:scale-110 transition-transform" />
-        </button>
-    </div>
+                                                {/* DELETE BUTTON - Loko mena maivana hita maso foana */}
+                                                <button 
+                                                    onClick={() => handleDelete(member.id)} 
+                                                    className="p-2.5 bg-red-50/50 text-red-500 rounded-xl border border-red-100/50 hover:bg-red-500 hover:text-white hover:shadow-lg hover:shadow-red-200 transition-all duration-300 group/del"
+                                                    title="Supprimer"
+                                                >
+                                                    <Trash2 size={16} className="group-hover/del:scale-110 transition-transform" />
+                                                </button>
+                                            </div>
                                                 </td>
                                             </tr>
                                         ))}
@@ -347,15 +347,15 @@ const Parametres = () => {
                         
                         <form onSubmit={handleSubmit} className="space-y-5">
                             <div className="space-y-1">
-                                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-2">Nom & Prénom</label>
-                                <input type="text" placeholder="Ex: Jean Ralambo" required className="w-full p-4 bg-slate-50 border border-slate-100 rounded-2xl outline-none focus:ring-4 focus:ring-indigo-600/10 focus:border-indigo-600 transition-all font-bold text-slate-700" value={formData.name} onChange={(e) => setFormData({...formData, name: e.target.value})} />
+                                <label className="text-[10px] font-black text-black uppercase tracking-widest ml-2">Nom & Prénom</label>
+                                <input type="text" placeholder="Nom complet" required className="w-full p-4 bg-slate-50 border border-slate-100 rounded-2xl outline-none focus:ring-4 focus:ring-indigo-600/10 focus:border-indigo-600 transition-all font-bold text-slate-700" value={formData.name} onChange={(e) => setFormData({...formData, name: e.target.value})} />
                             </div>
                             <div className="space-y-1">
-                                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-2">Poste occupé</label>
-                                <input type="text" placeholder="Ex: Directeur Technique" required className="w-full p-4 bg-slate-50 border border-slate-100 rounded-2xl outline-none focus:ring-4 focus:ring-indigo-600/10 focus:border-indigo-600 transition-all font-bold text-slate-700" value={formData.role} onChange={(e) => setFormData({...formData, role: e.target.value})} />
+                                <label className="text-[10px] font-black text-black uppercase tracking-widest ml-2">Poste occupé</label>
+                                <input type="text" placeholder="Poste" required className="w-full p-4 bg-slate-50 border border-slate-100 rounded-2xl outline-none focus:ring-4 focus:ring-indigo-600/10 focus:border-indigo-600 transition-all font-bold text-slate-700" value={formData.role} onChange={(e) => setFormData({...formData, role: e.target.value})} />
                             </div>
                             <div className="space-y-1">
-                                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-2">Photo de profil</label>
+                                <label className="text-[10px] font-black text-black uppercase tracking-widest ml-2">Photo de profil</label>
                                 <div className="relative group">
                                     <input type="file" accept="image/*" className="absolute inset-0 opacity-0 cursor-pointer z-10" onChange={(e) => setFormData({...formData, image: e.target.files[0]})} />
                                     <div className="w-full p-4 bg-slate-50 border-2 border-dashed border-slate-200 rounded-2xl flex items-center justify-center gap-3 text-slate-400 font-bold group-hover:border-indigo-400 group-hover:text-indigo-600 transition-all">

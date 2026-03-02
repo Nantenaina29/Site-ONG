@@ -12,7 +12,7 @@ function Login() {
   const [isLoading, setIsLoading] = useState(false);
   
   // States vaovao ho an'ny OTP
-  const [step, setStep] = useState(1); // 1: Login, 2: OTP Verification
+  const [step, setStep] = useState(1);
   const [otp, setOtp] = useState('');
   
   const navigate = useNavigate();
@@ -252,7 +252,7 @@ function Login() {
                   className="w-full bg-green-600 text-white py-4 rounded-xl font-black uppercase tracking-widest text-xs shadow-xl shadow-indigo-100 hover:bg-indigo-800 transition-all active:scale-95 flex items-center justify-center gap-2"
                 >
                   <LogIn size={18} />
-                  {isLoading ? "Vérification..." : "Connexion"}
+                  {isLoading ? "Vérification..." : "Se connecter"}
                 </button>
               </form>
             ) : (
