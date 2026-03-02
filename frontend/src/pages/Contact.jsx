@@ -48,33 +48,30 @@ const Contact = () => {
   };
   return (
     <div className="bg-white min-h-screen font-sans">
-      {/* --- SECTION 1: HEADER MIARAKA AMIN'NY ANIMATION --- */}
-      <section className="relative w-full py-32 text-center overflow-hidden group">
+            <section className="relative w-full min-h-100 md:min-h-125 flex items-center justify-center text-center overflow-hidden group">
+          
+          {/* --- BACKGROUND IMAGE RESPONSIVE --- */}
+          <div className="absolute inset-0 z-0">
+              <img 
+                  src="/Contact.jpg" 
+                  alt="Background" 
+                  className="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
+              />
+              <div className="absolute inset-0 bg-black/40"></div>
+          </div>
 
-            <div className="absolute inset-0 z-0">
-                <img 
-                    src="/Contact.jpg" // Soloina ny anaran'ny sarinao ao amin'ny public
-                    alt="Contact Background" 
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                />
-                {/* Overlay maivana mba hisongadina ny soratra */}
-                <div className="absolute inset-0 bg-black/30"></div>
-            </div>
-
-            <div className="container mx-auto px-4 relative z-10">
-                {/* Animated Background Element (Blur) */}
-                <div className="absolute -top-10 left-1/2 -translate-x-1/2 w-64 h-64 bg-white/10 rounded-full blur-3xl animate-pulse"></div>
-                
-                <h1 className="relative z-10 text-5xl md:text-7xl font-black uppercase mb-6 tracking-tighter text-white drop-shadow-[0_5px_15px_rgba(0,0,0,0.8)]">
-                    Contactez-<span>nous</span>
-                </h1>
-                
-                <p className="relative z-10 text-white max-w-2xl mx-auto text-lg md:text-xl font-bold leading-relaxed drop-shadow-[0_2px_10px_rgba(0,0,0,0.8)]">
-                    Vous avez un projet, une question ou vous souhaitez soutenir nos actions ? 
-                    Notre équipe est à votre entière disposition pour vous accompagner.
-                </p>
-            </div>
-        </section>
+          {/* --- CONTENT --- */}
+          <div className="container mx-auto px-6 relative z-10 py-12">
+              <h1 className="text-4xl md:text-7xl font-black uppercase mb-6 tracking-tighter text-white drop-shadow-2xl">
+                  Contactez-nous
+              </h1>
+              
+              <p className="text-white max-w-2xl mx-auto text-lg md:text-xl font-bold leading-relaxed drop-shadow-lg">
+                  Vous avez un projet, une question ou vous souhaitez soutenir nos actions ? 
+                  Notre équipe est à votre entière disposition pour vous accompagner.
+              </p>
+          </div>
+      </section>
 
       {/* --- SECTION 2: INFOS & FORMULAIRE --- */}
       <section className="container mx-auto py-24 px-6 lg:px-20">
