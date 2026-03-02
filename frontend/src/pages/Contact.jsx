@@ -20,7 +20,7 @@ const Contact = () => {
 
       await emailjs.send(
         'service_c4flxy7', 
-        '5dlswmu', 
+        'template_zkihx63', 
         {
           name: form.name,    
           email: form.email,  
