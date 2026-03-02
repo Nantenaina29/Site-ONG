@@ -76,60 +76,54 @@ const Realisations = () => {
 
                         {/* Ny div mikisaka (Marquee effect) */}
                         <div className="flex w-max animate-scroll-slow group-hover:pause-animation">
-                        {data && data.length > 0 ? (
-                            data.flatMap((intervention, interventionIndex) => {
-                                // 1. Jerena raha misy ny intervention
-                                if (!intervention) return [];
+                        {data && data.flatMap((intervention, interventionIndex) => {
+                            // 1. Alaina ny sary: na 'images' (array) na 'image' (string)
+                            let allImages = [];
+                            
+                            if (Array.isArray(intervention.images)) {
+                                allImages = intervention.images;
+                            } else if (typeof intervention.images === 'string') {
+                                // Raha toa ka string misy koma (,)
+                                allImages = intervention.images.includes(',') 
+                                    ? intervention.images.split(',').map(s => s.trim()) 
+                                    : [intervention.images];
+                            } else {
+                                // Backup raha toa ka 'image' no anaran'ny column
+                                allImages = [intervention.image || intervention.imgUrl];
+                            }
 
-                                // 2. Jerena izay sary misy (images array SA sary tokana)
-                                // Raha toa ka undefined ny .images dia ampiasaina ny .image na .imgUrl ho solony
-                                let imagesToDisplay = [];
-                                
-                                if (Array.isArray(intervention.images)) {
-                                    imagesToDisplay = intervention.images;
-                                } else if (intervention.image) {
-                                    imagesToDisplay = [intervention.image];
-                                } else if (intervention.imgUrl) {
-                                    imagesToDisplay = [intervention.imgUrl];
-                                }
+                            // 2. Sivana: fafana izay sary banga na "undefined"
+                            const cleanImages = allImages.filter(url => url && typeof url === 'string');
 
-                                // 3. Raha mbola tsy misy sary mihitsy dia miverina foana (tsy asiana card banga)
-                                if (imagesToDisplay.length === 0) return [];
-
-                                return imagesToDisplay.map((imgUrl, imgIndex) => (
-                                    <div 
-                                        key={`${interventionIndex}-${imgIndex}`} 
-                                        className="flex-shrink-0 w-72 md:w-96 px-3"
-                                    >
-                                        <div className="relative h-64 md:h-80 rounded-[2.5rem] overflow-hidden shadow-lg border border-slate-100 group/item">
+                            // 3. Averina ny cards isaky ny sary iray
+                            return cleanImages.map((singleImageUrl, imgIndex) => (
+                                <div 
+                                    key={`${interventionIndex}-${imgIndex}`} 
+                                    className="flex-shrink-0 w-72 md:w-96 px-3"
+                                >
+                                    <div className="relative h-64 md:h-80 rounded-[2.5rem] overflow-hidden shadow-lg border border-slate-100 group/item">
                                         <img 
-                                                src={imgUrl} 
-                                                alt={intervention.title} 
-                                                className="w-full h-full object-cover transition-transform duration-700 group-hover/item:scale-110"
-                                                onError={(e) => {
-                                                    // Raha tsy mandeha ilay sary dia mampiasa sary generic avy amin'ny Unsplash
-                                                    e.target.onerror = null; // Mba tsy hanao loop raha tsy mandeha koa ity
-                                                    e.target.src = 'https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=400&h=300&auto=format&fit=crop';
-                                                    console.warn("Tsy hita ny sary tamin'ny URL:", imgUrl);
-                                                }}
-                                            />
-                                            
-                                            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover/item:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-8">
-                                                <p className="text-green-400 text-[10px] font-black uppercase tracking-[0.2em] mb-1">
-                                                    {intervention.location || "Madagascar"}
-                                                </p>
-                                                <h3 className="text-white text-lg font-bold leading-tight">
-                                                    {intervention.title || "Sans titre"}
-                                                </h3>
-                                            </div>
+                                            src={singleImageUrl} // Eto izy no tokony ho String fa tsy Array intsony
+                                            alt={`${intervention.title} - ${imgIndex}`} 
+                                            className="w-full h-full object-cover transition-transform duration-700 group-hover/item:scale-110"
+                                            onError={(e) => {
+                                                e.target.onerror = null;
+                                                e.target.src = 'https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=400';
+                                            }}
+                                        />
+                                        
+                                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover/item:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-8">
+                                            <p className="text-green-400 text-[10px] font-black uppercase tracking-[0.2em] mb-1">
+                                                {intervention.location}
+                                            </p>
+                                            <h3 className="text-white text-lg font-bold leading-tight">
+                                                {intervention.title}
+                                            </h3>
                                         </div>
                                     </div>
-                                ));
-                            })
-                        ) : (
-                            /* Hafatra miseho raha mbola mikaroka ny sary (Loading) */
-                            <p className="text-slate-400 p-10">Chargement des interventions...</p>
-                        )}
+                                </div>
+                            ));
+                        })}
                     </div>
                     </div>
                 )}
