@@ -49,20 +49,32 @@ const Contact = () => {
   return (
     <div className="bg-white min-h-screen font-sans">
       {/* --- SECTION 1: HEADER MIARAKA AMIN'NY ANIMATION --- */}
-      <section className="bg-slate-50 py-24 text-center border-b border-slate-100 overflow-hidden">
-        <div className="container mx-auto px-4 relative">
-          {/* Animated Background Element */}
-          <div className="absolute -top-10 left-1/2 -translate-x-1/2 w-64 h-64 bg-indigo-500/5 rounded-full blur-3xl animate-pulse"></div>
-          
-          <h1 className="relative z-10 text-5xl md:text-7xl font-black uppercase mb-6 tracking-tighter text-slate-900 animate-fade-in-up">
-            Contactez-<span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-emerald-500">nous</span>
-          </h1>
-          <p className="relative z-10 text-slate-600 max-w-2xl mx-auto text-lg md:text-xl font-light leading-relaxed animate-fade-in">
-            Vous avez un projet, une question ou vous souhaitez soutenir nos actions ? 
-            Notre équipe est à votre entière disposition pour vous accompagner.
-          </p>
-        </div>
-      </section>
+      <section className="relative w-full py-32 text-center overflow-hidden group">
+
+            <div className="absolute inset-0 z-0">
+                <img 
+                    src="/Contact.jpg" // Soloina ny anaran'ny sarinao ao amin'ny public
+                    alt="Contact Background" 
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                />
+                {/* Overlay maivana mba hisongadina ny soratra */}
+                <div className="absolute inset-0 bg-black/30"></div>
+            </div>
+
+            <div className="container mx-auto px-4 relative z-10">
+                {/* Animated Background Element (Blur) */}
+                <div className="absolute -top-10 left-1/2 -translate-x-1/2 w-64 h-64 bg-white/10 rounded-full blur-3xl animate-pulse"></div>
+                
+                <h1 className="relative z-10 text-5xl md:text-7xl font-black uppercase mb-6 tracking-tighter text-white drop-shadow-[0_5px_15px_rgba(0,0,0,0.8)]">
+                    Contactez-<span>nous</span>
+                </h1>
+                
+                <p className="relative z-10 text-white max-w-2xl mx-auto text-lg md:text-xl font-bold leading-relaxed drop-shadow-[0_2px_10px_rgba(0,0,0,0.8)]">
+                    Vous avez un projet, une question ou vous souhaitez soutenir nos actions ? 
+                    Notre équipe est à votre entière disposition pour vous accompagner.
+                </p>
+            </div>
+        </section>
 
       {/* --- SECTION 2: INFOS & FORMULAIRE --- */}
       <section className="container mx-auto py-24 px-6 lg:px-20">
