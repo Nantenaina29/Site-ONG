@@ -102,12 +102,15 @@ const Realisations = () => {
                                         className="flex-shrink-0 w-72 md:w-96 px-3"
                                     >
                                         <div className="relative h-64 md:h-80 rounded-[2.5rem] overflow-hidden shadow-lg border border-slate-100 group/item">
-                                            <img 
+                                        <img 
                                                 src={imgUrl} 
-                                                alt={intervention.title || "Intervention"} 
+                                                alt={intervention.title} 
                                                 className="w-full h-full object-cover transition-transform duration-700 group-hover/item:scale-110"
                                                 onError={(e) => {
-                                                    e.target.src = 'https://via.placeholder.com/400x300?text=Sary+tsy+hita';
+                                                    // Raha tsy mandeha ilay sary dia mampiasa sary generic avy amin'ny Unsplash
+                                                    e.target.onerror = null; // Mba tsy hanao loop raha tsy mandeha koa ity
+                                                    e.target.src = 'https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=400&h=300&auto=format&fit=crop';
+                                                    console.warn("Tsy hita ny sary tamin'ny URL:", imgUrl);
                                                 }}
                                             />
                                             
