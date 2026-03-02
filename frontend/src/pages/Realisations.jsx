@@ -40,7 +40,7 @@ const Realisations = () => {
                         NOS RÉALISATIONS
                     </h1>
                     <p className="text-slate-400 max-w-xl mx-auto text-lg font-medium">
-                    Chaque image capturée ici est le témoin d'un engagement profond et d'une volonté inébranlable d'apporter un changement durable. 
+                         Chaque image capturée ici est le témoin d'un engagement profond et d'une volonté inébranlable d'apporter un changement durable. 
                         À travers nos interventions stratégiques et nos projets de proximité, nous transformons des défis complexes en opportunités concrètes 
                         pour les communautés locales.
                     </p>
@@ -76,31 +76,33 @@ const Realisations = () => {
 
                         {/* Ny div mikisaka (Marquee effect) */}
                         <div className="flex w-max animate-scroll-slow group-hover:pause-animation">
-                            {data.map((item, index) => (
+                        {data.flatMap((intervention, interventionIndex) => 
+                            // Raha misy array "images" ao anatin'ny intervention tsirairay
+                            intervention.images.map((imgUrl, imgIndex) => (
                                 <div 
-                                    key={index} 
+                                    key={`${interventionIndex}-${imgIndex}`} 
                                     className="flex-shrink-0 w-72 md:w-96 px-3"
                                 >
                                     <div className="relative h-64 md:h-80 rounded-[2.5rem] overflow-hidden shadow-lg border border-slate-100 group/item">
                                         <img 
-                                            src={item.image} 
-                                            alt={item.title} 
+                                            src={imgUrl} 
+                                            alt={intervention.title} 
                                             className="w-full h-full object-cover transition-transform duration-700 group-hover/item:scale-110"
                                         />
                                         
-                                        {/* Overlay rehefa ambonin'ny sary (Hover) */}
                                         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover/item:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-8">
                                             <p className="text-green-400 text-[10px] font-black uppercase tracking-[0.2em] mb-1">
-                                                {item.location}
+                                                {intervention.location} {/* Ohatra: "Sary {imgIndex + 1}" */}
                                             </p>
                                             <h3 className="text-white text-lg font-bold leading-tight">
-                                                {item.title}
+                                                {intervention.title}
                                             </h3>
                                         </div>
                                     </div>
                                 </div>
-                            ))}
-                        </div>
+                            ))
+                        )}
+                    </div>
                     </div>
                 )}
             </div>
