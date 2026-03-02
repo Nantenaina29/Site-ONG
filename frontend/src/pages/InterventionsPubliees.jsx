@@ -52,15 +52,37 @@ const InterventionsPubliees = () => {
     return (
         <div className="bg-slate-50 min-h-screen pb-20 font-sans">
             {/* Header Section */}
-            <div className="bg-indigo-700 text-white py-24 px-6 text-center mb-12 relative overflow-hidden">
-                <div className="absolute inset-0 opacity-10 pointer-events-none">
-                    <div className="absolute top-0 left-0 w-64 h-64 bg-white rounded-full -translate-x-1/2 -translate-y-1/2 blur-3xl"></div>
+            <div className="px-6 mb-12"> {/* Container mba hisy elanelana kely amin'ny sisin'ny écran */}
+                    <div className="relative max-w-6xl mx-auto py-20 px-6 text-center overflow-hidden rounded-3xl shadow-2xl group">
+                        
+                        {/* --- BACKGROUND IMAGE --- */}
+                        <div className="absolute inset-0 z-0">
+                            <img 
+                                src="/Interv.jpg"
+                                alt="Background" 
+                                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                            />
+                            {/* Overlay mainty kely mba ho hita tsara ny soratra fotsy */}
+                            <div className="absolute inset-0 bg-indigo-900/70 mix-blend-multiply"></div>
+                            <div className="absolute inset-0 bg-linear-to-t from-indigo-900/80 to-transparent"></div>
+                        </div>
+
+                        {/* --- DECORATIVE BLUR (Tazomintsika ilay blur teo aloha) --- */}
+                        <div className="absolute inset-0 opacity-20 pointer-events-none z-10">
+                            <div className="absolute top-0 left-0 w-64 h-64 bg-white rounded-full -translate-x-1/2 -translate-y-1/2 blur-3xl"></div>
+                        </div>
+
+                        {/* --- CONTENT --- */}
+                        <div className="relative z-20">
+                            <h1 className="text-4xl md:text-6xl font-black mb-6 tracking-tight text-white drop-shadow-md">
+                                Nos Interventions
+                            </h1>
+                            <p className="text-indigo-50 max-w-2xl mx-auto text-lg font-medium leading-relaxed drop-shadow-sm">
+                                Découvrez l'impact de nos actions sur le terrain et les projets réalisés pour les communautés.
+                            </p>
+                        </div>
+                    </div>
                 </div>
-                <h1 className="relative text-4xl md:text-6xl font-black mb-6 tracking-tight">Nos Interventions</h1>
-                <p className="relative text-indigo-100 max-w-2xl mx-auto text-lg font-medium leading-relaxed">
-                    Découvrez l'impact de nos actions sur le terrain et les projets réalisés pour les communautés.
-                </p>
-            </div>
 
             <div className="max-w-7xl mx-auto px-6">
                 {interventions.length > 0 ? (
@@ -99,7 +121,7 @@ const InterventionsPubliees = () => {
                                             alt={item.title}
                                             className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                                         />
-                                        <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                                        <div className="absolute inset-0 bg-linear-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                                         
                                         <div className="absolute top-5 left-5">
                                             <span className="bg-white/95 backdrop-blur-md px-4 py-2 rounded-2xl text-[10px] font-black text-indigo-700 shadow-xl uppercase tracking-[0.2em]">
@@ -111,14 +133,14 @@ const InterventionsPubliees = () => {
                                             <div className="absolute bottom-5 right-5">
                                                 <div className="flex items-center gap-2 bg-indigo-600/90 backdrop-blur-md px-4 py-2 rounded-2xl text-xs font-bold text-white shadow-2xl border border-white/20">
                                                     <ImageIcon size={14} />
-                                                    <span>+{extraCount} sary hafa</span>
+                                                    <span>+{extraCount}</span>
                                                 </div>
                                             </div>
                                         )}
                                     </div>
 
                                     {/* Content Area */}
-                                    <div className="p-8 flex flex-col flex-grow">
+                                    <div className="p-8 flex flex-col grow">
                                         <div className="flex items-center gap-2 text-indigo-500 mb-4">
                                             <div className="p-1.5 bg-indigo-50 rounded-lg text-indigo-600">
                                                 <MapPin size={14} strokeWidth={3} />
@@ -163,7 +185,7 @@ const InterventionsPubliees = () => {
             {/* MODAL - FIXED SECTION */}
             {selectedItem && (
                 <div 
-                    className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-8 bg-slate-900/95 backdrop-blur-md animate-in fade-in zoom-in duration-300"
+                    className="fixed inset-0 z-100 flex items-center justify-center p-4 md:p-8 bg-slate-900/95 backdrop-blur-md animate-in fade-in zoom-in duration-300"
                     onClick={() => setSelectedItem(null)}
                 >
                     <div 
@@ -196,7 +218,7 @@ const InterventionsPubliees = () => {
                                         ? JSON.parse(selectedItem.image) 
                                         : [selectedItem.image])
                                 ).filter(Boolean).map((img, idx) => (
-                                    <div key={idx} className="group relative rounded-[2rem] overflow-hidden h-80 shadow-lg border border-slate-100">
+                                    <div key={idx} className="group relative rounded-4xl overflow-hidden h-80 shadow-lg border border-slate-100">
                                         <img 
                                             src={img} 
                                             alt="" 
