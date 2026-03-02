@@ -53,36 +53,34 @@ const InterventionsPubliees = () => {
         <div className="bg-slate-50 min-h-screen pb-20 font-sans">
             {/* Header Section */}
             <div className="px-6 mb-12"> {/* Container mba hisy elanelana kely amin'ny sisin'ny écran */}
-                    <div className="relative max-w-6xl mx-auto py-20 px-6 text-center overflow-hidden rounded-3xl shadow-2xl group">
-                        
-                        {/* --- BACKGROUND IMAGE --- */}
-                        <div className="absolute inset-0 z-0">
-                            <img 
-                                src="/Interv.jpg"
-                                alt="Background" 
-                                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                            />
-                            {/* Overlay mainty kely mba ho hita tsara ny soratra fotsy */}
-                            <div className="absolute inset-0 bg-indigo-900/70 mix-blend-multiply"></div>
-                            <div className="absolute inset-0 bg-linear-to-t from-indigo-900/80 to-transparent"></div>
-                        </div>
+            <div className="w-full mb-12"> {/* Nesofina ny px-6 teto mba hameno sisiny */}
+                <div className="relative w-full py-32 px-6 text-center overflow-hidden group">
+                    
+                    {/* --- BACKGROUND IMAGE MAZAVA TSARA --- */}
+                    <div className="absolute inset-0 z-0">
+                        <img 
+                            src="/Interv.jpg" 
+                            alt="Background" 
+                            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                        />
+                        {/* Overlay maivana kely fotsiny (Gris/Black 20%) mba hahafahan'ny maso mamaky ny soratra */}
+                        <div className="absolute inset-0 bg-black/20"></div>
+                    </div>
 
-                        {/* --- DECORATIVE BLUR (Tazomintsika ilay blur teo aloha) --- */}
-                        <div className="absolute inset-0 opacity-20 pointer-events-none z-10">
-                            <div className="absolute top-0 left-0 w-64 h-64 bg-white rounded-full -translate-x-1/2 -translate-y-1/2 blur-3xl"></div>
-                        </div>
-
-                        {/* --- CONTENT --- */}
-                        <div className="relative z-20">
-                            <h1 className="text-4xl md:text-6xl font-black mb-6 tracking-tight text-white drop-shadow-md">
-                                Nos Interventions
-                            </h1>
-                            <p className="text-indigo-50 max-w-2xl mx-auto text-lg font-medium leading-relaxed drop-shadow-sm">
-                                Découvrez l'impact de nos actions sur le terrain et les projets réalisés pour les communautés.
-                            </p>
-                        </div>
+                    {/* --- CONTENT --- */}
+                    <div className="relative z-20">
+                        <h1 className="text-4xl md:text-7xl font-black mb-6 tracking-tight text-white drop-shadow-[0_5px_15px_rgba(0,0,0,0.8)]">
+                            Nos Interventions
+                        </h1>
+                        <p className="text-white max-w-3xl mx-auto text-xl font-bold leading-relaxed drop-shadow-[0_2px_10px_rgba(0,0,0,0.8)]">
+                            Découvrez l'impact de nos actions sur le terrain et les projets réalisés pour les communautés.
+                        </p>
                     </div>
                 </div>
+            </div>
+            </div>
+
+
 
             <div className="max-w-7xl mx-auto px-6">
                 {interventions.length > 0 ? (
