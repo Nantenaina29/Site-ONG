@@ -20,7 +20,7 @@ const NosActivites = () => {
       icon: <Users size={24} />,
       img: "/GS.jpg",
       desc: "La base de l'Action Tsinjo Aina repose sur la constitution de groupes informels soudés par la confiance.",
-      details: "Chaque groupe se structure avec un bureau permanent (Président, Trésorier, Secrétaire) élu de manière transparente. C'est une cellule d'apprentissage de la démocratie directe.",
+      details: "Pour fonctionner efficacement, chaque Groupe de Solidarité (GS) se structure en désignant trois responsables : un(e) Président(e), un(e) Trésorier(e) et un(e) Secrétaire, élus de manière ouverte et transparente. Cette organisation minimale est indispensable pour accomplir les tâches spécifiques du groupe, bien que les responsables ne disposent d'aucune prérogative particulière, assumant simplement des responsabilités supplémentaires dans l'intérêt de tous. Le GS sert ainsi de cellule de base pour l'apprentissage de la démocratie directe, où chaque membre peut s'exprimer lors de débats collectifs visant à atteindre un consensus sain pour la prise de décision. Ce fonctionnement est encadré par un Règlement Intérieur (RI) établi dès la création, qui définit les choix du groupement et évolue progressivement selon la maturation et les progrès des membres.",
       points: ["Solidarité et confiance", "Décisions par consensus", "Équilibre hommes/femmes", "Règlement évolutif"],
       themeColor: "text-blue-700",
       bgColor: "bg-blue-700"
@@ -32,7 +32,7 @@ const NosActivites = () => {
       icon: <Coins size={24} />,
       img: "/Epargne.jpg",
       desc: "L'épargne commune est l'arme principale de libération des membres face aux usuriers.",
-      details: "Elle permet d'octroyer des crédits pour des besoins vitaux (nourriture, santé, écolage). Le principe 'On suit le plus faible' garantit l'inclusion de tous.",
+      details: "L'épargne commune constitue l'outil principal de libération et d'autodéfense des membres, pouvant prendre la forme d'argent ou de produits agricoles comme le riz, dont la valeur augmente stratégiquement durant la période de soudure. Pour garantir une inclusion totale, le groupement applique le principe fondamental « On suit le plus faible », ajustant le taux de cotisation pour permettre aux membres les plus nécessiteux de participer activement. Cette épargne permet d'octroyer des crédits internes strictement réservés aux besoins vitaux — tels que la nourriture, la santé ou l'écolage — ainsi qu'à l'achat de semences, offrant ainsi une alternative concrète pour éviter le recours aux usuriers. Afin de protéger les plus vulnérables, la gestion est encadrée par un plafond d'emprunt garantissant l'équité, des délais de remboursement réalistes et un taux d'intérêt nul ou très modeste",
       points: ["Épargne en riz ou argent", "Lutte contre l'usure", "Inclusion des vulnérables", "Gestion rigoureuse"],
       themeColor: "text-emerald-600",
       bgColor: "bg-emerald-600"
@@ -44,7 +44,7 @@ const NosActivites = () => {
       icon: <Sprout size={24} />,
       img: "/Formation.jpg",
       desc: "Nous formons les membres aux bases de l'agroécologie pour augmenter la production familiale.",
-      details: "Fabrication de compost, haies vives et banques de semences communautaires sont au cœur de l'action pour une alimentation saine et durable.",
+      details: "L'agroécologie au sein de l'ONG Tsinjo Aina vise à transformer la précarité en souveraineté alimentaire en agissant directement sur les charges d'exploitation et la qualité de la nutrition des familles. Au cœur de cette démarche, les membres apprennent à fabriquer du compost et à installer des haies vives pour fertiliser et protéger leurs terres à moindre coût. L'action se concentre également sur la création de banques de semences communautaires et l'augmentation de la diversité des variétés locales disponibles, ce qui permet aux paysans de s'affranchir des intrants coûteux et de garantir une alimentation saine et durable pour leurs foyers. Cette souveraineté est renforcée par des formations spécifiques sur le changement climatique et la gestion familiale, permettant aux bénéficiaires de maîtriser leur production sur le long terme.",
       points: ["Compostage & Haies vives", "Semences locales", "Éducation nutritionnelle", "Adaptation au climat"],
       themeColor: "text-green-600",
       bgColor: "bg-green-600"
@@ -56,8 +56,8 @@ const NosActivites = () => {
       icon: <Network size={24} />,
       img: "/Dvpmt.JPG",
       desc: "Le Réseau Tsinjo Aina regroupe les GS pour porter des plaidoyers au niveau communal.",
-      details: "Les membres intègrent les Structures Locales de Concertation (SLC) pour agir sur le foncier, les droits civiques et l'accès aux services de base.",
-      points: ["Conseils entre groupes", "Plaidoyer via la SLC", "Sécurisation foncière", "Diagnostic participatif"],
+      details: "Le réseautage au sein de l'Action Tsinjo Aina s'organise à travers des plates-formes informelles au niveau des Fokontany, permettant aux groupements de proximité de se concerter régulièrement pour renforcer leur autonomie et atteindre le désendettement. Ces rencontres, qui favorisent l'échange et le conseil mutuel, servent de base à un plaidoyer structuré où les membres intègrent les Structures Locales de Concertation (SLC) pour porter leurs revendications auprès des autorités. Cette dynamique collective permet de définir des priorités d'action commune, telles que la défense des droits civiques, la sécurisation foncière, l'accès à l'eau potable et l'agriculture adaptée, transformant ainsi le réseau en un véritable levier d'influence pour l'accès aux services de base et le développement local.",
+      points: ["Conseils entre groupes", "Plaidoyer", "Sécurisation foncière", "Diagnostic participatif"],
       themeColor: "text-blue-600",
       bgColor: "bg-blue-600"
     }
