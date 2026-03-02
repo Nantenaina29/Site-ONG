@@ -77,51 +77,49 @@ const Realisations = () => {
                         {/* Ny div mikisaka (Marquee effect) */}
                         <div className="flex w-max animate-scroll-slow group-hover:pause-animation">
     {data && data.map((intervention, index) => {
-        // --- LOGIQUE DE RÉCUPÉRATION DES IMAGES ---
-        
-        // 1. Mitady izay sary misy (images, image, na imgUrl)
-        let imageList = [];
-        if (Array.isArray(intervention.images)) {
-            imageList = intervention.images;
-        } else if (intervention.images && typeof intervention.images === 'string') {
-            // Raha toa ka string misy koma ny images
-            imageList = intervention.images.includes(',') ? intervention.images.split(',') : [intervention.images];
-        } else if (intervention.image) {
-            imageList = [intervention.image];
-        } else if (intervention.imgUrl) {
-            imageList = [intervention.imgUrl];
+        // --- FANAMARIHANA: 'image' no column ao amin'ny Supabase ---
+        const saryAvyAminDB = intervention.image;
+
+        let listSary = [];
+
+        // 1. Raha toa ka Array ny 'image' (JSON ao amin'ny Supabase)
+        if (Array.isArray(saryAvyAminDB)) {
+            listSary = saryAvyAminDB;
+        } 
+        // 2. Raha toa ka String misy faingo (ohatra: "url1, url2")
+        else if (typeof saryAvyAminDB === 'string' && saryAvyAminDB.includes(',')) {
+            listSary = saryAvyAminDB.split(',').map(item => item.trim());
+        }
+        // 3. Raha sary tokana (String tsotra)
+        else if (saryAvyAminDB) {
+            listSary = [saryAvyAminDB];
         }
 
-        // 2. Madio ny URL (manaisotra espace)
-        const cleanImages = imageList.map(url => typeof url === 'string' ? url.trim() : url).filter(url => url);
-
-        // 3. Mifidy ny Cover sy ny Count
-        const coverImage = cleanImages.length > 0 ? cleanImages[0] : null;
-        const remainingCount = cleanImages.length > 1 ? cleanImages.length - 1 : 0;
+        const cover = listSary[0];
+        const countSisa = listSary.length > 1 ? listSary.length - 1 : 0;
 
         return (
             <div key={index} className="flex-shrink-0 w-72 md:w-96 px-3">
-                <div className="relative h-64 md:h-80 rounded-[2.5rem] overflow-hidden shadow-lg border border-slate-100 group/item">
+                <div className="relative h-64 md:h-80 rounded-[2.5rem] overflow-hidden shadow-lg border border-slate-100 group/item bg-slate-50">
                     
-                    {coverImage ? (
-                        <img 
-                            src={coverImage} 
-                            alt={intervention.title} 
-                            className="w-full h-full object-cover transition-transform duration-700 group-hover/item:scale-110"
-                            onError={(e) => {
-                                // Raha mbola tsy mandeha ny sary dia jereo ny console
-                                console.error("URL sary diso:", coverImage);
-                                e.target.src = 'https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=400';
-                            }}
-                        />
+                    {cover ? (
+                        <>
+                            <img 
+                                src={cover} 
+                                alt={intervention.title} 
+                                className="w-full h-full object-cover transition-transform duration-700 group-hover/item:scale-110"
+                            />
+                            
+                            {/* Badge +X mipoitra raha misy sary maromaro */}
+                            {countSisa > 0 && (
+                                <div className="absolute top-6 right-6 bg-black/70 backdrop-blur-md text-white px-4 py-2 rounded-full text-sm font-black z-10 border border-white/20">
+                                    +{countSisa}
+                                </div>
+                            )}
+                        </>
                     ) : (
-                        <div className="w-full h-full bg-slate-200 flex items-center justify-center">Tsy misy sary</div>
-                    )}
-
-                    {/* Badge +X */}
-                    {remainingCount > 0 && (
-                        <div className="absolute top-6 right-6 bg-black/70 backdrop-blur-md text-white px-4 py-2 rounded-full text-sm font-black z-10 border border-white/20">
-                            +{remainingCount}
+                        <div className="flex items-center justify-center h-full text-slate-400">
+                            Tsy misy sary
                         </div>
                     )}
                     
