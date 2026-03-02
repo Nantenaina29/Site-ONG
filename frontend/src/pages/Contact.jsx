@@ -114,16 +114,29 @@ const Contact = () => {
 
             {/* SOCIAL MEDIA */}
             <div className="pt-8 border-t border-slate-100">
-              <h4 className="font-bold text-slate-400 uppercase text-black tracking-[0.4em] mb-6">Suivez notre impact</h4>
-              <div className="flex gap-4">
-                {[Facebook, Twitter, Instagram].map((Icon, i) => (
-                  <a key={i} href="#" className="p-4 bg-slate-50 rounded-full text-slate-900 hover:bg-slate-900 hover:text-white transition-all duration-300">
-                    <Icon size={20} />
-                  </a>
-                ))}
+                <h4 className="font-bold text-slate-400 uppercase text-black tracking-[0.4em] mb-6">
+                  Suivez notre impact
+                </h4>
+                <div className="flex gap-4">
+                  {[
+                    { Icon: Facebook, link: "https://www.facebook.com/groups/1016298758850495/" },
+                    { Icon: Twitter, link: "https://twitter.com/yourprofile" }, // Soloy ny rohy-nao
+                    { Icon: Instagram, link: "https://instagram.com/yourprofile" } // Soloy ny rohy-nao
+                  ].map((social, i) => (
+                    <a 
+                      key={i} 
+                      href={social.link} 
+                      target="_blank" 
+                      rel="noopener noreferrer" 
+                      className="p-4 bg-slate-50 rounded-full text-slate-900 hover:bg-slate-900 hover:text-white transition-all duration-300"
+                    >
+                      <social.Icon size={20} />
+                    </a>
+                  ))}
+                </div>
               </div>
-            </div>
-          </div>
+              </div>
+
 
           {/* ANKAVANANA: FORMULAIRE (CLEAN & PRO) */}
           <div className="lg:col-span-2">
