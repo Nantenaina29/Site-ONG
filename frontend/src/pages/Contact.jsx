@@ -120,8 +120,8 @@ const Contact = () => {
                 <div className="flex gap-4">
                   {[
                     { Icon: Facebook, link: "https://www.facebook.com/groups/1016298758850495/" },
-                    { Icon: Twitter, link: "https://twitter.com/yourprofile" }, // Soloy ny rohy-nao
-                    { Icon: Instagram, link: "https://instagram.com/yourprofile" } // Soloy ny rohy-nao
+                    { Icon: Twitter, link: "https://twitter.com/yourprofile" }, 
+                    { Icon: Instagram, link: "https://instagram.com/yourprofile" } 
                   ].map((social, i) => (
                     <a 
                       key={i} 
