@@ -22,11 +22,10 @@ const Contact = () => {
         'service_c4flxy7', 
         '5dlswmu', 
         {
-          from_name: form.name,
-          from_email: form.email,
+          name: form.name,    
+          email: form.email,  
           subject: form.subject,
-          message: form.message,
-          to_email: 'elyserandria29@gmail.com' // Ny email-nao
+          message: form.message  
         },
         'QgPdbQQl9Dkymx3Dw'
       );
