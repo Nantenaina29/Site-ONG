@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Mail, Phone, MapPin, Send, Facebook, Twitter, Instagram, Loader2, MessageSquare } from 'lucide-react';
 import Swal from 'sweetalert2';
 import { supabase } from '../supabaseClient';
+import emailjs from '@emailjs/browser';
 
 const Contact = () => {
   const [loading, setLoading] = useState(false);
@@ -10,40 +11,34 @@ const Contact = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-
+  
     try {
-      // Ampidirina mivantana ao amin'ny table 'messages' (na 'contact') ao amin'ny Supabase
       const { error } = await supabase
-        .from('contact_messages') // Hamarino raha ity no anaran'ny table-nao
-        .insert([
-          { 
-            name: form.name, 
-            email: form.email, 
-            subject: form.subject, 
-            message: form.message,
-            created_at: new Date()
-          }
-        ]);
-
+        .from('contact_messages')
+        .insert([form]);
       if (error) throw error;
 
+      await emailjs.send(
+        'service_c4flxy7', 
+        '5dlswmu', 
+        {
+          from_name: form.name,
+          from_email: form.email,
+          subject: form.subject,
+          message: form.message,
+          to_email: 'elhadari04@gmail.com' // Ny email-nao
+        },
+        'YOUR_PUBLIC_KEY'
+      );
+  
       setLoading(false);
-      Swal.fire({
-        title: 'Message envoyé !',
-        text: 'Votre message a été bien enregistré. Notre équipe vous contactera.',
-        icon: 'success',
-        confirmButtonColor: '#0f172a'
-      });
+      Swal.fire({ title: 'Success!', icon: 'success' });
       setForm({ name: '', email: '', subject: '', message: '' });
-
+  
     } catch (err) {
       setLoading(false);
-      console.error(err);
-      Swal.fire({
-        title: 'Erreur !',
-        text: 'Impossible d\'enregistrer le message. Verifiez.',
-        icon: 'error'
-      });
+      console.error(err); // <--- Ampiasao toy izao dia tsy ho mena intsony izy
+      Swal.fire({ title: 'Erreur !', icon: 'error' });
     }
   };
   return (
