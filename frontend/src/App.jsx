@@ -323,52 +323,52 @@ function App() {
             {isMenuOpen ? <X size={30} /> : <Menu size={30} />}
           </button>
         </nav>
+              {/* --- SIDEBAR MOBILE --- */}
+              {isMenuOpen && (
+                <div 
+                  className="fixed inset-0 top-[105px] bg-black/30 z-40 md:hidden" 
+                  onClick={() => setIsMenuOpen(false)}
+                ></div>
+              )}
 
-        {isMenuOpen && (
-            <div 
-              className="fixed inset-0 top-[105px] bg-black/20 z-40 md:hidden" 
-              onClick={() => setIsMenuOpen(false)}
-            ></div>
-          )}
-
-          <div className={`fixed top-[105px] left-0 h-[calc(100vh-105px)] bg-white z-50 shadow-xl transition-transform duration-300 ease-in-out md:hidden flex flex-col border-r ${
-            isMenuOpen ? 'translate-x-0' : '-translate-x-full'
-          }`} 
-          style={{ width: '100px' }}> {/* 2.5 cm eo ho eo ny 95px amin'ny écran normal */}
-            
-            <ul className="flex flex-col items-center py-8 space-y-8 px-2">
-              {navLinks.map((l) => (
-                <li key={l.path} className="w-full flex justify-center">
-                  <NavLink 
-                    to={l.path} 
-                    onClick={() => setIsMenuOpen(false)}
-                    className={({ isActive }) => 
-                      `flex flex-col items-center gap-1 transition-colors ${
-                        isActive ? 'text-green-600' : 'text-indigo-900 hover:text-green-600'
-                      }`
-                    }
-                  >
-                    {l.icon}
-                    <span className="text-[9px] font-black uppercase tracking-tighter text-center">
-                      {l.label}
-                    </span>
-                  </NavLink>
-                </li>
-              ))}
-              
-              <li className="pt-6 border-t border-gray-100 w-full flex justify-center">
-                <Link 
-                  to="/login" 
-                  onClick={() => setIsMenuOpen(false)} 
-                  className="flex flex-col items-center gap-1 text-indigo-900 hover:text-green-600"
-                >
-                  <UserCircle size={20} />
-                  <span className="text-[9px] font-black uppercase tracking-tighter">Admin</span>
-                </Link>
-              </li>
-            </ul>
-          </div>
-
+              <div className={`fixed top-[105px] left-0 h-[calc(100vh-105px)] bg-white z-50 shadow-2xl transition-transform duration-300 ease-in-out md:hidden flex flex-col border-r ${
+                isMenuOpen ? 'translate-x-0' : '-translate-x-full'
+              }`} 
+              style={{ width: '120px' }}> {/* Nampiana kely ho 120px mba ho antonona horizontal */}
+                
+                <ul className="flex flex-col items-start py-6 space-y-6 px-3">
+                  {navLinks.map((l) => (
+                    <li key={l.path} className="w-full">
+                      <NavLink 
+                        to={l.path} 
+                        onClick={() => setIsMenuOpen(false)}
+                        className={({ isActive }) => 
+                          `flex flex-row items-center gap-3 transition-colors w-full p-2 rounded-lg ${
+                            isActive ? 'text-green-600 bg-green-50' : 'text-indigo-900 hover:bg-gray-50'
+                          }`
+                        }
+                      >
+                        {/* Ny icon sy ny soratra dia efa hifanitsy horizontal eto noho ny flex-row */}
+                        <span className="shrink-0">{l.icon}</span>
+                        <span className="text-[10px] font-black uppercase tracking-tighter truncate">
+                          {l.label}
+                        </span>
+                      </NavLink>
+                    </li>
+                  ))}
+                  
+                  <li className="pt-4 border-t border-gray-100 w-full">
+                    <Link 
+                      to="/login" 
+                      onClick={() => setIsMenuOpen(false)} 
+                      className="flex flex-row items-center gap-3 text-indigo-900 hover:text-green-600 p-2"
+                    >
+                      <UserCircle size={20} />
+                      <span className="text-[10px] font-black uppercase tracking-tighter">Admin</span>
+                    </Link>
+                  </li>
+                </ul>
+              </div>
         {/* --- CONTENT --- */}
         <main className="grow">
           <Routes>
