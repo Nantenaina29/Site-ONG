@@ -334,7 +334,7 @@ function App() {
           <div className={`fixed top-[105px] left-0 h-[calc(100vh-105px)] bg-white z-50 shadow-xl transition-transform duration-300 ease-in-out md:hidden flex flex-col border-r ${
             isMenuOpen ? 'translate-x-0' : '-translate-x-full'
           }`} 
-          style={{ width: '95px' }}> {/* 2.5 cm eo ho eo ny 95px amin'ny écran normal */}
+          style={{ width: '100px' }}> {/* 2.5 cm eo ho eo ny 95px amin'ny écran normal */}
             
             <ul className="flex flex-col items-center py-8 space-y-8 px-2">
               {navLinks.map((l) => (
