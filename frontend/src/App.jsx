@@ -326,45 +326,50 @@ function App() {
               {/* --- SIDEBAR MOBILE --- */}
               {isMenuOpen && (
                 <div 
-                  className="fixed inset-0 top-[105px] bg-black/30 z-40 md:hidden" 
+                  className="fixed inset-0 top-[105px] bg-black/40 z-40 md:hidden backdrop-blur-sm" 
                   onClick={() => setIsMenuOpen(false)}
                 ></div>
               )}
 
-              <div className={`fixed top-[105px] left-0 h-[calc(100vh-105px)] bg-white z-50 shadow-2xl transition-transform duration-300 ease-in-out md:hidden flex flex-col border-r ${
+              <div className={`fixed top-[105px] left-0 h-[calc(100vh-105px)] bg-white z-50 shadow-2xl transition-transform duration-300 ease-in-out md:hidden flex flex-col border-r border-gray-100 ${
                 isMenuOpen ? 'translate-x-0' : '-translate-x-full'
               }`} 
-              style={{ width: '120px' }}> {/* Nampiana kely ho 120px mba ho antonona horizontal */}
+              style={{ width: '200px' }}> {/* Natao 200px mba ho malalaka tsara ny soratra */}
                 
-                <ul className="flex flex-col items-start py-6 space-y-6 px-3">
+                <ul className="flex flex-col items-start py-8 space-y-2 px-4">
                   {navLinks.map((l) => (
                     <li key={l.path} className="w-full">
                       <NavLink 
                         to={l.path} 
                         onClick={() => setIsMenuOpen(false)}
                         className={({ isActive }) => 
-                          `flex flex-row items-center gap-3 transition-colors w-full p-2 rounded-lg ${
-                            isActive ? 'text-green-600 bg-green-50' : 'text-indigo-900 hover:bg-gray-50'
+                          `flex flex-row items-center gap-4 p-3 rounded-xl transition-all duration-200 w-full ${
+                            isActive 
+                              ? 'bg-green-50 text-green-600 shadow-sm' 
+                              : 'text-indigo-900 hover:bg-gray-50'
                           }`
                         }
                       >
-                        {/* Ny icon sy ny soratra dia efa hifanitsy horizontal eto noho ny flex-row */}
-                        <span className="shrink-0">{l.icon}</span>
-                        <span className="text-[10px] font-black uppercase tracking-tighter truncate">
+                        {/* Icon - tsy miova habe (shrink-0) */}
+                        <span className="shrink-0 opacity-80">{l.icon}</span>
+                        
+                        {/* Soratra - tsy tapaka (whitespace-nowrap) */}
+                        <span className="text-[11px] font-extrabold uppercase tracking-wide whitespace-nowrap">
                           {l.label}
                         </span>
                       </NavLink>
                     </li>
                   ))}
                   
-                  <li className="pt-4 border-t border-gray-100 w-full">
+                  {/* Admin Section eo ambany */}
+                  <li className="mt-4 pt-4 border-t border-gray-100 w-full">
                     <Link 
                       to="/login" 
                       onClick={() => setIsMenuOpen(false)} 
-                      className="flex flex-row items-center gap-3 text-indigo-900 hover:text-green-600 p-2"
+                      className="flex flex-row items-center gap-4 p-3 text-indigo-900 hover:text-green-600 transition-colors"
                     >
-                      <UserCircle size={20} />
-                      <span className="text-[10px] font-black uppercase tracking-tighter">Admin</span>
+                      <UserCircle size={22} className="shrink-0 opacity-80" />
+                      <span className="text-[11px] font-extrabold uppercase tracking-wide">Admin</span>
                     </Link>
                   </li>
                 </ul>
