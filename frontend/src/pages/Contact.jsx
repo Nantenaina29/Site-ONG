@@ -26,7 +26,7 @@ const Contact = () => {
           from_email: form.email,
           subject: form.subject,
           message: form.message,
-          to_email: 'elhadari04@gmail.com' // Ny email-nao
+          to_email: 'elyserandria29@gmail.com' // Ny email-nao
         },
         'QgPdbQQl9Dkymx3Dw'
       );
