@@ -148,7 +148,7 @@ const Contact = () => {
                     <input 
                       type="text" 
                       className="w-full p-5 bg-slate-50 border-none rounded-2xl outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white transition-all text-slate-900 font-medium"
-                      placeholder="Ex: Jean Ralambo"
+                      placeholder="Nom complet"
                       value={form.name}
                       onChange={(e) => setForm({...form, name: e.target.value})}
                       required
@@ -159,7 +159,7 @@ const Contact = () => {
                     <input 
                       type="email" 
                       className="w-full p-5 bg-slate-50 border-none rounded-2xl outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white transition-all text-slate-900 font-medium"
-                      placeholder="email@exemple.com"
+                      placeholder="Adresse email"
                       value={form.email}
                       onChange={(e) => setForm({...form, email: e.target.value})}
                       required

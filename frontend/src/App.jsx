@@ -369,7 +369,7 @@ function App() {
                       className="flex flex-row items-center gap-4 p-3 text-indigo-900 hover:text-green-600 transition-colors"
                     >
                       <UserCircle size={22} className="shrink-0 opacity-80" />
-                      <span className="text-[11px] font-extrabold uppercase tracking-wide">Admin</span>
+                      <span className="text-[11px] font-extrabold uppercase tracking-wide">Admin ONG</span>
                     </Link>
                   </li>
                 </ul>

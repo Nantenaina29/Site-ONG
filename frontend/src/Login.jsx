@@ -66,7 +66,7 @@ function Login() {
     if (!email) {
       Swal.fire({
         icon: 'warning',
-        title: 'Email manjavona',
+        title: 'Aucune Email',
         text: 'Veuillez saisir votre e-mail d’abord.',
         confirmButtonColor: '#3085d6',
       });
