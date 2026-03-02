@@ -76,44 +76,57 @@ const Realisations = () => {
 
                         {/* Ny div mikisaka (Marquee effect) */}
                         <div className="flex w-max animate-scroll-slow group-hover:pause-animation">
-                            {data && data.flatMap((intervention, interventionIndex) => {
-                                // 1. Alaina ny sary avy amin'ny 'images' (izay efa Array araka ny hita amin'ny console)
-                                const allImages = Array.isArray(intervention.images) 
-                                    ? intervention.images 
-                                    : [intervention.image || intervention.imgUrl];
+                            {data && data.length > 0 && data.flatMap((intervention, interventionIndex) => {
+                                // 1. Alaina ny sary (na images array, na image string)
+                                let imageList = [];
+                                
+                                if (Array.isArray(intervention.images)) {
+                                    imageList = intervention.images;
+                                } else if (intervention.image) {
+                                    imageList = [intervention.image];
+                                } else if (intervention.imgUrl) {
+                                    imageList = [intervention.imgUrl];
+                                }
 
-                                // 2. Sivana kely mba tsy hisy sary banga
-                                const validImages = allImages.filter(url => url && typeof url === 'string');
+                                // DEBUG: Ity no hitanao ao amin'ny Console raha mandeha ny flatMap
+                                console.log(`Intervention ${interventionIndex} (${intervention.title}):`, imageList);
 
-                                // 3. Eto no mamoaka ny sary tsirairay ho lasa String
-                                return validImages.map((singleUrl, imgIndex) => (
-                                    <div 
-                                        key={`${interventionIndex}-${imgIndex}`} 
-                                        className="flex-shrink-0 w-72 md:w-96 px-3"
-                                    >
-                                        <div className="relative h-64 md:h-80 rounded-[2.5rem] overflow-hidden shadow-lg border border-slate-100 group/item">
-                                            <img 
-                                                src={singleUrl} // ETO NO ZAVA-DEHIBE: Rohy iray (String) fa tsy Array
-                                                alt={`${intervention.title} - ${imgIndex}`} 
-                                                className="w-full h-full object-cover transition-transform duration-700 group-hover/item:scale-110"
-                                                onError={(e) => {
-                                                    e.target.onerror = null;
-                                                    e.target.src = 'https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=400';
-                                                    console.error("Mbola misy olana ity URL ity:", singleUrl);
-                                                }}
-                                            />
-                                            
-                                            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover/item:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-8">
-                                                <p className="text-green-400 text-[10px] font-black uppercase tracking-[0.2em] mb-1">
-                                                    {intervention.location}
-                                                </p>
-                                                <h3 className="text-white text-lg font-bold leading-tight">
-                                                    {intervention.title}
-                                                </h3>
+                                // 2. Raha mbola banga ny lisitra dia tsy mamoaka card
+                                if (!imageList || imageList.length === 0) return [];
+
+                                // 3. Averina ny cards
+                                return imageList.map((singleUrl, imgIndex) => {
+                                    // Hamarino raha string ilay URL fa tsy array indray
+                                    const finalUrl = Array.isArray(singleUrl) ? singleUrl[0] : singleUrl;
+
+                                    return (
+                                        <div 
+                                            key={`card-${interventionIndex}-${imgIndex}`} 
+                                            className="flex-shrink-0 w-72 md:w-96 px-3"
+                                        >
+                                            <div className="relative h-64 md:h-80 rounded-[2.5rem] overflow-hidden shadow-lg border border-slate-100 group/item">
+                                                <img 
+                                                    src={finalUrl} 
+                                                    alt={`${intervention.title} ${imgIndex}`} 
+                                                    className="w-full h-full object-cover transition-transform duration-700 group-hover/item:scale-110"
+                                                    onError={(e) => {
+                                                        e.target.onerror = null;
+                                                        e.target.src = 'https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=400';
+                                                    }}
+                                                />
+                                                
+                                                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover/item:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-8">
+                                                    <p className="text-green-400 text-[10px] font-black uppercase tracking-[0.2em] mb-1">
+                                                        {intervention.location}
+                                                    </p>
+                                                    <h3 className="text-white text-lg font-bold leading-tight">
+                                                        {intervention.title}
+                                                    </h3>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                ));
+                                    );
+                                });
                             })}
                         </div>
                     </div>
