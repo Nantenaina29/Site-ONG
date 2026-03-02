@@ -28,7 +28,7 @@ const Contact = () => {
           message: form.message,
           to_email: 'elhadari04@gmail.com' // Ny email-nao
         },
-        'YOUR_PUBLIC_KEY'
+        'QgPdbQQl9Dkymx3Dw'
       );
   
       setLoading(false);
