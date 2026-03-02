@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link, NavLink } from 'react-router-dom';
-import { UserCircle, Menu, X } from 'lucide-react';
+import {Home, Info, Briefcase, Award, Mail, UserCircle, Menu, X } from 'lucide-react';
 import { supabase } from './supabaseClient';
 import './i18n';
 
@@ -269,11 +269,11 @@ function App() {
 
   // Menu raikitra amin'ny teny Frantsay
   const navLinks = [
-    { path: "/", label: "Accueil" },
-    { path: "/a-propos", label: "À propos" },
-    { path: "/interventions-publiees", label: "Interventions" },
-    { path: "/realisations", label: "Réalisations" },
-    { path: "/contact", label: "Contact" }
+    { path: "/", label: "Accueil", icon: <Home size={18} /> },
+    { path: "/a-propos", label: "À propos", icon: <Info size={18} /> },
+    { path: "/interventions-publiees", label: "Interventions", icon: <Briefcase size={18} /> },
+    { path: "/realisations", label: "Réalisations", icon: <Award size={18} /> },
+    { path: "/contact", label: "Contact", icon: <Mail size={18} /> }
   ];
 
   if (loading) return (
@@ -324,44 +324,50 @@ function App() {
           </button>
         </nav>
 
-        {/* --- SIDEBAR MOBILE --- */}
         {isMenuOpen && (
-          <div className="fixed inset-0 top-0 bg-black/30 z-40 md:hidden" onClick={() => setIsMenuOpen(false)}></div>
-        )}
+            <div 
+              className="fixed inset-0 top-[105px] bg-black/20 z-40 md:hidden" 
+              onClick={() => setIsMenuOpen(false)}
+            ></div>
+          )}
 
-        <div className={`fixed top-0 left-0 h-full bg-white z-50 shadow-2xl transition-transform duration-300 ease-in-out md:hidden flex flex-col border-r ${isMenuOpen ? 'translate-x-0' : '-translate-x-full'}`}
-             style={{ width: '250px' }}> 
-          
-          <div className="p-6 border-b flex justify-between items-center">
-            <span className="font-black text-green-600 text-sm">MENU</span>
-            <X size={24} onClick={() => setIsMenuOpen(false)} className="cursor-pointer" />
-          </div>
-
-          <ul className="flex flex-col items-start py-6 space-y-6 px-6">
-            {navLinks.map((l) => (
-              <li key={l.path} className="w-full">
-                <NavLink 
-                  to={l.path} 
-                  onClick={() => setIsMenuOpen(false)}
-                  className={({ isActive }) => 
-                    `text-[13px] font-black uppercase tracking-widest transition-colors block w-full ${
-                      isActive ? 'text-green-600' : 'text-indigo-900 hover:text-green-600'
-                    }`
-                  }
-                >
-                  {l.label}
-                </NavLink>
-              </li>
-            ))}
+          <div className={`fixed top-[105px] left-0 h-[calc(100vh-105px)] bg-white z-50 shadow-xl transition-transform duration-300 ease-in-out md:hidden flex flex-col border-r ${
+            isMenuOpen ? 'translate-x-0' : '-translate-x-full'
+          }`} 
+          style={{ width: '95px' }}> {/* 2.5 cm eo ho eo ny 95px amin'ny écran normal */}
             
-            <li className="pt-4 border-t border-gray-100 w-full">
-              <Link to="/login" onClick={() => setIsMenuOpen(false)} className="flex items-center space-x-2 text-indigo-900 hover:text-green-600">
-                <UserCircle size={20} />
-                <span className="text-[13px] font-black uppercase tracking-widest">Admin</span>
-              </Link>
-            </li>
-          </ul>
-        </div>
+            <ul className="flex flex-col items-center py-8 space-y-8 px-2">
+              {navLinks.map((l) => (
+                <li key={l.path} className="w-full flex justify-center">
+                  <NavLink 
+                    to={l.path} 
+                    onClick={() => setIsMenuOpen(false)}
+                    className={({ isActive }) => 
+                      `flex flex-col items-center gap-1 transition-colors ${
+                        isActive ? 'text-green-600' : 'text-indigo-900 hover:text-green-600'
+                      }`
+                    }
+                  >
+                    {l.icon}
+                    <span className="text-[9px] font-black uppercase tracking-tighter text-center">
+                      {l.label}
+                    </span>
+                  </NavLink>
+                </li>
+              ))}
+              
+              <li className="pt-6 border-t border-gray-100 w-full flex justify-center">
+                <Link 
+                  to="/login" 
+                  onClick={() => setIsMenuOpen(false)} 
+                  className="flex flex-col items-center gap-1 text-indigo-900 hover:text-green-600"
+                >
+                  <UserCircle size={20} />
+                  <span className="text-[9px] font-black uppercase tracking-tighter">Admin</span>
+                </Link>
+              </li>
+            </ul>
+          </div>
 
         {/* --- CONTENT --- */}
         <main className="grow">
