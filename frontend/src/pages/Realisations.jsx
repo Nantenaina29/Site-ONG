@@ -69,37 +69,37 @@ const Realisations = () => {
                     <div className="relative w-full overflow-hidden group py-4">
                         
                         {/* Gradient Overlay Ankavia (Mampanjavona) */}
-                        <div className="absolute inset-y-0 left-0 w-32 md:w-64 z-10 bg-gradient-to-r from-white to-transparent pointer-events-none"></div>
+                        <div className="absolute inset-y-0 left-0 w-32 md:w-64 z-10 bg-linear-to-r from-white to-transparent pointer-events-none"></div>
                         
                         {/* Gradient Overlay Ankavanana (Mampanjavona) */}
-                        <div className="absolute inset-y-0 right-0 w-32 md:w-64 z-10 bg-gradient-to-l from-white to-transparent pointer-events-none"></div>
+                        <div className="absolute inset-y-0 right-0 w-32 md:w-64 z-10 bg-linear-to-l from-white to-transparent pointer-events-none"></div>
 
                         {/* Ny div mikisaka (Marquee effect) */}
                         <div className="flex w-max animate-scroll-slow group-hover:pause-animation">
-    {data && data.map((intervention, index) => {
-        // --- FANAMARIHANA: 'image' no column ao amin'ny Supabase ---
-        const saryAvyAminDB = intervention.image;
+                        {data && data.map((intervention, index) => {
+                            
+                            const saryAvyAminDB = intervention.image;
 
-        let listSary = [];
+                            let listSary = [];
 
-        // 1. Raha toa ka Array ny 'image' (JSON ao amin'ny Supabase)
-        if (Array.isArray(saryAvyAminDB)) {
-            listSary = saryAvyAminDB;
-        } 
-        // 2. Raha toa ka String misy faingo (ohatra: "url1, url2")
-        else if (typeof saryAvyAminDB === 'string' && saryAvyAminDB.includes(',')) {
-            listSary = saryAvyAminDB.split(',').map(item => item.trim());
-        }
-        // 3. Raha sary tokana (String tsotra)
-        else if (saryAvyAminDB) {
-            listSary = [saryAvyAminDB];
-        }
+                           
+                            if (Array.isArray(saryAvyAminDB)) {
+                                listSary = saryAvyAminDB;
+                            } 
+                           
+                            else if (typeof saryAvyAminDB === 'string' && saryAvyAminDB.includes(',')) {
+                                listSary = saryAvyAminDB.split(',').map(item => item.trim());
+                            }
+                      
+                            else if (saryAvyAminDB) {
+                                listSary = [saryAvyAminDB];
+                            }
 
-        const cover = listSary[0];
-        const countSisa = listSary.length > 1 ? listSary.length - 1 : 0;
+                            const cover = listSary[0];
+                            const countSisa = listSary.length > 1 ? listSary.length - 1 : 0;
 
         return (
-            <div key={index} className="flex-shrink-0 w-72 md:w-96 px-3">
+            <div key={index} className="shrink-0 w-72 md:w-96 px-3">
                 <div className="relative h-64 md:h-80 rounded-[2.5rem] overflow-hidden shadow-lg border border-slate-100 group/item bg-slate-50">
                     
                     {cover ? (
@@ -123,7 +123,7 @@ const Realisations = () => {
                         </div>
                     )}
                     
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover/item:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-8">
+                    <div className="absolute inset-0 bg-linear-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover/item:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-8">
                         <p className="text-green-400 text-[10px] font-black uppercase tracking-[0.2em] mb-1">
                             {intervention.location}
                         </p>
