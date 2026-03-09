@@ -94,10 +94,10 @@ const TeamSection = () => {
 
       {/* INFO - Nesorina ny truncate mba hidina andalana ny anarana */}
       <div className="min-w-0 flex flex-col justify-center">
-        <h4 className="text-[12px] font-black text-slate-800 tracking-tight leading-[1.1] whitespace-normal break-words">
+        <h4 className="text-[12px] font-black text-black tracking-tight leading-[1.1] whitespace-normal break-words">
           {member.name}
         </h4>
-        <p className="text-[9px] font-bold text-slate-400 uppercase tracking-wider mt-1 whitespace-normal leading-tight">
+        <p className="text-[9px] font-bold text-blue-800 uppercase tracking-wider mt-1 whitespace-normal leading-tight">
           {member.role}
         </p>
       </div>
@@ -160,7 +160,12 @@ const ActivitiesHome = () => {
                    <span className="text-7xl font-black text-gray-100 absolute -top-10 -left-2 z-0 opacity-50">{item.id}</span>
                    <h4 className="text-3xl font-black text-green-600 uppercase tracking-tight relative z-10">{item.title}</h4>
                 </div>
-                <p className="text-lg text-gray-800 leading-relaxed border-l-4 border-orange-500 pl-6 font-medium">{item.desc}</p>
+
+                {/* --- ETO NO ASIANA ILAY text-justify --- */}
+                <p className="text-lg text-gray-800 leading-relaxed border-l-4 border-orange-500 pl-6 font-medium text-justify">
+                  {item.desc}
+                </p>
+
                 <ul className="grid grid-cols-1 md:grid-cols-2 gap-y-4 gap-x-6 mt-8">
                   {item.details.map((detail, dIdx) => (
                     <li key={dIdx} className="flex items-center gap-3">
@@ -187,11 +192,11 @@ const ApproachSection = () => (
         <div className="space-y-2 text-gray-700"> 
           <div className="border-l-4 border-fmfp-green pl-4 py-1">
               <p className="text-lg font-black uppercase text-green-600 mb-0.5">Épargne Collective</p>
-              <p className="text-lg leading-snug">Pour briser le cycle de l'endettement, l'ONG met en place une épargne collective qui transforme les petites cotisations hebdomadaires en un capital communautaire géré en toute transparence. Ce fonds permet d'octroyer des crédits internes à taux justes, libérant ainsi les paysans de l'usure pour qu'ils retrouvent leur dignité et une totale indépendance financière.</p>
+              <p className="text-lg leading-snug text-justify">Pour briser le cycle de l'endettement, l'ONG met en place une épargne collective qui transforme les petites cotisations hebdomadaires en un capital communautaire géré en toute transparence. Ce fonds permet d'octroyer des crédits internes à taux justes, libérant ainsi les paysans de l'usure pour qu'ils retrouvent leur dignité et une totale indépendance financière.</p>
           </div>
           <div className="border-l-4 border-indigo-900 pl-4 py-1">
               <p className="text-lg font-black uppercase text-green-600 mb-0.5">Inclusion Totale</p>
-              <p className="text-lg leading-snug">Ce principe garantit que le rythme de progression de l'ensemble du groupe s'ajuste systématiquement sur les capacités des membres les plus vulnérables afin de ne laisser personne de côté. En plaçant l'humain avant la performance technique, cette approche renforce la cohésion sociale et assure que chaque avancée bénéficie réellement à tous, sans exception.</p>
+              <p className="text-lg leading-snug text-justify">Ce principe garantit que le rythme de progression de l'ensemble du groupe s'ajuste systématiquement sur les capacités des membres les plus vulnérables afin de ne laisser personne de côté. En plaçant l'humain avant la performance technique, cette approche renforce la cohésion sociale et assure que chaque avancée bénéficie réellement à tous, sans exception.</p>
           </div>
         </div>
       </div>
