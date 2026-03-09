@@ -130,7 +130,7 @@ const ActivitiesHome = () => {
       id: "02",
       title: "Formations & Production",
       desc:  "Ce programme cible spécifiquement les personnes les plus démunies et exclues qui rencontrent des difficultés majeures pour accéder aux ressources naturelles nécessaires à la production. L'appui repose sur une formation solide aux bases de l'agroécologie, incluant la fabrication de compost biologique et l'installation de haies vives pour enrichir les terres. L'ONG facilite également la mise à disposition de semences locales et la constitution de banques de semences communautaires afin de garantir l'autonomie et la diversité des cultures. Parallèlement, une éducation nutritionnelle est dispensée pour valoriser la production locale et assurer une alimentation saine et équilibrée à toutes les familles. Enfin, des formations transversales sur la gestion du temps, le genre et l'adaptation au changement climatique complètent ce dispositif pour renforcer la résilience globale des bénéficiaires.",
-      details: ["Bases de l'agroécologie","Éducation nutritionnelle","Genre & Climat","Banque de semences"],
+      details: ["Bases de l'agroécologie","Éducation nutritionnelle","Genre & Climat","Multiplication et conservation des semences locales"],
       img: "/Formation.jpg", align: "flex-row-reverse"
     },
     {
@@ -157,7 +157,7 @@ const ActivitiesHome = () => {
               </div>
               <div className="w-full lg:w-1/2 space-y-6 text-left">
                 <div className="relative">
-                   <span className="text-7xl font-black text-gray-100 absolute -top-10 -left-2 z-0 opacity-50">{item.id}</span>
+                   <span className="text-7xl font-black text-gray-500 absolute -top-10 -left-2 z-0 opacity-50">{item.id}</span>
                    <h4 className="text-3xl font-black text-green-600 uppercase tracking-tight relative z-10">{item.title}</h4>
                 </div>
 

@@ -17,7 +17,7 @@ const APropos = () => {
                 <h3 className="text-2xl font-black text-indigo-950 uppercase border-l-4 border-orange-500 pl-4">
                   Notre Histoire
                 </h3>
-                <div className="text-lg text-gray-700 leading-relaxed font-medium space-y-4">
+                <div className="text-lg text-gray-700 leading-relaxed font-medium space-y-4 text-justify">
                   <p>
                   Le Projet Fianarantsoa a vu le jour en 1998 dans la partie sud de Fianarantsoa
                    à Ambalavao à titre de projet individuel. Il a ensuite connu une expansion en 2001 
@@ -46,7 +46,7 @@ const APropos = () => {
                 <h3 className="text-2xl font-black text-indigo-950 uppercase border-l-4 border-emerald-500 pl-4">
                 Nos Fondements
                 </h3>
-                <div className="text-lg text-gray-700 leading-relaxed font-medium space-y-6">
+                <div className="text-lg text-gray-700 leading-relaxed font-medium space-y-6 text-justify">
                   <p>
                     <strong>Vision :</strong> Faire de chaque bénéficiaire un citoyen responsable, prenant en main son développement et vivant en harmonie dans une société équitable.
                   </p>
@@ -86,7 +86,7 @@ const APropos = () => {
             <h1 className="text-4xl md:text-5xl font-black text-indigo-950 uppercase leading-none">
               Soutenir les <br/><span className="text-emerald-600 text-3xl md:text-4xl italic">plus démunis</span>
             </h1>
-            <p className="text-gray-700 text-lg leading-relaxed border-l-4 border-emerald-500 pl-4">
+            <p className="text-gray-700 text-lg leading-relaxed border-l-4 border-emerald-500 pl-4 text-justify">
             L'Action Tsinjo Aina concentre son intervention sur les personnes les plus démunies et exclues, dont la
              vulnérabilité est accentuée par leur position sociale (absence de terres et de moyens de production),
               leur âge ou leur handicap physique et mental. Cette cible, souvent ignorée par les circuits classiques 
@@ -113,7 +113,7 @@ const APropos = () => {
             <h3 className="text-2xl font-black text-indigo-950 uppercase flex items-center gap-3">
               <Users className="text-emerald-600" /> Démocratie Directe
             </h3>
-            <p className="text-lg text-gray-700 leading-relaxed">
+            <p className="text-lg text-gray-700 leading-relaxed text-justify">
             Au sein du Groupe de Solidarité (GS), la démocratie directe se manifeste par une organisation 
             horizontale où le groupement sert de cellule de base à l'apprentissage des vertus citoyennes,
              garantissant que chaque membre dispose du même droit de parole et d'influence sur l'avenir collectif. 
