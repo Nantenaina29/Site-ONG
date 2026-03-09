@@ -75,35 +75,35 @@ const TeamSection = () => {
           </h3>
         </div>
 
-        {/* GRID MEMBRES - gap-4 ho an'ny espace kely kokoa */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          {team.map((member, index) => (
-            <div 
-              key={member.id}
-              className="group bg-white rounded-3xl p-3 shadow-sm hover:shadow-md transition-all duration-500 border border-slate-100 flex items-center gap-4 animate-in fade-in slide-in-from-bottom-2"
-              style={{ animationDelay: `${index * 50}ms` }}
-            >
-              {/* IMAGE CONTAINER - Boribory 2.5cm (approx 96px/w-24 h-24) */}
-              <div className="relative h-20 w-20 shrink-0 rounded-full overflow-hidden bg-slate-50 border-2 border-white shadow-sm">
-                <img 
-                  src={member.img || `https://ui-avatars.com/api/?name=${member.name}&background=6366f1&color=fff`} 
-                  alt={member.name}
-                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                />
-              </div>
+       {/* GRID MEMBRES - gap-4 ho an'ny espace kely kokoa */}
+<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+  {team.map((member, index) => (
+    <div 
+      key={member.id}
+      className="group bg-white rounded-3xl p-3 shadow-sm hover:shadow-md transition-all duration-500 border border-slate-100 flex items-center gap-3 animate-in fade-in slide-in-from-bottom-2"
+      style={{ animationDelay: `${index * 50}ms` }}
+    >
+      {/* IMAGE CONTAINER - h-16 w-16 dia ampy tsara mba tsy ho tery loatra ny soratra */}
+      <div className="relative h-16 w-16 shrink-0 rounded-full overflow-hidden bg-slate-50 border-2 border-white shadow-sm">
+        <img 
+          src={member.img || `https://ui-avatars.com/api/?name=${member.name}&background=6366f1&color=fff`} 
+          alt={member.name}
+          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+        />
+      </div>
 
-              {/* INFO - Atao eo anilan'ny sary (flex) mba tsy handany toerana ambony/ambany */}
-              <div className="min-w-0">
-                <h4 className="text-sm font-black text-slate-800 tracking-tight leading-tight truncate">
-                  {member.name}
-                </h4>
-                <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest truncate">
-                  {member.role}
-                </p>
-              </div>
-            </div>
-          ))}
-        </div>
+      {/* INFO - Nesorina ny truncate mba hidina andalana ny anarana */}
+      <div className="min-w-0 flex flex-col justify-center">
+        <h4 className="text-[12px] font-black text-slate-800 tracking-tight leading-[1.1] whitespace-normal break-words">
+          {member.name}
+        </h4>
+        <p className="text-[9px] font-bold text-slate-400 uppercase tracking-wider mt-1 whitespace-normal leading-tight">
+          {member.role}
+        </p>
+      </div>
+    </div>
+  ))}
+</div>
 
         {/* Empty State */}
         {team.length === 0 && (
