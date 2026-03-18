@@ -167,13 +167,18 @@ const ActivitiesHome = () => {
                 </p>
 
                 <ul className="grid grid-cols-1 md:grid-cols-2 gap-y-4 gap-x-6 mt-8">
-                  {item.details.map((detail, dIdx) => (
-                    <li key={dIdx} className="flex items-center gap-3">
-                      <div className="w-2 h-2 bg-emerald-500 rounded-full shrink-0"></div>
-                      <p className="text-lg text-green-600 font-black uppercase tracking-tight leading-none">{detail}</p>
-                    </li>
-                  ))}
-                </ul>
+                {item.details.map((detail, dIdx) => (
+                  <li key={dIdx} className="flex items-center gap-3">
+                    {/* 1. Ahena kely ny haben'ny teboka maitso */}
+                    <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full shrink-0"></div>
+                    
+                    {/* 2. Ovaina ho text-[11px] mba hifanaraka amin'ny Navbar-nao */}
+                    <p className="text-[11px] text-green-600 font-black uppercase tracking-tight leading-none">
+                      {detail}
+                    </p>
+                  </li>
+                ))}
+              </ul>
               </div>
             </div>
           ))}
