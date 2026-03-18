@@ -303,7 +303,7 @@ function App() {
 
           {/* --- VERSION ORDINATEUR --- */}
           <div className="hidden md:flex items-center space-x-8">
-            <ul className="flex space-x-8 text-[14px] font-black uppercase tracking-widest text-indigo-900 items-center">
+          <ul className="flex space-x-8 text-[11px] font-black uppercase tracking-widest text-indigo-900 items-center">
               {navLinks.map((l) => (
                 <li key={l.path}>
                   <NavLink 
