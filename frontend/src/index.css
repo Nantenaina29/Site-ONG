@@ -1,25 +1,25 @@
 @import "tailwindcss";
 
 @theme {
-  /* Mampiditra ny loko */
+  /* Loko */
   --color-fmfp-blue: #003366;
   --color-fmfp-green: #27ae60;
   --color-fmfp-orange: #f39c12;
 
-  /* IZAO NO FANALAHIDY: Ovaina ny font default an'ny Tailwind */
-  --font-sans: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
-  --font-serif: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
+  
+  --font-sans: Arial, Helvetica, sans-serif;
+  --font-serif: Arial, Helvetica, sans-serif;
 }
 
-/* Ampiharina amin'ny body mivantana koa mba azo antoka */
+
 body {
-  font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 12pt;
   -webkit-font-smoothing: antialiased;
   color: #1a1a1a;
 }
 
 h1, h2, h3, h4 {
-  letter-spacing: -0.02em;
-  /* Manery ny lohateny hampiasa ny font-family voafidy */
+  letter-spacing: -0.01em; 
   font-family: inherit; 
 }
