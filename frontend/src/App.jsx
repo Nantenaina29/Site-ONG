@@ -274,11 +274,11 @@ function App() {
 
   // Menu raikitra amin'ny teny Frantsay
   const navLinks = [
-    { path: "/", label: "Accueil", icon: <Home size={16} /> },
-    { path: "/a-propos", label: "À propos", icon: <Info size={16} /> },
-    { path: "/interventions-publiees", label: "Interventions", icon: <Briefcase size={16} /> },
-    { path: "/realisations", label: "Réalisations", icon: <Award size={16} /> },
-    { path: "/contact", label: "Contact", icon: <Mail size={16} /> }
+    { path: "/", label: "Accueil", icon: <Home size={14} /> },
+    { path: "/a-propos", label: "À propos", icon: <Info size={14} /> },
+    { path: "/interventions-publiees", label: "Interventions", icon: <Briefcase size={14} /> },
+    { path: "/realisations", label: "Réalisations", icon: <Award size={14} /> },
+    { path: "/contact", label: "Contact", icon: <Mail size={14} /> }
   ];
 
   if (loading) return (
