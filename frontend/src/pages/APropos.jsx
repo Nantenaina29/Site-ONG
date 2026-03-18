@@ -19,25 +19,13 @@ const APropos = () => {
                 </h3>
                 <div className="text-lg text-gray-700 leading-relaxed font-medium space-y-4 text-justify">
                   <p>
-                  Le Projet Fianarantsoa a vu le jour en 1998 dans la partie sud de Fianarantsoa
-                   à Ambalavao à titre de projet individuel. Il a ensuite connu une expansion en 2001 
-                   et 2003 vers le nord, et depuis, il n’a cessé de grandir. En 2009, l’Association
-                    Tsinjo Aina Betsileo  a été crée pour soutenir cette initiative. Puis, en  décembre 2016, 
-                    cette association a été transformée en l’ONG TSINJO AINA Fianarantsoa.
+                  Le Projet Fianarantsoa a vu le jour en 1998, dans la partie sud de la région, à Ambalavao, sous la forme d’une initiative individuelle. Rapidement, il s’est étendu vers le nord en 2001 puis en 2003, amorçant une dynamique de croissance continue. En 2009, pour soutenir et structurer cette démarche, l’Association Tsinjo Aina Betsileo a été fondée. Quelques années plus tard, en décembre 2016, elle a évolué pour devenir l’ONG TSINJO AINA Fianarantsoa.
                   </p>
                   <p>
-                  Actuellement, l’ONG bénéficie à 24 060 personnes directement, dont 11 814 femmes,
-                   et touche indirectement 23 628 personnes supplémentaires. L’organisation s’efforce
-                    améliorer les condition de vie et autonomiser les communautés locales, en
-                     particulier les femmes, a travers divers projets sociaux, économiques et environnementaux.
+                  Aujourd’hui, l’organisation accompagne directement près de 25000 bénéficiaires, dont 11800 femmes, et touche indirectement plus de 58400 personnes supplémentaires. Sa mission est d’améliorer les conditions de vie et de renforcer l’autonomie des communautés locales, en particulier des femmes, à travers des projets sociaux, économiques et environnementaux.
                   </p>
                   <p>
-                  L’approche de  ‘ONG repose sur l’effort propre des  communautés, c’est a dire encourager
-                   les groupes créer et gérer leurs propres initiatives de développement durable. L’ONG prône
-                    également la reconstruction la solidarité communautaire, un concept qui a historiquement
-                     existe a Madagascar mais qui a peu a peu disparu. Elle met l’accent sur le renforcement
-                      des capacités, l’acquisition de compétences et la sensibilisation pour un développement
-                       durable et souverain.
+                  L’approche adoptée repose sur la mobilisation des efforts communautaires: encourager les groupes à concevoir et gérer leurs propres initiatives de développement durable. L’ONG œuvre également à raviver la solidarité communautaire, une valeur profondément enracinée dans l’histoire Malagasy mais qui s’est progressivement effritée. Elle met l’accent sur le renforcement des capacités, l’acquisition de compétences et la sensibilisation, afin de promouvoir un développement à la fois durable et souverain.
                   </p>
                 </div>
               </div>
@@ -86,18 +74,12 @@ const APropos = () => {
             <h1 className="text-4xl md:text-5xl font-black text-indigo-950 uppercase leading-none">
               Soutenir les <br/><span className="text-emerald-600 text-3xl md:text-4xl italic">plus démunis</span>
             </h1>
-            <p className="text-gray-700 text-lg leading-relaxed border-l-4 border-emerald-500 pl-4 text-justify">
-            L'Action Tsinjo Aina concentre son intervention sur les personnes les plus démunies et exclues, dont la
-             vulnérabilité est accentuée par leur position sociale (absence de terres et de moyens de production),
-              leur âge ou leur handicap physique et mental. Cette cible, souvent ignorée par les circuits classiques 
-              de développement, rencontre des obstacles majeurs pour accéder aux ressources naturelles essentielles
-               à sa subsistance. Pour briser ce cycle d'isolement, l'organisation intègre ces individus dans des Groupes
-                de Solidarité (GS) où s'applique la règle d'inclusion radicale du « suivre le plus faible » : le rythme 
-                de progression du collectif est calé sur celui des membres les plus fragiles, garantissant que personne
-                 ne soit laissé de côté. En transformant ces bénéficiaires en citoyens responsables capables de gérer 
-                 leur propre « effort propre », l'ONG vise leur désendettement vis-à-vis des usuriers, leur souveraineté
-                  alimentaire par l'agroécologie et leur pleine reconnaissance civique au sein des instances de décision locales."
-            </p>
+            <div className="text-gray-700 text-lg leading-relaxed border-l-4 border-emerald-500 pl-4 text-justify">
+            <p>L’action de Tsinjo Aina s’oriente prioritairement vers les personnes les plus vulnérables et marginalisées: celles privées de terres et de moyens de production, les personnes âgées, ainsi que celles vivant avec un handicap physique ou mental. Ces groupes, souvent laissés de côté par les circuits classiques du développement, rencontrent de profondes difficultés pour accéder aux ressources naturelles indispensables à leur survie.</p>
+            <p>Pour rompre ce cercle d’exclusion, l’organisation les intègre dans des Groupes de Solidarité (GS), fondés sur une règle d’inclusion radicale: « suivre le plus faible ». Concrètement, la progression collective s’adapte au rythme des membres les plus fragiles, garantissant que personne ne soit abandonné en chemin.</p>
+            <p>À travers cette démarche, Tsinjo Aina transforme ces bénéficiaires en citoyens responsables, capables de gérer leur propre effort et de construire leur autonomie. Les objectifs sont clairs: sortir du cycle de l’endettement auprès des usuriers, atteindre la souveraineté alimentaire grâce à l’agroécologie, et obtenir une pleine reconnaissance civique au sein des instances locales de décision.</p>
+
+            </div>
           </div>
           <div className="relative">
           <img src="/hero.jpg" alt="Fivorian'ny GS"  className="rounded-3xl shadow-xl w-full h-150 object-cover transition-all duration-500" />
@@ -113,20 +95,11 @@ const APropos = () => {
             <h3 className="text-2xl font-black text-indigo-950 uppercase flex items-center gap-3">
               <Users className="text-emerald-600" /> Démocratie Directe
             </h3>
-            <p className="text-lg text-gray-700 leading-relaxed text-justify">
-            Au sein du Groupe de Solidarité (GS), la démocratie directe se manifeste par une organisation 
-            horizontale où le groupement sert de cellule de base à l'apprentissage des vertus citoyennes,
-             garantissant que chaque membre dispose du même droit de parole et d'influence sur l'avenir collectif. 
-             Contrairement aux systèmes de vote majoritaire classique, la prise de décision repose sur
-              un processus rigoureux de débat collectif approfondi visant systématiquement l'obtention 
-              d'un consensus, assurant ainsi que les résolutions soient soutenues par l'ensemble des
-               participants. Cette structure est encadrée par un bureau permanent (président, trésorier, secrétaire)
-                élu de manière ouverte et transparente, dont les membres n'exercent aucune prérogative de pouvoir
-                 mais assument des responsabilités de service dans l'intérêt commun. Enfin, cette démocratie 
-                 se veut radicalement inclusive par l'application du principe de « suivre le plus faible », 
-                 ajustant le rythme de progression et les règles du groupe qui évoluent selon sa maturité, 
-                 afin de protéger et d'intégrer pleinement les membres les plus démunis ou marginalisés.
-            </p>
+            <div className="text-lg text-gray-700 leading-relaxed text-justify">
+           <p> Au sein des Groupes de Solidarité (GS), la démocratie directe s’exprime à travers une organisation horizontale. Chaque groupement devient une cellule d’apprentissage citoyen, où tous les membres disposent d’un droit égal de parole et d’influence sur les décisions collectives. Contrairement aux systèmes classiques fondés sur le vote majoritaire, les résolutions émergent d’un processus exigeant de débat approfondi, visant toujours l’obtention d’un consensus. Ainsi, chaque décision est portée par l’ensemble des participants.</p>
+           <p>Cette structure est coordonnée par un bureau permanent – président, trésorier et secrétaire – élu de manière ouverte et transparente. Ces responsables n’exercent aucun pouvoir hiérarchique: leur rôle est exclusivement de service, au bénéfice du collectif.</p>
+           <p>Enfin, cette démocratie se veut résolument inclusive grâce au principe du « suivre le plus faible ». Le rythme de progression et les règles du groupe s’ajustent en fonction de sa maturité, afin de protéger et d’intégrer pleinement les membres les plus démunis ou marginalisés.</p>
+            </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
                 <h4 className="font-bold text-indigo-900 text-xs uppercase mb-1">Bureau Permanent</h4>

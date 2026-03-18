@@ -137,7 +137,7 @@ const NosActivites = () => {
         <div className="container mx-auto px-6 md:px-20 flex flex-col md:flex-row items-center justify-center gap-6">
           <h3 className="text-xs font-black text-blue-900 uppercase tracking-[0.4em]">Formations :</h3>
           <div className="flex flex-wrap justify-center gap-2">
-            {["Gestion", "Agroécologie", "Genre", "Nutrition", "Plaidoyer", "Climat"].map((f, i) => (
+            {["Gestion Simplifié", "Agroécologie", "Genre", "Nutrition", "Plaidoyer", "Climat"].map((f, i) => (
               <div key={i} className="px-5 py-2 bg-white border-2 border-blue-100 text-[10px] font-black text-blue-800 uppercase rounded-full shadow-sm">
                 {f}
               </div>
