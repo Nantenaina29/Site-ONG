@@ -95,43 +95,59 @@ const NosActivites = () => {
         </div>
       </div>
 
-      {/* --- CONTENT SECTION --- */}
-      <div className="container mx-auto px-6 md:px-20 pt-16 pb-12">
-        <div className="grid grid-cols-1 gap-24">
-          {activites.map((item, index) => (
-            <article key={item.id} className={`flex flex-col ${index % 2 === 0 ? 'lg:flex-row' : 'lg:flex-row-reverse'} gap-12 items-center`}>
-              <div className="w-full lg:w-1/2 relative group">
-                <div className="overflow-hidden rounded-3xl shadow-2xl aspect-[4/3] border-4 border-slate-50">
-                  <img src={item.img} alt={item.title} className="w-full h-full object-cover" />
-                </div>
-                <div className={`absolute -bottom-4 ${index % 2 === 0 ? '-right-4' : '-left-4'} p-4 ${item.bgColor} text-white rounded-2xl shadow-xl z-10`}>
-                  {item.icon}
-                </div>
-              </div>
+              {/* --- CONTENT SECTION --- */}
+          <div className="container mx-auto px-6 md:px-10 pt-16 pb-12"> {/* Nahena ho md:px-10 ny elanelana sisiny */}
+            <div className="grid grid-cols-1 gap-24">
+              {activites.map((item, index) => (
+                <article 
+                  key={item.id} 
+                  className={`flex flex-col ${index % 2 === 0 ? 'lg:flex-row' : 'lg:flex-row-reverse'} gap-12 lg:items-stretch`} 
+                > 
+                  {/* lg:items-stretch: mampitovy ny hahavon'ny sary sy ny soratra */}
 
-              <div className="w-full lg:w-1/2 space-y-5">
-                <span className={`${item.themeColor} font-black text-[11px] uppercase tracking-[0.3em]`}>{item.subtitle}</span>
-                <h2 className="text-3xl md:text-4xl font-black text-black uppercase leading-tight">{item.title}</h2>
-                
-                <div className="space-y-4 text-black">
-                  <p className="text-lg font-bold leading-snug">{item.desc}</p>
-                  <p className="text-base leading-relaxed opacity-95">{item.details}</p>
-                </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-4">
-                  {item.points.map((point, pIdx) => (
-                    <div key={pIdx} className="flex items-center space-x-2 group">
-                      <CheckCircle2 size={16} className="text-emerald-500 shrink-0" />
-                      <span className="text-[11px] font-black text-black uppercase tracking-tight">{point}</span>
+                  <div className="w-full lg:w-1/2 relative group">
+                    {/* Esorina ny aspect-[4/3] mba hanaraka ny hahavo (height) ilay sary */}
+                    <div className="overflow-hidden rounded-3xl shadow-2xl h-full border-4 border-slate-50">
+                      <img 
+                        src={item.img} 
+                        alt={item.title} 
+                        className="w-full h-full object-cover" 
+                      />
                     </div>
-                  ))}
-                </div>
-              </div>
-            </article>
-          ))}
-        </div>
-      </div>
+                    <div className={`absolute -bottom-4 ${index % 2 === 0 ? '-right-4' : '-left-4'} p-4 ${item.bgColor} text-white rounded-2xl shadow-xl z-10`}>
+                      {item.icon}
+                    </div>
+                  </div>
 
+                  <div className="w-full lg:w-1/2 space-y-5 flex flex-col justify-center py-4">
+                    {/* Nampiana flex-col sy justify-center mba hitoetra eo afovoan'ny sary ny soratra */}
+                    <span className={`${item.themeColor} font-black text-[11px] uppercase tracking-[0.3em]`}>
+                      {item.subtitle}
+                    </span>
+                    <h2 className="text-3xl md:text-4xl font-black text-black uppercase leading-tight">
+                      {item.title}
+                    </h2>
+                    
+                    <div className="space-y-4 text-black">
+                      <p className="text-lg font-bold leading-snug">{item.desc}</p>
+                      <p className="text-base leading-relaxed opacity-95 text-justify">{item.details}</p>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-4">
+                      {item.points.map((point, pIdx) => (
+                        <div key={pIdx} className="flex items-center space-x-2 group">
+                          <CheckCircle2 size={16} className="text-emerald-500 shrink-0" />
+                          <span className="text-[11px] font-black text-black uppercase tracking-tight">
+                            {point}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </article>
+              ))}
+            </div>
+          </div>
       {/* --- FORMATION LIST --- */}
       <div className="bg-blue-50 py-10 border-y-2 border-blue-100">
         <div className="container mx-auto px-6 md:px-20 flex flex-col md:flex-row items-center justify-center gap-6">
