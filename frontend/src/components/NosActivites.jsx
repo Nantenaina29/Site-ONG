@@ -45,7 +45,7 @@ const NosActivites = () => {
       img: "/AGRO.jpg",
       desc: "Nous formons les membres aux bases de l'agroécologie pour augmenter la production familiale.",
       details: "L'agroécologie au sein de l'ONG Tsinjo Aina vise à transformer la précarité en souveraineté alimentaire en agissant directement sur les charges d'exploitation et la qualité de la nutrition des familles. Au cœur de cette démarche, les membres apprennent à fabriquer du compost et à installer des haies vives pour fertiliser et protéger leurs terres à moindre coût. L'action se concentre également sur la création de banques de semences communautaires et l'augmentation de la diversité des variétés locales disponibles, ce qui permet aux paysans de s'affranchir des intrants coûteux et de garantir une alimentation saine et durable pour leurs foyers. Cette souveraineté est renforcée par des formations spécifiques sur le changement climatique et la gestion familiale, permettant aux bénéficiaires de maîtriser leur production sur le long terme.",
-      points: ["Compostage & Haies vives", "Semences locales", "Éducation nutritionnelle", "Adaptation au climat"],
+      points: ["Compostage & Haies vives", "Multiplication et conservations des semences locales", "Éducation nutritionnelle", "Adaptation au climat"],
       themeColor: "text-green-600",
       bgColor: "bg-green-600"
     },
