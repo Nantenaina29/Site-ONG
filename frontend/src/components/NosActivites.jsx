@@ -54,7 +54,7 @@ const NosActivites = () => {
       title: "Réseautage et Plaidoyer",
       subtitle: "Une voix pour les exclus",
       icon: <Network size={24} />,
-      img: "/Dvpmt.JPG",
+      img: "/plaidoyer.jpg",
       desc: "Le Réseau Tsinjo Aina regroupe les GS pour porter des plaidoyers au niveau communal.",
       details: "Le réseautage au sein de l'Action Tsinjo Aina s'organise à travers des plates-formes informelles au niveau des Fokontany, permettant aux groupements de proximité de se concerter régulièrement pour renforcer leur autonomie et atteindre le désendettement. Ces rencontres, qui favorisent l'échange et le conseil mutuel, servent de base à un plaidoyer structuré où les membres intègrent les Structures Locales de Concertation (SLC) pour porter leurs revendications auprès des autorités. Cette dynamique collective permet de définir des priorités d'action commune, telles que la défense des droits civiques, la sécurisation foncière, l'accès à l'eau potable et l'agriculture adaptée, transformant ainsi le réseau en un véritable levier d'influence pour l'accès aux services de base et le développement local.",
       points: ["Conseils entre groupes", "Plaidoyer", "Sécurisation foncière", "Diagnostic participatif"],
