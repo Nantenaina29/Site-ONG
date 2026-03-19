@@ -246,7 +246,7 @@ const HomePage = () => {
     <>
       <div className="relative h-[60vh] bg-gray-900 overflow-hidden text-left flex items-center">
         <div className="absolute inset-0 z-0">
-          <img src="/back.jpg" alt="Background" className="w-full h-full object-cover opacity-60" />
+          <img src="/ENTRAIDE.jpg" alt="Background" className="w-full h-full object-cover opacity-60" />
         </div>
         <div className="relative z-20 container mx-auto px-6 md:px-20 text-white">
           <h2 className="max-w-lg text-gray-300 mb-6 text-md font-light leading-tight">Formation et Développement</h2>
