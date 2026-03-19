@@ -124,21 +124,21 @@ const ActivitiesHome = () => {
       title: "Les Groupes de Solidarités (GS)",
       desc: "Le Groupe de Solidarité (GS) représente l’espace central de participation citoyenne, où les membres exercent une démocratie directe garantissant à chacun la liberté de parole. Son fonctionnement repose sur trois piliers essentiels : l’information, la formation et l’accompagnement-conseil, qui soutiennent l’engagement des membres. Pour assurer une gestion transparente, le GS procède à l’élection ouverte d’un bureau permanent composé d’un président, d’un trésorier et d’un secrétaire, tous investis dans la défense de l’intérêt collectif. Les décisions majeures sont systématiquement prises en Assemblée Générale (AG), réunissant l’ensemble des membres. ",
       details: ["Épargne commune (riz, argent)","Crédits internes sans usuriers","Principe 'On suit le plus faible'","Gestion transparente par bureau élu"],
-      img: "/GS.jpg", align: "flex-row"
+      img: "/EPRACC.jpg", align: "flex-row"
     },
     {
       id: "02",
       title: "Formations & Production",
       desc:  "Ce programme s’adresse en priorité aux personnes les plus vulnérables et marginalisées, confrontées à de fortes difficultés d’accès aux ressources naturelles indispensables à la production. L’appui repose sur une formation solide aux principes de l’agroécologie, renforcée par la mise à disposition de semences locales communautaires, garantissant l’autonomie et la diversité des cultures. Parallèlement, une éducation nutritionnelle valorise la production locale et favorise une alimentation saine et équilibrée pour toutes les familles. Enfin, des formations transversales portant sur la gestion du temps, l’égalité de genre et l’adaptation au changement climatique viennent compléter ce dispositif, afin de renforcer la résilience globale des bénéficiaires.",
       details: ["Bases de l'agroécologie","Éducation nutritionnelle","Genre & Climat","Multiplication et conservation des semences locales"],
-      img: "/Formation.jpg", align: "flex-row-reverse"
+      img: "/FORMATION.jpg", align: "flex-row-reverse"
     },
     {
       id: "03",
       title: "Les Réseaux",
       desc: "Le réseau constitue une véritable plateforme d’échange et de concertation entre les différents Groupes de Solidarité, leur permettant d’unir leurs forces pour relever les défis du développement local et progresser vers une autonomie durable. Une action stratégique clé réside dans l’intégration des membres au sein de la Structure Locale de Concertation (SLC), afin de renforcer le lobbying et le plaidoyer auprès des instances décisionnelles. Le réseau accompagne également ses membres dans l’élaboration et la présentation de plans de développement structurés aux autorités locales, contribuant ainsi à influencer les politiques publiques. Outre la défense des droits civiques, il encourage des initiatives communes visant à sécuriser l’accès aux ressources vitales telles que l’eau potable, le foncier et une agriculture durable. Enfin, ce mouvement consolide la solidarité entre les groupements, les positionnant comme des acteurs incontournables du progrès social et économique régional.",
       details: ["Lobbying & Plaidoyer (SLC)","Défense des Droits Civiques","Accès à l'eau & Foncier","Planification locale"],
-      img: "/Dvpmt.JPG", align: "flex-row"
+      img: "/RESEAU.jpg", align: "flex-row"
     }
   ];
   return (
