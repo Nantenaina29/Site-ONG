@@ -157,7 +157,7 @@ function Login() {
         {/* 1. ANKAVIA: SARY */}
         <div className="w-full lg:w-1/2 relative bg-slate-50 flex items-center justify-center border-b lg:border-b-0 lg:border-r border-gray-50 h-56 sm:h-64 lg:h-full overflow-hidden">
           <img 
-            src="/admin.png" 
+            src="/Logo TAF 3D.png" 
             alt="Admin Illustration" 
             className="w-full h-full object-cover lg:object-cover" 
           />
