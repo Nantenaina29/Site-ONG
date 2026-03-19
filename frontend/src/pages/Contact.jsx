@@ -19,15 +19,15 @@ const Contact = () => {
       if (error) throw error;
 
       await emailjs.send(
-        'service_c4flxy7', 
-        'template_zkihx63', 
+        'service_9fthtx8', 
+        'template_i3bbvmr', 
         {
           name: form.name,    
           email: form.email,  
           subject: form.subject,
           message: form.message  
         },
-        'QgPdbQQl9Dkymx3Dw'
+        '3zUqCmG2ks6xyxDnl'
       );
   
       setLoading(false);
