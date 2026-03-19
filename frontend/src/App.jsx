@@ -131,7 +131,7 @@ const ActivitiesHome = () => {
       title: "Formations & Production",
       desc:  "Ce programme s’adresse en priorité aux personnes les plus vulnérables et marginalisées, confrontées à de fortes difficultés d’accès aux ressources naturelles indispensables à la production. L’appui repose sur une formation solide aux principes de l’agroécologie, renforcée par la mise à disposition de semences locales communautaires, garantissant l’autonomie et la diversité des cultures. Parallèlement, une éducation nutritionnelle valorise la production locale et favorise une alimentation saine et équilibrée pour toutes les familles. Enfin, des formations transversales portant sur la gestion du temps, l’égalité de genre et l’adaptation au changement climatique viennent compléter ce dispositif, afin de renforcer la résilience globale des bénéficiaires.",
       details: ["Bases de l'agroécologie","Éducation nutritionnelle","Genre & Climat","Multiplication et conservation des semences locales"],
-      img: "/FORMATION.jpg", align: "flex-row-reverse"
+      img: "/form.jpg", align: "flex-row-reverse"
     },
     {
       id: "03",
