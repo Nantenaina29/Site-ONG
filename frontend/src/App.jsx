@@ -124,7 +124,7 @@ const ActivitiesHome = () => {
       title: "Les Groupes de Solidarités (GS)",
       desc: "Le Groupe de Solidarité (GS) représente l’espace central de participation citoyenne, où les membres exercent une démocratie directe garantissant à chacun la liberté de parole. Son fonctionnement repose sur trois piliers essentiels : l’information, la formation et l’accompagnement-conseil, qui soutiennent l’engagement des membres. Pour assurer une gestion transparente, le GS procède à l’élection ouverte d’un bureau permanent composé d’un président, d’un trésorier et d’un secrétaire, tous investis dans la défense de l’intérêt collectif. Les décisions majeures sont systématiquement prises en Assemblée Générale (AG), réunissant l’ensemble des membres. ",
       details: ["Épargne commune (riz, argent)","Crédits internes sans usuriers","Principe 'On suit le plus faible'","Gestion transparente par bureau élu"],
-      img: "/gs.jpg", align: "flex-row"
+      img: "/GS.jpg", align: "flex-row"
     },
     {
       id: "02",
