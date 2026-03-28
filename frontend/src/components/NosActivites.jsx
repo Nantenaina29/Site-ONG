@@ -70,7 +70,7 @@ const NosActivites = () => {
       <div className="relative h-[50vh] min-h-[400px] flex items-center overflow-hidden bg-white">
         <div className="absolute inset-0 z-0">
           <div className="slideshow-infinite">
-            {/* Averina indroa ny sary voalohany amin'ny farany mba tsy hisy fahatapahana */}
+           
             <div className="slide-item" style={{ backgroundImage: "url('/GS.jpg')" }}></div>
             <div className="slide-item" style={{ backgroundImage: "url('/Formation.jpg')" }}></div>
             <div className="slide-item" style={{ backgroundImage: "url('/Dvpmt.JPG')" }}></div>

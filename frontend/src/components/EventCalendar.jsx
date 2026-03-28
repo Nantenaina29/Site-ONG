@@ -52,15 +52,15 @@ const EventCalendar = () => {
           {/* Vaovao 1 */}
           <div className="group border-l-4 border-fmfp-green pl-6 py-1">
             <span className="text-[10px] font-black text-indigo-900 uppercase tracking-widest">Dernière minute</span>
-            <h4 className="font-bold text-green-600 uppercase text-lg leading-tight mt-1">Multiplication et conservation des semences locales</h4>
-            <p className="text-sm text-gray-600 mt-2">La préservation et la diffusion des semences locales au sein des communautés renforcent la souveraineté alimentaire en donnant aux paysans et paysannes la possibilité de conserver et de partager des variétés adaptées et résistantes. Ce système coopératif réduit la dépendance aux intrants agricoles onéreux, permettant aux familles de diminuer immédiatement leurs coûts de production. En protégeant les réserves collectives, le projet contribue à sécuriser l’avenir agricole des paysans et paysannes face aux incertitudes climatiques. </p>
+            <h4 className="font-bold text-green-600 uppercase text-lg leading-tight mt-1 text-justify">Multiplication et conservation des semences locales</h4>
+            <p className="text-sm text-gray-600 mt-2 text-justify">La préservation et la diffusion des semences locales au sein des communautés renforcent la souveraineté alimentaire en donnant aux paysans et paysannes la possibilité de conserver et de partager des variétés adaptées et résistantes. Ce système coopératif réduit la dépendance aux intrants agricoles onéreux, permettant aux familles de diminuer immédiatement leurs coûts de production. En protégeant les réserves collectives, le projet contribue à sécuriser l’avenir agricole des paysans et paysannes face aux incertitudes climatiques. </p>
           </div>
 
           {/* Vaovao 2 */}
           <div className="group border-l-4 border-indigo-900 pl-6 py-1">
             <span className="text-[10px] font-black text-indigo-900 uppercase tracking-widest">Impact Social</span>
-            <h4 className="font-bold text-green-600 uppercase text-lg leading-tight mt-1">Succès de l'Épargne Collective</h4>
-            <p className="text-sm text-gray-700 mt-2">La mise en place d’une épargne collective permet aux villageois et villageoises de se libérer de la dépendance aux usuriers en constituant un fonds solidaire géré de manière autonome. Grâce à des crédits internes à faible taux, les familles peuvent sécuriser leurs récoltes et répondre à leurs besoins urgents sans recourir à l’endettement extérieur. Cette dynamique renforce la cohésion sociale et démontre que la solidarité financière locale constitue un levier puissant pour un développement durable et respectueux de la dignité des communautés.</p>
+            <h4 className="font-bold text-green-600 uppercase text-lg leading-tight mt-1 text-justify">Succès de l'Épargne Collective</h4>
+            <p className="text-sm text-gray-700 mt-2 text-justify">La mise en place d’une épargne collective permet aux villageois et villageoises de se libérer de la dépendance aux usuriers en constituant un fonds solidaire géré de manière autonome. Grâce à des crédits internes à faible taux, les familles peuvent sécuriser leurs récoltes et répondre à leurs besoins urgents sans recourir à l’endettement extérieur. Cette dynamique renforce la cohésion sociale et démontre que la solidarité financière locale constitue un levier puissant pour un développement durable et respectueux de la dignité des communautés.</p>
           </div>
 
           <button className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-indigo-900 hover:text-fmfp-green transition-all pt-2">
