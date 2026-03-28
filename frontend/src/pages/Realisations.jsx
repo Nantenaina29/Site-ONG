@@ -15,9 +15,33 @@ const Realisations = () => {
                 .eq('is_published', true)
                 .order('created_at', { ascending: false });
 
-            if (!error) {
-                // Averina in-telo ny data mba ho seamless ny loop
-                setData([...result, ...result, ...result]);
+            if (!error && result) {
+                // ETO NO FANDALANANA NY SARY TSIRAIRAY:
+                // Mamorona lisitra vaovao izay misy "object" iray isaky ny sary hita
+                const saryTsirairay = [];
+                
+                result.forEach(intervention => {
+                    let listSary = [];
+                    if (Array.isArray(intervention.image)) {
+                        listSary = intervention.image.filter(img => img !== "" && img !== null);
+                    } else if (typeof intervention.image === 'string' && intervention.image.includes(',')) {
+                        listSary = intervention.image.split(',').map(item => item.trim()).filter(img => img !== "");
+                    } else if (intervention.image) {
+                        listSary = [intervention.image];
+                    }
+
+                    // Isaky ny sary hita ao anatin'ny intervention iray, dia mamorona "item" vaovao
+                    listSary.forEach(saryUrl => {
+                        saryTsirairay.push({
+                            url: saryUrl,
+                            title: intervention.title,
+                            location: intervention.location
+                        });
+                    });
+                });
+
+                // Averina in-telo mba ho seamless ny scroll
+                setData([...saryTsirairay, ...saryTsirairay, ...saryTsirairay]);
             }
             setLoading(false);
         };
@@ -26,105 +50,55 @@ const Realisations = () => {
 
     return (
         <div className="min-h-screen bg-white overflow-x-hidden">
-            {/* --- 1. EN-TÊTE (HERO SECTION) --- */}
+            {/* --- 1. EN-TÊTE --- */}
             <div className="bg-slate-900 py-20 px-6 text-center text-white relative overflow-hidden">
-            <div className="absolute inset-0 opacity-50">
-                <img 
-                    src="/Real.jpg" 
-                    alt="Background" 
-                    className="w-full h-full object-cover" 
-                />
-            </div>
+                <div className="absolute inset-0 opacity-50">
+                    <img src="/Real.jpg" alt="Background" className="w-full h-full object-cover" />
+                </div>
                 <div className="relative z-10">
-                    <h1 className="text-4xl md:text-6xl font-black mb-4 tracking-tighter uppercase">
-                        NOS RÉALISATIONS
-                    </h1>
+                    <h1 className="text-4xl md:text-6xl font-black mb-4 tracking-tighter uppercase">NOS RÉALISATIONS</h1>
                     <p className="text-slate-400 max-w-xl mx-auto text-lg font-medium">
-                         Chaque image capturée ici est le témoin d'un engagement profond et d'une volonté inébranlable d'apporter un changement durable. 
-                        À travers nos interventions stratégiques et nos projets de proximité, nous transformons des défis complexes en opportunités concrètes 
-                        pour les communautés locales.
+                        Chaque image capturée ici est le témoin d'un engagement profond...
                     </p>
                 </div>
             </div>
 
             {/* --- 2. ANIMATION SCROLL SECTION --- */}
             <div className="py-16 bg-white relative">
-                <div className="max-w-7xl mx-auto px-6 mb-10 flex items-center justify-between">
-                    <div className="flex items-center gap-2 text-indigo-600 font-black uppercase tracking-widest text-sm">
-                        <Camera size={20} />
-                        <span>Galerie Panoramique</span>
-                    </div>
-                    <div className="h-px flex-1 bg-slate-100 mx-6 hidden md:block"></div>
-                    <div className="text-slate-400 text-xs font-bold uppercase">
-                        Défilement Automatique
-                    </div>
-                </div>
-
+                {/* ... (Header kely: Galerie Panoramique) ... */}
+                
                 {loading ? (
                     <div className="flex justify-center py-20">
                         <div className="w-10 h-10 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin"></div>
                     </div>
                 ) : (
                     <div className="relative w-full overflow-hidden group py-4">
-                        
                         <div className="absolute inset-y-0 left-0 w-32 md:w-64 z-10 bg-linear-to-r from-white to-transparent pointer-events-none"></div>
                         <div className="absolute inset-y-0 right-0 w-32 md:w-64 z-10 bg-linear-to-l from-white to-transparent pointer-events-none"></div>
 
                         <div className="flex w-max animate-scroll-slow group-hover:pause-animation">
-                        {data && data.map((intervention, index) => {
-                            
-                            const saryAvyAminDB = intervention.image;
-                            let listSary = [];
-
-                            // FANITSIANA: Hanivana ny sary banga "" araka ny hita ao amin'ny Database
-                            if (Array.isArray(saryAvyAminDB)) {
-                                listSary = saryAvyAminDB.filter(img => img !== "" && img !== null);
-                            } 
-                            else if (typeof saryAvyAminDB === 'string' && saryAvyAminDB.includes(',')) {
-                                listSary = saryAvyAminDB.split(',').map(item => item.trim()).filter(img => img !== "");
-                            }
-                            else if (saryAvyAminDB) {
-                                listSary = [saryAvyAminDB];
-                            }
-
-                            const cover = listSary[0];
-                            const countSisa = listSary.length > 1 ? listSary.length - 1 : 0;
-
-                            return (
+                            {data.map((item, index) => (
                                 <div key={index} className="shrink-0 w-72 md:w-96 px-3">
                                     <div className="relative h-64 md:h-80 rounded-[2.5rem] overflow-hidden shadow-lg border border-slate-100 group/item bg-slate-50">
+                                        <img 
+                                            src={item.url} 
+                                            alt={item.title} 
+                                            className="w-full h-full object-cover transition-transform duration-700 group-hover/item:scale-110"
+                                        />
                                         
-                                        {cover ? (
-                                            <>
-                                                <img 
-                                                    src={cover} 
-                                                    alt={intervention.title} 
-                                                    className="w-full h-full object-cover transition-transform duration-700 group-hover/item:scale-110"
-                                                />
-                                                {countSisa > 0 && (
-                                                    <div className="absolute top-6 right-6 bg-black/70 backdrop-blur-md text-white px-4 py-2 rounded-full text-sm font-black z-10 border border-white/20">
-                                                        +{countSisa}
-                                                    </div>
-                                                )}
-                                            </>
-                                        ) : (
-                                            <div className="flex items-center justify-center h-full text-slate-400">
-                                                Aucune image
-                                            </div>
-                                        )}
-                                        
+                                        {/* Tsy misy badge +11 intsony eto */}
+
                                         <div className="absolute inset-0 bg-linear-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover/item:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-8">
                                             <p className="text-green-400 text-[10px] font-black uppercase tracking-[0.2em] mb-1">
-                                                {intervention.location}
+                                                {item.location}
                                             </p>
                                             <h3 className="text-white text-lg font-bold leading-tight">
-                                                {intervention.title}
+                                                {item.title}
                                             </h3>
                                         </div>
                                     </div>
                                 </div>
-                            );
-                        })}
+                            ))}
                         </div>
                     </div>
                 )}
@@ -135,11 +109,8 @@ const Realisations = () => {
                     0% { transform: translateX(0); }
                     100% { transform: translateX(-33.33%); }
                 }
-                .animate-scroll-slow { animation: scroll-slow 60s linear infinite; }
+                .animate-scroll-slow { animation: scroll-slow 80s linear infinite; }
                 .pause-animation:hover { animation-play-state: paused; }
-                @media (max-width: 768px) {
-                    .animate-scroll-slow { animation-duration: 40s; }
-                }
             `}</style>
         </div>
     );
