@@ -24,11 +24,11 @@ const EventCalendar = () => {
   };
 
   return (
-    <div className="flex flex-col lg:flex-row gap-12 items-start">
+    <div className="flex flex-col lg:flex-row gap-12 items-stretch">
       
       {/* --- 1. CALENDRIER (SADY FLAT NO TSY MISY CARD) --- */}
-      <div className="w-full lg:w-1/2">
-        <div className="flex items-center space-x-3 mb-6">
+      <div className="w-full lg:w-1/2 flex flex-col">
+        <div className="flex items-center space-x-3 mb-6 shrink-0">
           <CalendarIcon className="text-fmfp-green" size={24} />
           <h2 className="text-xl font-black text-indigo-900 uppercase tracking-tight border-b-2 border-fmfp-green">Calendrier</h2>
         </div>
