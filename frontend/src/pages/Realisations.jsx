@@ -119,7 +119,7 @@ const Realisations = () => {
                         </>
                     ) : (
                         <div className="flex items-center justify-center h-full text-slate-400">
-                            Tsy misy sary
+                            Aucune image
                         </div>
                     )}
                     
